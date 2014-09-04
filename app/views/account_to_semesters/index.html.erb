@@ -1,0 +1,56 @@
+<h1>Счет на семестр</h1>
+<div class="well  well-small">
+    <%= form_tag("/account_to_semesters", method: "get") do  %>
+        <div class="row">
+            <div class="col-md-3">
+                <p>
+                    Учебный год:<br>
+                    <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years] ), { include_blank: true })%>
+                </p>
+            </div>
+            <div class="col-md-1 col-md-offset-7" >
+                <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+            </div>
+        </div>
+    <% end %>
+</div>
+<p>
+  <a href="/account_to_semesters/new" class="btn btn-large btn-success enabled">Новый счет на семестр</a>
+</p>
+
+<table class="table table-hover">
+  <tr>
+    <% if can? :manager, AccountToSemester %><th>Факультет</th><% end %>
+    <th>Учебный год</th>
+    <th>Семестр</th>
+    <th>Тип</th>
+    <th>Сумма</th>
+    <th></th>
+  </tr>
+
+
+    <tbody>
+    <% @account_to_semesters.sort_by {|s| s.year}.reverse.each do |account_to_semester| %>
+      <tr>
+
+        <% if can? :manager, AccountToSemester %><td><%= account_to_semester.faculty.short_name %></td><% end %>
+        <td><%= account_to_semester.year %></td>
+        <td><%= account_to_semester.semester %></td>
+                <td><%=AccountToSemester::TYPE_ACСOUNT[account_to_semester.type_account]%></td>
+                <td><%= account_to_semester.sum %></td>
+
+                <% if can? :manager, AccountToSemester %>
+                    <td><%= link_to 'Show', account_to_semester %>
+                      <%= link_to 'Edit', edit_account_to_semester_path(account_to_semester) %>
+                      <%= link_to 'Destroy', account_to_semester_path(account_to_semester),
+                                  method: :delete, data: { confirm: 'Are you sure?' } %>
+                    </td>
+                <% end %>
+        <td><%=  link_to "Изменить", { controller: "operations", action: "new", account_to_semester_id:account_to_semester.id },  :class => "btn btn-primary"  %></td>
+
+
+      </tr>
+        <% end %>
+        </tbody>
+
+</table>

@@ -1,0 +1,34 @@
+<h1>Группы</h1>
+  <p>  
+  <a href="/groups/new" class="btn btn-large btn-success enabled">Новая группа</a>
+  </p>
+  
+<table class="table table-striped">
+  <tr>
+      <th>Имя</th>
+      <th>Курс</th>
+      <th>Семестр    </th>
+<th>Учебный год</th>
+<th>Факультет</th>
+  </tr>
+ 
+  <% @groups.sort_by{|word| word.year }.each do |group| %>
+    <tr>
+		<td><%= group.name %></td>
+		<td><%= group.kurs %></td>
+		<td><%= group.semester %></td>
+		<td><%= group.year %></td>
+		<td><%= group.faculty.name %></td>
+
+     
+      <td><%= link_to 'Show', group %></td>
+	  <td><%= link_to 'Edit', edit_group_path(group) %></td>
+	      <td><%= link_to 'Destroy', group_path(group),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+
+  <p>  
+  <a href="/" class="btn btn-large btn-primary enabled">На первую страницу</a>
+  </p>

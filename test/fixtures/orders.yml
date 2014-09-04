@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  namber: 1
+  date: 2013-11-25
+  type: 
+  up: MyText
+  bottom: MyText
+
+two:
+  namber: 1
+  date: 2013-11-25
+  type: 
+  up: MyText
+  bottom: MyText

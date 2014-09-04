@@ -1,0 +1,39 @@
+<h2>Изменение параметров счета на семестр</h2>
+ 
+<%= form_for :account_to_semester, url: account_to_semester_path(@account_to_semester), method: :patch do |f| %>
+  <% if @account_to_semester.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@account_to_semester.errors.count, "error") %> prohibited
+        this account_to_semester from being saved:</h2>
+    <ul>
+    <% @account_to_semester.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+     <p>
+   Факультет<br>
+   	  <%= select("account_to_semester", "faculty_id", Faculty.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })%>
+
+  </p>
+   <p>
+    Тип счета<br>
+    <%= select("account_to_semester", "type_account", AccountToSemester::TYPE_ACСOUNT.map{|k, v| [v, k]}, { include_blank: true })%>
+    
+  </p>
+   <p>
+    Сумма<br>
+    <%= f.text_field :sum %>
+  </p>
+
+       <div class="form-actions">
+    <button type="submit" class="btn btn-success">Сохранить</button>
+    <button type="reset" class="btn">Отменить</button>
+    </div>
+<% end %>
+
+
+  <p>  
+  <a href="/account_to_semesters" class="btn btn-large btn-primary enabled">Вернутся к списку</a>
+  </p>

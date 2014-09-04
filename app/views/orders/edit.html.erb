@@ -1,0 +1,79 @@
+<h2>Создание нового приказа</h2>
+
+<%= form_for :order , url: order_path(@order), method: :patch do |f| %>
+  <% if @order.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@order.errors.count, "ошибка") %> prohibited
+        this order from being saved:</h2>
+    <ul>
+    <% @order.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+  
+   <p>
+    Номер<br>
+    <%= f.text_field :number %>
+  </p>
+    <p>
+      Дата<br>
+      <%= date_select :order, :date%>
+    </p>
+    <p>
+      Тип<br>
+      <%= select("order", "type_order", Order::TYPE_ORDER.map{|k, v| [v, k]}, { include_blank: true })%>
+    </p>
+    <%if @order.up.nil?%>
+        <%if @order.type_order==0%>
+           <% File.open('./app/views/orders/up0.txt', 'r'){ |file| @text=file.read}%>
+            <% %>
+            <%end%>
+        <p>
+          Шаблон<br>
+          <%= f.text_area :up, value: "#{@text}", style: "width: 670px; height: 150px;" %>
+        </p>
+    <%else%>
+        <p>
+          Шаблон<br>
+          <%= f.text_area :up, style: "width: 670px; height: 150px;" %>
+        </p>
+    <%end%>
+    <p>
+      Согласовано:<br>
+    </p>
+    <table><%i=0%>
+        <%Order::LIST.map do |k, v|%>
+            <%= f.fields_for :list, index: i  do |b| %>
+                <tr>
+                    <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                    <td><%=v[0] %> </td>
+                    <td><%=v[1] %> </td>
+                </tr>
+            <% end %>
+            <%= i+=1%>
+        <%end%>
+        <tr>
+            <%= f.fields_for :list, index: i  do |b| %>
+                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                <td><%= b.text_field :name1 %></td>
+                <td><%= b.text_field :name2 %></td>
+            <% end %>
+        </tr>
+        <tr>
+            <%= i+=1%>
+            <%= f.fields_for :list, index: i  do |b| %>
+                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                <td><%= b.text_field :name1 %></td>
+                <td><%= b.text_field :name2 %></td>
+            <% end %>
+        </tr>
+    </table>
+      <p>
+        <%= f.submit %>
+      </p>
+<% end %>
+
+
+

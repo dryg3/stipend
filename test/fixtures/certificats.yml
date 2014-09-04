@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  number: MyString
+  who: MyText
+  when: MyString
+  month_start: 1
+  year_start: 1
+  month_finish: 
+  year_finish: 1
+  date_finish: 2013-11-25
+
+two:
+  number: MyString
+  who: MyText
+  when: MyString
+  month_start: 1
+  year_start: 1
+  month_finish: 
+  year_finish: 1
+  date_finish: 2013-11-25

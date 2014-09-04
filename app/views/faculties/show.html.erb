@@ -1,0 +1,44 @@
+<p>
+  <strong>Название факультета:</strong>
+  <%= @faculty.name %>
+</p>
+
+<table>
+  <tr>
+      <th>Тип</th>
+ <th>Сумма</th>
+
+  </tr>
+ 
+  <% @faculty.account_to_semesters.each do |account_to_semester| %>
+    <tr>
+     <% if account_to_semester.type_account =="1"%>
+     <td>1 курс 1 семестр</td>
+     <%elsif account_to_semester.type_account =="2" %>
+     <td>Повышенная</td>
+     <%elsif account_to_semester.type_account =="3" %>
+     <td>Соц.+академ</td>
+      <%elsif account_to_semester.type_account =="4" %>
+     <td>резерв</td>
+      <% end %>
+    
+    
+    
+		
+<td><%= account_to_semester.sum %></td>
+
+     
+      <td><%= link_to 'Show', account_to_semester %></td>
+	  <td><%= link_to 'Edit', edit_account_to_semester_path(account_to_semester) %></td>
+	      <td><%= link_to 'Destroy', account_to_semester_path(account_to_semester),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+
+  <p>
+<%= link_to 'Изменить факультет', edit_faculty_path(@faculty) %> |
+<%= link_to 'Вернутся к списку', faculties_path %>
+  </p>
+
+

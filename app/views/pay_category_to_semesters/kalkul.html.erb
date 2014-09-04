@@ -1,0 +1,89 @@
+<h2>Расчет повышенной стипендии</h2>
+<p>
+<strong>Требуется распределить: </strong>
+<%= @sum %>
+</p>
+<p>
+<strong>Кол-во людей на факультете, получающих стипендию:</strong>
+<%= @student %>
+</p>
+<%= form_tag({:action => 'kalkul',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
+<table  width="800">
+  <tr>
+    <th>учебная</th>
+    <th>общественая</th>
+    <th>научно-иследовательская</th>
+    <th>культурная</th>
+    <th>спортивная</th>
+    <th>сумма итог</th>
+  </tr>
+  <tr>
+
+    <td><%= @category.study %> <%=  text_field_tag(:study, params[:study].nil? ? @s : params[:study],  :style => "width:80px") %>
+  + </td>
+    <td><%= @category.public %> <%= text_field_tag(:public, params[:public].nil? ? @s : params[:public],  :style => "width:80px")%>
+  + </td>
+    <td><%= @category.scientific %> <%=  text_field_tag(:scientific, params[:scientific].nil? ? @s : params[:scientific],  :style => "width:80px") %>
+  +</td>
+    <td><%= @category.cultural %> <%=  text_field_tag(:cultural, params[:cultural].nil? ? @s : params[:cultural],  :style => "width:80px")%>
+  +</td>
+    <td><%= @category.sports %> <%=  text_field_tag(:sports, params[:sports].nil? ? @s : params[:sports],  :style => "width:80px") %>
+  =</td>
+    <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
+  </tr>
+</table>
+
+    <div class="form-actions">
+      <button class="btn btn-large btn-info" type="submit" > Посчитать</button>
+      <%=  link_to "Далее >>>", { controller: "pay_category_to_semesters", action: "stip1", faculty_id: current_user.faculty_id, sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study]},  :class => "btn btn-primary"  %>
+    </div>
+<%end%>
+
+<h3>Расчет стипендии по категории</h3>
+<table  width="250">
+    <tr>
+      <td><strong>учебная:</strong></td>
+      <td><%=params[:study]%></td>
+    </tr>
+    <tr>
+      <td><strong>общественая:</strong></td>
+      <td><%=params[:public]%></td>
+    </tr>
+    <tr>
+      <td><strong>научно-иследовательская:</strong></td>
+      <td><%=params[:scientific]%></td>
+    </tr>
+    <tr>
+      <td><strong>культурная:</strong></td>
+      <td><%=params[:cultural]%></td>
+    </tr>
+    <tr>
+      <td><strong>спортивная:</strong></td>
+      <td><%=params[:sports]%></td>
+    </tr>
+ </table>
+
+
+<table  width="250">
+  <tr>
+    <th></th>
+    <th></th>
+    <th>1 курс</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><strong>Социальная:</strong></td>
+    <td><%=params[:social]%></td>
+    <td><%=params[:social1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Хорошист:</strong></td>
+    <td><%=params[:four]%></td>
+    <td><%=params[:four1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Отличник:</strong></td>
+    <td><%=params[:five]%></td>
+    <td><%=params[:five1]%></td>
+  </tr>
+</table>

@@ -1,0 +1,135 @@
+<%=@order.bottom%>
+
+<p>
+    <strong>
+        <%=Order::TYPE_ORDER[@order.type_order]%> № <%= @order.number %> от <%= l @order.date, format: :default%>
+    </strong>
+</p>
+
+Назначить стипендию следующим студентам ФПМТФ на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно:
+
+<table border="7" class="table table-hover">
+  <tr>
+    <th  rowspan="2">№</th>
+    <th  rowspan="2">Фамилия И.О.</th>
+    <th colspan="2">Стипендия, руб./мес.</th>
+    <th colspan="5">Повышеная  академическаяая стипендия, руб./мес.</th>
+    <th  rowspan="2">Срок окончания выплаты социальной стипендии</th>
+    <th  rowspan="2">Итого, руб./мес.</th>
+  </tr>
+  <tr>
+    <th>Социальная</th>
+    <th>Академическая</th>
+    <th>учебная деятельность</th>
+    <th>общественая деятельность</th>
+    <th>научно-иследовательская деятельность</th>
+    <th>культурная деятельность</th>
+    <th>спортивная деятельность</th>
+  </tr>
+  <tr>
+    <%(1..11).collect do |n| %>
+    <th><%=n%></th>
+    <%end%>
+  </tr>
+  <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
+  <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
+  <% @groups.sort_by{|q| q.name}.each do |s| %>
+      <tr>
+        <th  colspan="0" class="group"  >
+          <% if  can? :read, Group  %>
+              <%=link_to " Группа №  #{s.name}", s %>
+          <%else%>
+              Группа №  <%=s.name%>
+          <% end %>
+        </th>
+      </tr>
+      <%n=0 %>
+
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+
+          <% if s.name ==student_group.group.name%>
+              <%n+=1 %>
+              <tr>
+                <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+                <td><%=n%></td>
+                <td><%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>. <%= pay_to_month_student.student.secondname[0]%>.</td>
+                <td><%= pay_to_month_student.social unless pay_to_month_student.social.zero?%></td>
+                <%s3+=pay_to_month_student.social%>
+                <td><%= pay_to_month_student.academic unless pay_to_month_student.academic.zero?%></td>
+                <%s4+=pay_to_month_student.academic%>
+                <td><%= pay_to_month_student.study unless pay_to_month_student.study.zero?%></td>
+                <%s5+=pay_to_month_student.study%>
+                <td><%= pay_to_month_student.public  unless pay_to_month_student.public.zero?%></td>
+                <%s6+=pay_to_month_student.public%>
+                <td><%= pay_to_month_student.scientific  unless pay_to_month_student.scientific.zero?%></td>
+                <%s7+=pay_to_month_student.scientific%>
+                <td><%= pay_to_month_student.cultural  unless pay_to_month_student.cultural.zero?%></td>
+                <%s8+=pay_to_month_student.cultural%>
+                <td><%= pay_to_month_student.sports  unless pay_to_month_student.sports.zero?%></td>
+                <%s9+=pay_to_month_student.sports %>
+                <td>
+                  <%unless pay_to_month_student.social.zero?%>
+                      <%cer=Certificat.where('student_id = ?',  student_group.student_id).select(:date_finish).sort_by{|q| q.date_finish}.last%>
+                      <%unless cer.nil?%>
+                          <%#=cer.date_finish.strftime("%d.%m.%Y")%>
+                        <%=(cer.date_finish < @pays.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y")  :  @pays.date_finish.strftime("%d.%m.%Y")%>
+                      <%end%>
+                  <%end%>
+                </td>
+                <td><%=pay_to_month_student.sum+pay_to_month_student.social+ pay_to_month_student.academic%></td>
+                <%s11+=pay_to_month_student.sum+pay_to_month_student.social+ pay_to_month_student.academic%>
+              </tr>
+          <% end %>
+      <% end %>
+      <tr>
+        <th></th>
+        <th></th>
+        <th><%=s3%></th>
+        <th><%=s4%></th>
+        <th><%=s5%></th>
+        <th><%=s6%></th>
+        <th><%=s7%></th>
+        <th><%=s8%></th>
+        <th><%=s9%></th>
+        <th></th>
+        <th><%=s11%></th>
+      </tr>
+      <%ss3+=s3%><%ss4+=s4%><%ss5+=s5%><%ss6+=s6%><%ss7+=s7%><%ss8+=s8%><%ss9+=s9%><%ss11+=s11%>
+      <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
+  <% end %>
+  <tr>
+    <th></th>
+    <th></th>
+    <th><%=ss3%></th>
+    <th><%=ss4%></th>
+    <th><%=ss5%></th>
+    <th><%=ss6%></th>
+    <th><%=ss7%></th>
+    <th><%=ss8%></th>
+    <th><%=ss9%></th>
+    <th></th>
+    <th><%=ss11%></th>
+  </tr>
+</table>
+
+<% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+    <p>
+        <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+        <%unless pay_to_month_student.surcharge.zero?%>
+          Назначить
+          <%= pay_to_month_student.student.surname%>
+          <%= pay_to_month_student.student.firstname[0]%>.
+          <%= pay_to_month_student.student.secondname[0]%>.
+          студенту группы <%=student_group.group.name%>
+          доплату до 6307 стипендию в размере <%=pay_to_month_student.surcharge%>
+    <%end%>
+    </p>
+<%end%>
+
+<p>
+    <%= link_to 'Изменить приказ', edit_order_path(@order) %> |
+    <%= link_to 'Вернутся к списку', order_path %>
+</p>
+
+
+<%= link_to 'Печать', order_path( @order,:format => :pdf) %>

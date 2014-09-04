@@ -1,0 +1,67 @@
+<%= link_to "<<< Вернуться", :back, class: "btn btn-large btn-primary enabled"%>
+
+<div class="well  well-small">
+<%= form_tag("/students", method: "get") do |f| %>
+
+<p>
+    Фамилия:<br>
+    <%= text_field_tag(:surname) %>
+  </p>
+  <p>
+    Имя:<br>
+    <%= text_field_tag(:firstname) %>
+  </p>
+ <p>
+  Отчество:<br>
+  <%= text_field_tag(:secondname) %>
+</p>
+  <p>
+    Коментарии:<br>
+    <%= text_field_tag(:text) %>
+  </p>
+
+
+  
+  <%= submit_tag("Поиск") %>
+<% end %>
+
+  </div >
+
+
+<h1>Студенты</h1>
+
+
+  <p>  
+  <a href="/students/new" class="btn btn-large btn-success enabled">Новый студент</a>
+  </p>
+
+<table class="table table-striped">
+  <tr>
+     <th>Фамилия</th>
+     <th>Имя</th>
+     <th>Отчество</th>
+     <th>Прочее</th>
+	 <th>Редактирование</th>
+     
+  </tr>
+
+	<% @search.sort_by {|s| s.surname}.each do |student| %>
+			<tr>
+				<td><%= student.surname %></td>
+				<td><%= student.firstname %></td>
+				<td><%= student.secondname %></td>
+				<td><%= student.text %></td>
+
+			 
+			  <td><%= link_to 'Show', student %>
+              	  <%= link_to 'Edit', edit_student_path(student) %>
+				  <%= link_to 'Destroy', student_path(student),
+							method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td><%=  link_to "Справки", controller: "students", action: "certificat", student_id: student.id %></td>
+			</tr>
+	<% end %>
+
+</table>
+
+
+

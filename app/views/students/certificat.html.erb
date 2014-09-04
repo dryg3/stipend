@@ -1,0 +1,106 @@
+<%= link_to "<<< Вернуться", :back, class: "btn btn-large btn-primary enabled"%>
+
+<h1> <%= @student.surname %> <%=@student.firstname %> <%= @student.secondname %></h1>
+
+<p>
+  <strong>Примечание:</strong>
+  <%= @student.text %>
+</p>
+
+
+<h2>Справки</h2>
+<table class="table table-striped">
+  <tr>
+
+    <th>№ справки</th>
+    <th>Кем выдана</th>
+    <th>Дата выдачи </th>
+    <th>Начало <br>выплат </th>
+    <th>Конец <br>выплат </th>
+    <th>Дата окончания </th>
+    <% if can? :delete,Certificat %>
+        <th>Редактирование</th>
+    <%end%>
+  </tr>
+
+  <% @student.certificats.sort_by { |s| s.date_finish}.reverse.each do |certificat| %>
+      <tr align=center>
+        <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
+        <td><%= certificat.who %></td>
+        <td><%= certificat.when.strftime("%d.%m.%Y") %></td>
+        <td><% if certificat.month_start<10%>0<%end%><%= certificat.month_start %>.<%= certificat.year_start %></td>
+        <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
+        <td><%= certificat.date_finish.strftime("%d.%m.%Y") %></td>
+        <% if can? :delete,Certificat and (Date.today-certificat.date_finish).to_i<180%>
+            <td><i class="icon-search"></i><%= link_to 'Удалить', certificat_path(certificat), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>
+
+
+<% if  can? :create, Certificat  %>
+    <h2>Добавить справку:</h2>
+    <%= form_for([@student, @student.certificats.build]) do |f| %>
+        <% @student.certificats.map(&:errors).each do |e|%>
+            <%if e.messages.any?%>
+                <div id="error_explanation" class="error_explanation">
+                  <h2>Сообщение: сохранение не удалось из-за <%= e.count %> ошибки:</h2>
+                  <ul>
+                    <% e.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+            <% end %>
+        <% end %>
+
+        <% if @student.errors.any? %>
+            <div id="error_explanation" class="error_explanation">
+              <h2>Сообщение: сохранение не удалось из-за <%= @student.errors.count %> ошибки:</h2>
+              <ul>
+                <% @student.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <p>
+          № справки:<br>
+          <%= f.text_field :number %>
+        </p>
+
+        <p>
+          Кем выдана:<br>
+          <%= f.text_field :who %>
+        </p>
+        <p>
+          Дата выдачи:<br>
+          <%= date_select :certificat, :when %>
+        </p>
+        <p>
+          Начало выплат:<br>
+          <%= f.text_field :month_start %>
+          <%= f.text_field :year_start %>
+        </p>
+
+        <p>
+          Конец выплат:<br>
+          <%= f.text_field :month_finish %>
+          <%=f.text_field :year_finish %>
+        </p>
+
+        <p>
+          Дествительно до:<br>
+          <%= date_select :certificat, :date_finish %>
+
+
+        </p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Сохранить</button>
+          <button type="reset" class="btn">Отменить</button>
+        </div>
+    <% end %>
+<% end %>

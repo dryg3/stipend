@@ -1,0 +1,97 @@
+<h2>Создание нового расчета</h2>
+<%= form_for :pay_category_to_semester , url: pay_category_to_semesters_path do |f| %>
+    <% if @pay_category_to_semester.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@pay_category_to_semester.errors.count, 'error') %> prohibited
+            this pay_category_to_semester from being saved:</h2>
+          <ul>
+            <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <p>
+      <!--Факультет<br>-->
+      <%= f.hidden_field :faculty_id,:value =>  params[:faculty_id].nil? ? params[:pay_category_to_semester][:faculty_id] : params[:faculty_id]%>
+
+    </p>
+    <p>
+      Дата начала<br>
+      <%= date_select :pay_category_to_semester, :date_start %>
+    </p>
+    <p>
+      Дата окончания<br>
+      <%= date_select :pay_category_to_semester, :date_finish %>
+    </p>
+
+    <%=  f.hidden_field :study,:value =>  params[:study].nil? ? params[:pay_category_to_semester][:study] : params[:study]%>
+    <%=  f.hidden_field :public,:value =>  params[:public].nil? ? params[:pay_category_to_semester][:public] : params[:public]%>
+    <%=  f.hidden_field :scientific,:value =>  params[:scientific].nil? ? params[:pay_category_to_semester][:scientific] : params[:scientific]%>
+    <%=  f.hidden_field :cultural,:value =>  params[:cultural].nil? ? params[:pay_category_to_semester][:cultural] : params[:cultural]%>
+    <%=  f.hidden_field :sports,:value =>  params[:sports].nil? ? params[:pay_category_to_semester][:sports] : params[:sports]%>
+
+    <%=  f.hidden_field :social1, :value => params[:social1].nil? ? params[:pay_category_to_semester][:social1] : params[:social1] %>
+    <%=  f.hidden_field :four1, :value => params[:four1].nil? ? params[:pay_category_to_semester][:four1] : params[:four1]%>
+    <%=  f.hidden_field :five1, :value => params[:five1].nil? ? params[:pay_category_to_semester][:five1] : params[:five1] %>
+
+    <%=  f.hidden_field :social, :value => params[:social].nil? ? params[:pay_category_to_semester][:social] : params[:social] %>
+    <%=  f.hidden_field :four, :value => params[:four].nil? ? params[:pay_category_to_semester][:four] : params[:four]%>
+    <%=  f.hidden_field :five, :value => params[:five].nil? ? params[:pay_category_to_semester][:five] : params[:five] %>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
+<% end %>
+
+<h3>Расчет стипендии по категории</h3>
+<table  width="250">
+  <strong>Категория повышенной стипендии:</strong>
+  <tr>
+    <td><strong>учебная:</strong></td>
+    <td><%=params[:study]%></td>
+  </tr>
+  <tr>
+    <td><strong>общественая:</strong></td>
+    <td><%=params[:public]%></td>
+  </tr>
+  <tr>
+    <td><strong>научно-иследовательская:</strong></td>
+    <td><%=params[:scientific]%></td>
+  </tr>
+  <tr>
+    <td><strong>культурная:</strong></td>
+    <td><%=params[:cultural]%></td>
+  </tr>
+  <tr>
+    <td><strong>спортивная:</strong></td>
+    <td><%=params[:sports]%></td>
+  </tr>
+</table>
+
+
+<table  width="250">
+  <tr>
+    <th></th>
+    <th></th>
+    <th>1 курс</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><strong>Социальная:</strong></td>
+    <td><%=params[:social]%></td>
+    <td><%=params[:social1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Хорошист:</strong></td>
+    <td><%=params[:four]%></td>
+    <td><%=params[:four1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Отличник:</strong></td>
+    <td><%=params[:five]%></td>
+    <td><%=params[:five1]%></td>
+  </tr>
+</table>
+

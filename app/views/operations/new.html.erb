@@ -1,0 +1,40 @@
+<h2>Создание новой операции</h2>
+
+<%= form_for :operation , url: operations_path do |f| %>
+  <% if @operation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@operation.errors.count, "error") %> prohibited this operation from being saved:</h2>
+
+      <ul>
+      <% @operation.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+     <p>
+    Счет <%= f.text_field :account_to_semester_id, value: params[:account_to_semester_id] %>
+</p>
+     <p>
+    Тип операции       
+    <%= select("operation", "type_op", Operation::TYPE_OP.map{|k, v| [v, k]}, { include_blank: true })%>
+ 
+</p>
+     <p>
+    Сумма    <%= f.number_field :sum %>
+</p>
+     <p>
+    Дата операции    <%= f.date_select :date_op %>
+</p>
+     <p>
+    Коментарий    <%= f.text_field :text %>
+</p>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
+
+<% end %>
+
+<%= link_to 'Вернутся к списку', operations_path %>

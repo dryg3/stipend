@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  year: 1
+  month: 1
+  social: 1
+  academic: 1
+  study: 1
+  public: 1
+  scientific: 1
+  cultural: 1
+  sports: 1
+  type: 
+  surcharge: 1
+
+two:
+  year: 1
+  month: 1
+  social: 1
+  academic: 1
+  study: 1
+  public: 1
+  scientific: 1
+  cultural: 1
+  sports: 1
+  type: 
+  surcharge: 1

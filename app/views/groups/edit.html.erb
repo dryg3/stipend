@@ -1,0 +1,38 @@
+<h2>Изменение параметров группы</h2>
+ 
+<%= form_for :group, url: group_path(@group), method: :patch do |f| %>
+  <% if @group.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@group.errors.count, "error") %> prohibited
+        this group from being saved:</h2>
+    <ul>
+    <% @group.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+   <p>
+         Название    <%= f.text_field :name %>
+  </p>
+     <p>
+        Курс    <%= f.text_field :kurs %>
+  </p>
+  <p>
+        Семестр   <%= f.text_field :semester %>
+
+  </p>
+   <p>
+        Учебный год   <%= f.text_field :year %>
+  </p>
+    <p>
+      Факультет<br>
+      <%= select("group", "faculty_id", Faculty.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })%>
+
+    </p>
+  <p>
+    <%= f.submit :Сохранить%>
+  </p>
+<% end %>
+ 
+<%= link_to 'Вернутся к списку', groups_path %>

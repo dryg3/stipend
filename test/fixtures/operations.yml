@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  type_op: MyString
+  sum: 1
+  date_op: 2014-04-10
+  text: MyString
+
+two:
+  type_op: MyString
+  sum: 1
+  date_op: 2014-04-10
+  text: MyString

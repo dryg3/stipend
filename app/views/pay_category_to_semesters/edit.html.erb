@@ -1,0 +1,75 @@
+<h2>Изменение параметров расчета на семестр</h2>
+ 
+<%= form_for :pay_category_to_semester, url: pay_category_to_semester_path(@pay_category_to_semester), method: :patch do |f| %>
+  <% if @pay_category_to_semester.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@pay_category_to_semester.errors.count, "error") %> prohibited
+        this pay_category_to_semester from being saved:</h2>
+    <ul>
+    <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+   <% end %>
+     <p>
+   Факультет<br>
+   	  <%= select("pay_category_to_semester", "faculty_id", Faculty.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })%>
+
+  </p>
+   <p>
+    Дата выдачи<br>
+    <%= date_select :pay_category_to_semester, :date_start %>
+  </p>
+     <p>
+    Дата выдачи<br>
+    <%= date_select :pay_category_to_semester, :date_finish %>
+  </p>
+<p>
+	социальная стипендия <br>
+	<%= f.text_field :social1 %> <%= f.text_field :social %>
+</p>
+ 
+<p>
+	Хор<br>
+	<%= f.text_field :four1%><%= f.text_field :four%>
+</p>
+<p>
+	Отл<br>
+	<%= f.text_field :five1%><%= f.text_field :five%>
+</p>
+Категория повышенной стипендии:
+
+	<p>
+	 учебная дечтельность<br>
+	<%= f.text_field :study %>
+	 
+	</p>
+	<p>
+	  общественая дечтельность<br>
+	 <%= f.text_field :public %>
+	  
+	</p>
+	<p>
+	  науч-ис. дечтельность<br>
+	<%= f.text_field  :scientific %>
+	  
+	</p>
+	<p>
+	 культурная дечтельность <br>
+	<%= f.text_field  :cultural %>
+	  
+	</p>
+	<p>
+	спортивная дечтельность <br>
+	<%= f.text_field  :sports %>
+	</p>
+
+
+  <p>
+    <%= f.submit :Сохранить %>
+  </p>
+<% end %>
+
+ 
+<%= link_to 'Вернутся к списку', pay_category_to_semesters_path %>

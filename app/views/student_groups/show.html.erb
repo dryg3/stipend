@@ -1,0 +1,64 @@
+<table>
+  <tr>
+
+<th>ФИО Студента </th>
+ <th>Группа </th>
+ <th>Коммерция</th>
+<th>Возврат </th>
+<th>Академическая</th>
+<th>Социальная</th>
+<th>Поышенная акад.стипендия</th>
+  </tr>
+ 
+  
+<tr>
+
+<td><%= @student_group.student.surname%> <%= @student_group.student.firstname%> <%= @student_group.student.secondname%></td>
+ <td><%= @student_group.group.name %></td>
+ 
+     <% if @student_group.commerce== true %>
+     <td>ОК</td>
+     <%else%>
+     <td>нет</td>
+     <% end %>
+
+     <% if @student_group.refund == true %>
+     <td>ОК</td>
+     <%else%>
+     <td>нет</td>
+      <% end %>
+<td><%=StudentGroup::TYPE_STIPEND[@student_group.type_stipend]%></td>
+
+
+     
+     <% if @student_group.social ==true%>
+      <td>ОК</td>
+     <%else%>
+     <td>нет</td>
+     <% end %>
+<td>
+       <% if @student_group.study ==true%>
+    учебная
+     <% end %>
+      <% if @student_group.public ==true%>
+     общ.
+     <% end %>
+      <% if @student_group.scientific ==true%>
+     нид
+     <% end %>
+      <% if @student_group.cultural ==true%>
+    культ
+     <% end %>
+     <% if @student_group.sports ==true%>
+    спорт
+     <% end %>
+     </td>
+
+    </tr>
+  
+</table>
+ 
+  <p>
+<%= link_to 'Изменить параметры студента группы', edit_student_group_path(@student_group) %> |
+<%= link_to 'Вернутся к списку', student_groups_path %>
+  </p>

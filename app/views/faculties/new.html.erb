@@ -1,0 +1,27 @@
+<h2>Создание нового факультета</h2>
+
+<%= form_for :faculty , url: faculties_path do |f| %>
+  <% if @faculty.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@faculty.errors.count, "error") %> prohibited
+        this faculty from being saved:</h2>
+    <ul>
+    <% @faculty.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+  
+   <p>
+    Название<br>
+    <%= f.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= f.submit :Сохранить %>
+  </p>
+<% end %>
+
+
+

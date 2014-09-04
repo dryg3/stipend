@@ -1,0 +1,7 @@
+<%=if type_order==0%>
+<%= render 'order' %>
+<%end%>
+
+<%=if type_order==1%>
+<%= render 'protocol1' %>
+<%end%>

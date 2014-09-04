@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  type_stipend: MyString
+  refund: false
+  commerce: false
+  group: MyString
+  student_id: 
+
+two:
+  type_stipend: MyString
+  refund: false
+  commerce: false
+  group: MyString
+  student_id: 

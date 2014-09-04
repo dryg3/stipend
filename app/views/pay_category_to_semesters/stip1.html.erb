@@ -1,0 +1,95 @@
+<h2>Расчет стипендии для первого курса первого семстра</h2>
+<p>
+  <strong>Требуется распределить: </strong>
+  <%= @sum %>
+</p>
+<p>
+  <strong>Кол-во людей на факультете, получающих стипендию:</strong>
+  <%= @student %>
+</p>
+<%= form_tag({:action => 'stip1',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
+    <table  width="800">
+        <tr>
+            <th>Социальная </th>
+            <th>"Хорошистов"</th>
+            <th>"Отличников"</th>
+            <th>Соц+Хор</th>
+            <th>Соц+Отл</th>
+            <th>сумма итог</th>
+        </tr>
+        <tr>
+            <td><%= @social %> <%= text_field_tag(:social1, params[:social1].nil? ? @s : params[:social1],  :style => "width:80px") %>
+            + </td>
+            <td><%= @four %> <%= text_field_tag(:four1, params[:four1].nil? ? @s : params[:four1],  :style => "width:80px")%>
+            + </td>
+            <td><%= @five %> <%= text_field_tag(:five1, params[:five1].nil? ? @s : params[:five1],  :style => "width:80px") %>
+            + </td>
+            <td><%= @socfour %> <%= text_field_tag(:socfour, @sfour, disabled: true,  :style => "width:80px")%>
+            + </td>
+            <td><%= @socfive %> <%= text_field_tag(:socfive, @sfive, disabled: true,  :style => "width:80px") %>
+            =</td>
+            <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
+        </tr>
+    </table>
+
+
+    <%=  hidden_field_tag(:study, params[:study]) %>
+    <%=  hidden_field_tag(:public, params[:public])%>
+    <%=  hidden_field_tag(:scientific, params[:scientific]) %>
+    <%=  hidden_field_tag(:cultural, params[:cultural])%>
+    <%=  hidden_field_tag(:sports, params[:sports]) %>
+
+    <div class="form-actions">
+        <button class="btn btn-large btn-info" type="submit" > Посчитать</button>
+        <%=  link_to "Далее >>>", { controller: "pay_category_to_semesters", action: "stip2", faculty_id: current_user.faculty_id, sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],five1: params[:five1],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
+    </div>
+<%end%>
+
+<h3>Расчет стипендии по категории</h3>
+<table  width="250">
+  <tr>
+    <td><strong>учебная:</strong></td>
+    <td><%=params[:study]%></td>
+  </tr>
+  <tr>
+    <td><strong>общественая:</strong></td>
+    <td><%=params[:public]%></td>
+  </tr>
+  <tr>
+    <td><strong>научно-иследовательская:</strong></td>
+    <td><%=params[:scientific]%></td>
+  </tr>
+  <tr>
+    <td><strong>культурная:</strong></td>
+    <td><%=params[:cultural]%></td>
+  </tr>
+  <tr>
+    <td><strong>спортивная:</strong></td>
+    <td><%=params[:sports]%></td>
+  </tr>
+</table>
+
+
+<table  width="250">
+  <tr>
+    <th></th>
+    <th></th>
+    <th>1 курс</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><strong>Социальная:</strong></td>
+    <td><%=params[:social]%></td>
+    <td><%=params[:social1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Хорошист:</strong></td>
+    <td><%=params[:four]%></td>
+    <td><%=params[:four1]%></td>
+  </tr>
+  <tr>
+    <td><strong>Отличник:</strong></td>
+    <td><%=params[:five]%></td>
+    <td><%=params[:five1]%></td>
+  </tr>
+</table>

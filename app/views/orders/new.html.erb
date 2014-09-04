@@ -1,0 +1,39 @@
+<h2>Создание нового приказа</h2>
+
+<%= form_for :order , url: orders_path do |f| %>
+  <% if @order.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@order.errors.count, "ошибка") %> prohibited
+        this order from being saved:</h2>
+    <ul>
+    <% @order.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+    <p>
+            <%= f.hidden_field :pay_category_to_semester_id, value: params[:pay_category_to_semester_id] %>
+    </p>
+   <p>
+    Номер<br>
+    <%= f.text_field :number %>
+  </p>
+    <p>
+      Дата<br>
+      <%= date_select :order, :date%>
+    </p>
+    <p>
+      Тип<br>
+      <%= select("order", "type_order", Order::TYPE_ORDER.map{|k, v| [v, k]}, { include_blank: true })%>
+    </p>
+
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
+<% end %>
+
+
+

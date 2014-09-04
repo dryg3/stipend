@@ -1,0 +1,312 @@
+<p>
+  <strong>Факультет: </strong>
+  <%= @account_to_semester.faculty.name %>
+</p>
+<p>
+  <strong><%=AccountToSemester::TYPE_ACСOUNT[@sum1.type_account]%>: </strong>
+  <%= @sum1.sum %>
+</p>
+<p>
+  <strong><%=AccountToSemester::TYPE_ACСOUNT[@sum2.type_account]%>: </strong>
+  <%= @sum2.sum %>
+</p>
+<p>
+  <strong><%=AccountToSemester::TYPE_ACСOUNT[@sum3.type_account]%>: </strong>
+  <%= @sum3.sum %>
+</p>
+<p>
+<h2>Кол-во людей на факультете, получающих стипендию по категориям</h2>
+</p>
+
+<table class="table table-striped">
+  <tr>
+
+
+    <th>Социальная стипендия</th>
+    <th>"Хорошистов"</th>
+    <th>"Отличников"</th>
+
+    <th>Социальная стипендия, 1 курс</th>
+    <th>"Хорошистов", 1 курс</th>
+    <th>"Отличников", 1 курс</th>
+
+    <th>учебная деятельность</th>
+    <th>общественая деятельность</th>
+    <th>научно-иследовательская деятельность</th>
+    <th>культурная деятельность</th>
+    <th>спортивная деятельность</th>
+
+
+  </tr>
+
+
+  <tr>
+
+    <td><%= @category.social %></td>
+    <td><%= @category.four%></td>
+    <td><%= @category.five %></td>
+
+    <td><%= @category.social1 %></td>
+    <td><%= @category.four1%></td>
+    <td><%= @category.five1 %></td>
+
+    <td><%= @category.study %></td>
+    <td><%= @category.public %></td>
+    <td><%= @category.scientific %></td>
+    <td><%= @category.cultural %></td>
+    <td><%= @category.sports %></td>
+
+  </tr>
+
+</table>
+
+
+<%= form_tag({:action => 'new',:faculty_id => "#{params[:faculty_id]}",:step=>1}) do |f| %>
+    <div class="row">
+      <div class="col-md-3">
+        Социальная стипендия:<br>
+        <%= text_field_tag(:social,  params[:social])%><br>
+
+        Хор<br>
+        <%= text_field_tag(:four, params[:four]) %><br>
+
+        Отл  <br>
+        <%= text_field_tag(:five, params[:five]) %><br>
+        <strong>Первый курс:</strong><br>
+        Социальная стипендия:<br>
+        <%= text_field_tag(:social1,  params[:social1])%><br>
+
+        Хор<br>
+        <%= text_field_tag(:four1, params[:four1]) %><br>
+
+        Отл  <br>
+        <%= text_field_tag(:five1, params[:five1]) %><br>
+
+      </div>
+
+      <div class="col-md-3 ">
+        <strong>Коэффициенты:</strong><br>
+
+        <p>
+          a=<%=  text_field_tag(:a, ((params[:a].nil? or params[:a].empty?) ? 1 : params[:a] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          b=<%=  text_field_tag(:b, ((params[:b].nil? or params[:b].empty?) ? 2 : params[:b] ),  :style => "width:50px") %>
+        </p>
+        <strong>Коэффициенты первый курс:</strong><br>
+
+        <p>
+          a=<%=  text_field_tag(:a1, ((params[:a1].nil? or params[:a1].empty?) ? 1 : params[:a1] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          b=<%=  text_field_tag(:b1, ((params[:b1].nil? or params[:b1].empty?) ? 2 : params[:b1] ),  :style => "width:50px") %>
+        </p>
+
+      </div>
+
+      <div class="col-md-3 ">
+        <strong>Категория повышенной стипендии:</strong><br>
+
+        <p>
+          учебная деятельность<br>
+          <%=  text_field_tag(:study, params[:study]) %>
+
+        </p>
+        <p>
+          общественая деятельность<br>
+          <%= text_field_tag(:public, params[:public])%>
+
+        </p>
+        <p>
+          науч-ис. деятельность<br>
+          <%=  text_field_tag(:scientific, params[:scientific]) %>
+
+        </p>
+        <p>
+          культурная деятельность <br>
+          <%=  text_field_tag(:cultural, params[:cultural])%>
+
+        </p>
+        <p>
+          спортивная деятельность <br>
+          <%=  text_field_tag(:sports, params[:sports]) %>
+        </p>
+
+      </div>
+
+
+      <div class="col-md-2 ">
+        <strong>Коэффициенты:</strong><br>
+
+        <p>
+          a=<%=  text_field_tag(:aq0, ((params[:aq0].nil? or params[:aq0].empty?) ? 1 : params[:aq0] ),  :style => "width:50px") %>
+          <br>
+          b=<%=  text_field_tag(:bq0, ((params[:bq0].nil? or params[:bq0].empty?) ? 2 : params[:bq0] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          a=<%=  text_field_tag(:aq1, ((params[:aq1].nil? or params[:aq1].empty?) ? 1 : params[:aq1] ),  :style => "width:50px") %>
+<br>
+          b=<%=  text_field_tag(:bq1, ((params[:bq1].nil? or params[:bq1].empty?) ? 2 : params[:bq1] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          a=<%=  text_field_tag(:aq2, ((params[:aq2].nil? or params[:aq2].empty?) ? 1 : params[:aq2] ),  :style => "width:50px") %>
+<br>
+          b=<%=  text_field_tag(:bq2, ((params[:bq2].nil? or params[:bq2].empty?) ? 2 : params[:bq2] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          a=<%=  text_field_tag(:aq3, ((params[:aq3].nil? or params[:aq3].empty?) ? 1 : params[:aq3] ),  :style => "width:50px") %>
+<br>
+          b=<%=  text_field_tag(:bq3, ((params[:bq3].nil? or params[:bq3].empty?) ? 2 : params[:bq3] ),  :style => "width:50px") %>
+        </p>
+        <p>
+          a=<%=  text_field_tag(:aq4, ((params[:aq4].nil? or params[:aq4].empty?) ? 1 : params[:aq4] ),  :style => "width:50px") %>
+<br>
+          b=<%=  text_field_tag(:bq4, ((params[:bq4].nil? or params[:bq4].empty?) ? 2 : params[:bq4] ),  :style => "width:50px") %>
+        </p>
+
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+            <p>
+             <%= check_box_tag(:simplex, params[:simplex],checked = params[:simplex])%> Не расчитывать целочисленным методом
+            </p>
+            <p>
+              <%= @category.study %>  <%=  text_field_tag(:study, params[:study].nil? ?  @pay_category_to_semester.study : (params[:study].empty? ? 0 : params[:study]),  :style => "width:60px") %>
+              + <%= @category.public %>  <%= text_field_tag(:public, params[:public].nil? ?  @pay_category_to_semester.public : (params[:public].empty? ? 0 :  params[:public]),  :style => "width:60px")%>
+              + <%= @category.scientific %>  <%=  text_field_tag(:scientific, params[:scientific].nil? ?  @pay_category_to_semester.scientific : ( params[:scientific].empty? ? 0 :params[:scientific]),  :style => "width:60px") %>
+              + <%= @category.cultural %>  <%=  text_field_tag(:cultural, params[:cultural].nil? ?  @pay_category_to_semester.cultural : (params[:cultural].empty? ? 0 : params[:cultural]),  :style => "width:60px")%>
+              + <%= @category.sports %>  <%=  text_field_tag(:sports,params[:sports].nil? ?  @pay_category_to_semester.sports : ( params[:sports].empty? ? 0 :  params[:sports]),  :style => "width:60px") %>
+              = <%=  text_field_tag(:summa, @summa,  :style => "width:80px") %>
+            </p>
+        </div>
+    </div>
+    <button class="btn btn-large btn-info" type="submit" > Обновить</button>
+<% end %>
+<%if params[:step].to_i==1 %>
+<p>
+<h2>Стипендия по категориям</h2>
+</p>
+<table class="table table-striped">
+  <tr>
+
+    <th>Социальная стипендия</th>
+    <th>"Хорошистов"</th>
+    <th>"Отличников"</th>
+
+    <th>Социальная стипендия, 1 курс</th>
+    <th>"Хорошистов", 1 курс</th>
+    <th>"Отличников", 1 курс</th>
+
+    <th>учебная деятельность</th>
+    <th>общественая деятельность</th>
+    <th>научно-иследовательская деятельность</th>
+    <th>культурная деятельность</th>
+    <th>спортивная деятельность</th>
+
+  </tr>
+
+
+  <tr>
+
+
+    <td><%= @pay_category_to_semester.social %></td>
+    <td><%= @pay_category_to_semester.four%></td>
+    <td><%= @pay_category_to_semester.five %></td>
+
+    <td><%= @pay_category_to_semester.social1 %></td>
+    <td><%= @pay_category_to_semester.four1%></td>
+    <td><%= @pay_category_to_semester.five1 %></td>
+
+    <td><%= @pay_category_to_semester.study %></td>
+    <td><%= @pay_category_to_semester.public %></td>
+    <td><%= @pay_category_to_semester.scientific %></td>
+    <td><%= @pay_category_to_semester.cultural %></td>
+    <td><%= @pay_category_to_semester.sports %></td>
+
+  </tr>
+
+</table>
+
+<h2>Создание нового расчета</h2>
+<%= form_for :pay_category_to_semester , url: pay_category_to_semesters_path do |f| %>
+    <% if @pay_category_to_semester.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@pay_category_to_semester.errors.count, "error") %> prohibited
+            this pay_category_to_semester from being saved:</h2>
+          <ul>
+            <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+        <p>
+          <!--Факультет <br>-->
+          <%= f.hidden_field  :faculty_id%>
+        </p>
+    <!--<p>-->
+      <!--Факультет<br>-->
+      <!--<%= select("pay_category_to_semester", "faculty_id", Faculty.all.collect {|p| [ p.name, p.id ] }, { include_blank: true})%>-->
+
+    <!--</p>-->
+    <p>
+      <!--Дата выдачи<br>-->
+      <%= date_select :pay_category_to_semester, :date_start %>
+    </p>
+    <p>
+      <!--Дата выдачи<br>-->
+      <%= date_select :pay_category_to_semester, :date_finish %>
+    </p>
+    <p>
+      <!--социальная стипендия <br>-->
+       <%= f.hidden_field :social%>   <%= f.hidden_field :social1%>
+    </p>
+
+    <p>
+      <!--Хор<br>-->
+ <%= f.hidden_field :four%>      <%= f.hidden_field :four1%>
+    </p>
+    <p>
+      <!--Отл<br>-->
+ <%= f.hidden_field :five%>      <%= f.hidden_field :five1%>
+    </p>
+    <!--Категория повышенной стипендии:-->
+
+    <p>
+      <!--учебная деятельность<br>-->
+      <%= f.hidden_field :study%>
+
+    </p>
+    <p>
+      <!--общественая деятельность<br>-->
+      <%= f.hidden_field :public%>
+
+    </p>
+    <p>
+      <!--науч-ис. деятельность<br>-->
+      <%= f.hidden_field  :scientific%>
+
+    </p>
+    <p>
+      <!--культурная деятельность <br>-->
+      <%= f.hidden_field  :cultural%>
+
+    </p>
+    <p>
+      <!--спортивная деятельность <br>-->
+      <%= f.hidden_field :sports%>
+    </p>
+
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
+
+<% end %>
+
+<% end %>

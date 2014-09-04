@@ -1,0 +1,38 @@
+<h1>Приказы</h1>
+
+<p>
+  <a href="/orders/new" class="btn btn-large btn-success enabled">Новый приказ</a>
+</p>
+
+<table class="table table-hover">
+    <tr>
+        <th>Номер</th>
+        <th>Тип</th>
+        <th></th>
+    </tr>
+      <% @orders.sort_by { |x| x.date}.reverse.each do |order| %>
+        <tr>
+          <td><%= link_to "#{order.number} от #{l order.date, format: :default}", order%></td>
+          <!--<td><% order.number %> от <% l order.date, format: :default%></td>-->
+          <td><%=Order::TYPE_ORDER[ order.type_order] %></td>
+
+
+
+          <% if can? :manager, :all %>
+              <td><%= order.faculty.short_name %></td>
+              <td><%= link_to 'Show', order %></td>
+          <td><%= link_to 'Edit', edit_order_path(order) %></td>
+              <td><%= link_to 'Destroy', order_path(order),
+                        method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+          <td>
+            <%= link_to 'Изменить', edit_order_path(order) , class: "btn btn-primary "%>
+            <%= link_to 'Печать', order_path( order,:format => :pdf) , class: "btn btn-success"%>
+          </td>
+        </tr>
+      <% end %>
+</table>
+<p>
+  <a href="/" class="btn btn-large btn-primary enabled">На первую страницу</a>
+</p>
+

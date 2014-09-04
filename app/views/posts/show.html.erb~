@@ -1,0 +1,12 @@
+<h1>Listing posts</h1>
+<p>
+  <strong>Title:</strong>
+  <%= @post.try(:title) %>
+</p>
+ 
+<p>
+  <strong>Text:</strong>
+  <%= @post.text %>
+</p>
+
+

@@ -1,0 +1,110 @@
+<div class='main-page-header'>
+    <h1>Распределения студенческого стипендиального фонда</h1>
+</div>
+
+
+<div class='row autocorrect_height'>
+    <div class="span3 ">
+        <div class='well hover_shadow'>
+            <p>
+                <%= link_to "Справки", controller: "certificats" %>
+            </p>
+            <p>
+                <%= link_to "Списки студентов по группам", controller: "student_groups" %>
+            </p>
+        </div>
+    </div>
+  <% if  can? :manage, :all  %>
+    <div class="span3 ">
+        <div class='well hover_shadow'>
+            <p>
+                <%= link_to "Факультет", controller: "faculties" %>
+            </p>
+            <p>
+                <%= link_to "Группа", controller: "groups" %>
+            </p>
+            <p>
+                <%= link_to "Студент", controller: "students" %>
+            </p>
+        </div>
+    </div>
+<%end%>
+      <div class="span3 ">
+        <div class='well hover_shadow'>
+          <p>
+            <%= link_to "Cчет на семестр", controller: "account_to_semesters" %>
+          </p>
+          <p>
+            <%= link_to "Операции по счету", controller: "operations" %>
+          </p>
+        </div>
+      </div>
+
+    <div class="span3 ">
+        <div class='well hover_shadow'>
+            <p>
+                <%= link_to "Расчет по категории на семестр", controller: "pay_category_to_semesters" %>
+            </p>
+            <p>
+                <%= link_to "Выплата на месяц конкретного студента", controller: "pay_to_month_students" %>
+            </p>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<ol>
+<li>Загрузить списки студентов:</li>
+вкладка <strong>"Студенты"</strong> -> кнопка <strong>"Загрузить новые данные"</strong>
+<li>Добавить справки из РУСЗН студентам, имеющие право для получения социальной стипендии:</li>
+вкладка <strong>"Студенты"</strong> -> колонка <strong>"Справка"</strong> ->  строка требуемого человека -> <strong>"+"</strong> или <strong>дата</strong> последней справки
+<li>Добавить новый счета:</li>
+ссылка <strong>"Счет на семестр"</strong> -> кнопка <strong>"Новый счет на семестр"</strong>
+<li>Расчитать стипендию по категории на семестр:</li>
+  вкладка <strong>"Расчет"</strong> -> строка требуемого расчета -> кнопка <strong>"Новый расчет на семестр"</strong>
+<li>Распределить стипендию между студентами:</li>
+  вкладка <strong>"Расчет"</strong> -> строка требуемого расчета -> кнопка <strong>"Распределить"</strong>
+<li>Создать приказ и протоколы:</li>
+  вкладка <strong>"Расчет"</strong> -> строка требуемого расчета -> кнопка <strong>"Создать приказ"</strong>
+
+</ol>
+
+<% if  can? :manage, :all  %>
+<hr />
+<hr />
+<hr />
+<p>
+<%= link_to 'Создать расчет', {controller: 'pay_category_to_semesters', action: 'kalkul', faculty_id: current_user.faculty_id}, class: "btn btn-success"  %>
+</p>
+<p>
+<%= link_to "Orders", controller: "orders" %>
+</p>    
+<p>
+<%= link_to "J", controller: "operations" %>
+</p>
+<p>
+<%= link_to "Справки", controller: "certificats" %>
+</p>
+<p>
+<%= link_to "Студент", controller: "students" %>
+</p>
+<p>
+<%= link_to "Группа", controller: "groups" %>
+</p>
+<p>
+<%= link_to "Студент группы", controller: "student_groups" %>
+</p>
+<p>
+<%= link_to "Факультет", controller: "faculties" %>
+</p>
+<p>
+<%= link_to "Cчет на семестр", controller: "account_to_semesters" %>
+</p>
+<p>
+<%= link_to "Расчет по категории на семестр", controller: "pay_category_to_semesters" %>
+</p>
+<p>
+<%= link_to "Выплата на месяц конкретного студента", controller: "pay_to_month_students" %>
+</p>
+<%end%>

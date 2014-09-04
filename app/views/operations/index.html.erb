@@ -1,0 +1,43 @@
+<h1>Операции по счету</h1>
+
+<%if can? :creat, Operation%>
+    <p>
+        <a href="/operations/new" class="btn btn-large btn-success enabled">Новая операция</a>
+    </p>
+<%end%>
+<table  class="table table-striped">
+    <thead>
+        <tr>
+            <th>Счет</th>
+            <th>Тип операции</th>
+            <th>Сумма </th>
+            <th>Дата операции</th>
+            <th> Пользователь </th>
+            <th> Коментарий </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% @operations.each do |operation| %>
+            <tr>
+                <td><%= AccountToSemester::TYPE_ACСOUNT[operation.account_to_semester.type_account]%>(<%= operation.account_to_semester.faculty.short_name%>)</td>
+                <td><%=Operation::TYPE_OP[operation.type_op]%></td>
+                <td><%= operation.sum %></td>
+                <td><%= operation.date_op.strftime("%d.%m.%Y") %></td>
+                <td><%= operation.user.name %></td>
+                <td><%= operation.text %></td>
+                <%if can? :manager, Operation%>
+                    <td><%= link_to 'Show', operation %></td>
+                    <td><%= link_to 'Edit', edit_operation_path(operation) %></td>
+                    <td><%= link_to 'Destroy', operation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%end%>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+
+
+
+
+   

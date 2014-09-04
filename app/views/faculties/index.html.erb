@@ -1,0 +1,29 @@
+<h1>Факультеты</h1>
+<%= link_to 'Новый факультет', new_faculty_path %> 
+
+
+<table>
+  <tr>
+      <th>Имя</th>
+
+  </tr>
+ 
+  <% @faculties.sort_by {|word| word.name}.each do |faculty| %>
+    <tr>
+		<td><%= faculty.name %></td>
+
+      
+
+     
+      <td><%= link_to 'Show', faculty %></td>
+	  <td><%= link_to 'Edit', edit_faculty_path(faculty) %></td>
+	      <td><%= link_to 'Destroy', faculty_path(faculty),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+  <p>
+<a href = "/">На первую страницу</a>
+  </p>
+
+

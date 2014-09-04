@@ -1,0 +1,52 @@
+<h1>Справка социальной стипендии</h1>
+
+<div class="well  well-small">
+  <%= form_tag("/certificats", method: "get") do  %>
+      <div class="row">
+        <div class="col-md-3">
+          Фамилия:<br>
+          <%= text_field_tag(:surname,  params[:surname])%><br>
+        </div>
+        <div class="col-md-3 col-md-offset-1">
+          Номер справки:<br>
+            <%= text_field_tag(:number, params[:number]) %>
+        </div>
+        <div class="col-md-1 col-md-offset-3" >
+          <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+        </div>
+      </div>
+  <% end %>
+</div>
+<%unless @certificats==[]%>
+<table class="table table-striped" >
+    <tr align=center>
+        <th>ФИО студента </th>
+        <th>№ справки</th>
+        <th>Кем выдан</th>
+        <th>Дата выдачи </th>
+        <th>Начало выплат </th>
+        <th>Конец выплат </th>
+        <th>Дата окончания </th>
+        <% if can? :delete,Certificat %>
+          <th> Редактирование</th>
+        <%end%>
+    </tr>
+ 
+    <% @certificats.sort_by { |s| s.date_finish}.reverse.each do |certificat| %>
+        <tr align=center>
+            <td><%=  link_to " #{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", certificat.student %></td>
+            <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
+            <td><%= certificat.who %></td>
+            <td><%= certificat.when.strftime("%d.%m.%Y") %></td>
+            <td><% if certificat.month_start<10%>0<%end%><%= certificat.month_start %>.<%= certificat.year_start %></td>
+            <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
+            <td><%= certificat.date_finish.strftime("%d.%m.%Y") %></td>
+            <% if can? :delete,Certificat and (Date.today-certificat.date_finish).to_i<180%>
+                <td><%= link_to 'X', certificat_path(certificat), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+        </tr>
+    <% end %>
+</table>
+<% else %>
+    <h3>Ничего не найдено</h3>
+<% end %>

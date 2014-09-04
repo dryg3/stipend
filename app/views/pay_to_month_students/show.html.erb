@@ -1,0 +1,44 @@
+
+
+
+<p>
+	<h2><strong><%= @pay_to_month_student.student.surname%> <%= @pay_to_month_student.student.firstname%> <%= @pay_to_month_student.student.secondname%></strong></h2>
+</p>
+<table>
+  <tr>
+  <th>Начало выплат</th>
+ <th>Социальная стипендия</th>
+ <th>Академическая стипендия</th>
+ <th>учебная дечтельность</th>
+    <th>общественая дечтельность</th>
+ <th>науч-ис. дечтельность</th>
+ <th>культурная дечтельность</th>
+ <th>спортивная дечтельностьь</th>
+ <th>Тип</th>
+  <th>Выплата</th>
+  </tr>
+ 
+
+    <tr>
+	<td><%= @pay_to_month_student.month %>.<%= @pay_to_month_student.year %></td>
+    <td><%= @pay_to_month_student.social %></td>
+    <td><%= @pay_to_month_student.academic %></td>
+    <td><%= @pay_to_month_student.study %></td>
+    <td><%= @pay_to_month_student.public %></td>
+    <td><%= @pay_to_month_student.scientific %></td>
+    <td><%= @pay_to_month_student.cultural %></td>
+    <td><%= @pay_to_month_student.sports %></td>
+
+    <td><%=PayToMonthStudent::TYPE_PAY[@pay_to_month_student.type_pay]%></td>
+<td><%= @pay_to_month_student.surcharge %></td>
+    </tr>
+
+</table>
+
+
+  <p>
+<%= link_to 'Изменить счет факультета на семестр', edit_pay_to_month_student_path(@pay_to_month_student) %> |
+<%= link_to 'Вернутся к списку', pay_to_month_students_path %>
+  </p>
+
+

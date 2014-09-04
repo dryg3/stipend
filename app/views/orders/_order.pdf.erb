@@ -1,0 +1,209 @@
+.
+\vspace{5.2cm plus 1mm minus 1mm}
+
+
+  \hspace{-1cm}\textbf{\scriptsize{О назначении стипендии студентам ФПМТФ}}
+
+
+\vspace{0.5cm plus 1mm minus 1mm}
+  На основании Положения <<О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО <<МГИУ>> утв. приказом ректора от 19.11.2012 № 356; решения Ученого совета ФГБОУ ВПО <<МГИУ>> от 19.02.2014 (протокол № 5), решения Ученого совета ФПМТФ от 18.06.2014 (протокол № 9) и решения стипендиальной комиссии ФПМТФ от 04.07.2014 (протоколы № 10 и № 11)
+
+\vspace{0.5cm plus 1mm minus 1mm}
+  ПРИКАЗЫВАЮ:
+
+  1. Назначить государственную стипендию следующим студентам ФПМТФ на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
+  {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
+
+  \begin{longtable}[hc]{|m{0.5em}|l|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
+  %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
+
+  \hline
+
+
+  &
+  & \multicolumn{2}{c|}{\begin{tiny}\textbf{Стипендия,} \end{tiny}}
+  & \multicolumn{5}{c|}{\begin{tiny}\textbf{Повышеная академическая стипендия,} \end{tiny}}
+  & \begin{tiny}\hfil\textbf{Срок}\hfil\end{tiny}
+  & \begin{tiny}\textbf{Итого,}  \end{tiny}\\
+
+  &&\multicolumn{2}{c|}{\begin{tiny}\textbf{руб./мес.:} \end{tiny}}
+  & \multicolumn{5}{c|}{\begin{tiny}\textbf{руб./мес.:} \end{tiny}}
+  &\begin{tiny}\hfil\textbf{окончания}\hfil\end{tiny}
+  &\begin{tiny}\textbf{руб./мес.} \end{tiny}\\
+  \cline{3-9}
+
+\begin{tiny}\textbf{№}\end{tiny}
+  &\begin{tiny}\hfill \textbf{Фамилия И.О.} \hfill \end{tiny}
+    &\begin{tiny}\textbf{Социал.}\end{tiny}
+  &\begin{tiny}\textbf{Академ.}\end{tiny}
+  &\begin{tiny}\textbf{Учебн.}\end{tiny}
+  &\begin{tiny}\textbf{Общ.}\end{tiny}
+  &\begin{tiny}\textbf{Науч-ис.}\end{tiny}
+  &\begin{tiny}\textbf{Культ.}\end{tiny}
+  &\begin{tiny}\textbf{Спорт.}\end{tiny}
+  &\begin{tiny}\hfil\textbf{выплаты}\hfil\end{tiny}
+  &
+  \\
+  &&&
+  &\begin{tiny}\textbf{деятел.}\end{tiny}
+  &\begin{tiny}\textbf{деятел.}\end{tiny}
+  &\begin{tiny}\textbf{деятел.}\end{tiny}
+  &\begin{tiny}\textbf{деятел.}\end{tiny}
+  &\begin{tiny}\textbf{деятел.}\end{tiny}
+  &\begin{tiny}\textbf{социальной}\end{tiny}
+  &
+  \\
+
+  &&&&&&&&&\begin{tiny}\textbf{стипендии}\end{tiny}&\\
+  \hline
+
+ \begin{footnotesize}\hfil 1\hfil\end{footnotesize}
+&\begin{footnotesize}\hfil 2\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 3\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 4\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 5\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 6\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 7\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 8\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 9\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 10\hfil \end{footnotesize}
+&\begin{footnotesize}\hfil 11\hfil \end{footnotesize} \\ \hline
+
+  <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
+  <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
+  <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+      \multicolumn{11}{|c|}{\begin{footnotesize}\textbf{Группа  <%=s.name%>}\end{footnotesize}}\\ \hline
+
+      <%n=0 %>
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+          <% if s.name ==student_group.group.name%>
+              <%n+=1 %>
+              <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+            \begin{footnotesize}<%=n%>\end{footnotesize}
+              &\begin{footnotesize}
+              \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+              \end{footnotesize}
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.social unless pay_to_month_student.social.zero?%>\hfil\end{footnotesize}
+              <%s3+=pay_to_month_student.social%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.academic unless pay_to_month_student.academic.zero?%>\hfil\end{footnotesize}
+              <%s4+=pay_to_month_student.academic%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.study unless pay_to_month_student.study.zero?%>\hfil\end{footnotesize}
+              <%s5+=pay_to_month_student.study%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.public  unless pay_to_month_student.public.zero?%>\hfil\end{footnotesize}
+              <%s6+=pay_to_month_student.public%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.scientific  unless pay_to_month_student.scientific.zero?%>\hfil\end{footnotesize}
+              <%s7+=pay_to_month_student.scientific%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.cultural  unless pay_to_month_student.cultural.zero?%>\hfil\end{footnotesize}
+              <%s8+=pay_to_month_student.cultural%>
+              &\begin{footnotesize}\hfil<%= pay_to_month_student.sports  unless pay_to_month_student.sports.zero?%>\hfil\end{footnotesize}
+              <%s9+=pay_to_month_student.sports %>
+              &<%if pay_to_month_student.social!=0%>
+            <%cer=Certificat.where('student_id = ?',  student_group.student_id).select(:date_finish).sort_by{|q| q.date_finish}.last%>
+            <%unless cer.nil?%>
+                    \begin{footnotesize}<%=(cer.date_finish < @pays.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y").to_s  :  @pays.date_finish.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+            <%end%>
+            <%end%>
+              &\begin{footnotesize}\hfil <%=pay_to_month_student.sum+pay_to_month_student.social+ pay_to_month_student.academic%>\hfil \end{footnotesize}
+              <%s11+=pay_to_month_student.sum+pay_to_month_student.social+ pay_to_month_student.academic%>\\ \hline
+          <% end %>
+      <% end %>
+
+      \multicolumn{2}{|c|}{}
+      &\begin{footnotesize}\hfil<%=s3%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s4%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s5%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s6%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s7%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s8%>\hfil\end{footnotesize}
+      &\begin{footnotesize}\hfil<%=s9%>\hfil\end{footnotesize}
+      &
+      &\begin{footnotesize}\hfil<%=s11%>\hfil\end{footnotesize}
+      \\ \hline
+
+
+      <%ss3+=s3%><%ss4+=s4%><%ss5+=s5%><%ss6+=s6%><%ss7+=s7%><%ss8+=s8%><%ss9+=s9%><%ss11+=s11%>
+      <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
+  <% end %>
+
+  \multicolumn{2}{|c|}{}
+  &\begin{footnotesize}\hfil<%=ss3%>\hfil\end{footnotesize}
+  &\begin{footnotesize}<%=ss4%>\end{footnotesize}
+  &\begin{footnotesize}\hfil<%=ss5%>\hfil\end{footnotesize}
+  &\begin{footnotesize}\hfil<%=ss6%>\hfil\end{footnotesize}
+  &\begin{footnotesize}\hfil<%=ss7%>\hfil\end{footnotesize}
+  &\begin{footnotesize}\hfil<%=ss8%>\hfil\end{footnotesize}
+  &\begin{footnotesize}\hfil<%=ss9%>\hfil\end{footnotesize}
+  &
+  &\begin{footnotesize}\hfil<%=ss11%>\hfil\end{footnotesize}
+  \\ \hline
+
+
+
+
+  \end{longtable}
+  }
+
+2. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Левченко Виталию Андреевичу в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+3. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Бурдину Александр Михайлович в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+4. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студентке 5 курса Бурдиной Дарье Олеговне в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+
+
+
+  <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+
+      <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+      <%unless pay_to_month_student.surcharge.zero?%>
+          Назначить дополнительную академическую стипендию на период
+          с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%>
+          студенту группы <%=student_group.group.name%>
+          <%= pay_to_month_student.student.surname%>
+          <%= pay_to_month_student.student.firstname[0]%>.
+          <%= pay_to_month_student.student.secondname[0]%>.
+          в размере <%=pay_to_month_student.surcharge%> руб. ежемесячно
+          (доплата до 6307 руб. с учетом социальной стипендии).
+      <%end%>
+
+  <%end%>
+
+
+\vspace{1.5cm plus 1mm minus 1mm}
+  \begin{tabular}{l}
+  <%=@order.bottom.split("\n").first.split("\t")[0]%>\\
+  \end{tabular}
+  \hfill
+  \begin{tabular}{l}
+  <%=@order.bottom.split("\n").first.split("\t")[1]%>\\
+  \end{tabular}
+
+  \newpage
+  \noindent СОГЛАСОВАНО:
+
+  \parindent=0.5cm
+  <%o=@order.bottom.split("\n")%>
+  <%o.shift%>
+  \begin{tabular}{p{9cm}}
+  <%o.each do |bottom|%>
+      <%=bottom.split("\t")[0]%>\\
+  <%end%>
+  \end{tabular}
+  \hfill
+  \begin{tabular}{l}
+  <%o.each do |bottom|%>
+
+      <%=bottom.split("\t")[1]%>\\
+      <%if bottom.split("\t")[0].size>40%>\\ <%end%>
+  <%end%>
+  \end{tabular}
+
+  \parindent=1.25cm
+  \begin{table}[b]
+  Исп. Союстова С. И.\\
+  Тел. 17132\\
+
+  Рассылка: деканат ФПМТФ, ПФО, стипендиальный отдел
+  \end{table}
+
+  \linespread{1.5}

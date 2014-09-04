@@ -1,0 +1,113 @@
+<h1> <%= @student.surname %> <%=@student.firstname %> <%= @student.secondname %></h1>
+
+<p>
+  <strong>Примечание:</strong>
+  <%= @student.text %>
+</p>
+
+
+<h2>Справки</h2>
+<table class="table table-striped">
+  <tr>
+
+    <th>№ справки</th>
+    <th>Кем выдан</th>
+    <th>Дата выдачи </th>
+    <th>Начало выплат </th>
+    <th>Конец выплат </th>
+    <th>Дата окончания </th>
+    <th>Редактирование</th>
+  </tr>
+
+  <% @student.certificats.each do |certificat| %>
+      <tr>
+
+        <td><%= certificat.number %></td>
+        <td><%= certificat.who %></td>
+        <td><%= certificat.when %></td>
+        <td><%= certificat.month_start %>.<%= certificat.year_start %></td>
+        <td><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
+        <td><%= certificat.date_finish %></td>
+
+        <td><%= link_to 'Show', certificat %>
+          <%= link_to 'Edit', edit_certificat_path(certificat) %>
+          <%= link_to 'Destroy', certificat_path(certificat),
+                      method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+</table>
+
+
+<h2>Добавить справку:</h2>
+<%= form_for([@student, @student.certificats.build]) do |f| %>
+
+    <% @student.certificats.map(&:errors).each do |e|%>
+        <%if e.messages.any?%>
+            <div id="error_explanation" class="error_explanation">
+              <h2>Сообщение: сохранение не удалось из-за <%= e.count %> ошибки:</h2>
+              <ul>
+                <% e.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+    <% end %>
+
+    <% if @student.errors.any? %>
+        <div id="error_explanation" class="error_explanation">
+          <h2>Сообщение: сохранение не удалось из-за <%= @student.errors.count %> ошибки:</h2>
+          <ul>
+            <% @student.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+
+
+    <p>
+      Номер<br>
+      <%= f.text_field :number %>
+    </p>
+
+    <p>
+      Кем выдано<br>
+      <%= f.text_field :who %>
+    </p>
+    <p>
+      От какого числа<br>
+      <%= f.text_field :when %>
+    </p>
+    <p>
+      Месяц начала выплат<br>
+      <%= f.text_field :month_start %>
+    </p>
+
+    <p>
+      Год начала выплат<br>
+      <%= f.text_field :year_start %>
+    </p>
+
+    <p>
+      Месяц окончания выплат<br>
+      <%= f.text_field :month_finish %>
+    </p>
+
+    <p>
+      Год оканчания выплат<br>
+      <%=f.text_field :year_finish %>
+    </p>
+
+    <p>
+      До какого числа действительна<br>
+      <%= f.text_field :date_finish %>
+    </p>
+    <p>
+      <%= f.submit :Сохранить %>
+    </p>
+<% end %>
+
+<%= link_to 'Изменить параметры студента', edit_student_path(@student) %> |
+<%= link_to 'Вернутся к списку', students_path %>

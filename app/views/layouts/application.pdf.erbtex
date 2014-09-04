@@ -1,0 +1,26 @@
+\documentclass[a4paper,12pt]{memoir}
+\usepackage{msiu_term_work}
+
+\lstset{language=Ruby,inputencoding=utf8/koi8-r,basicstyle=\small,
+stringstyle=\ttfamily,xleftmargin=1cm}
+
+\usepackage{geometry} %способ ручной установки полей
+\geometry{top=2cm} %поле сверху
+\geometry{bottom=2cm} %поле снизу
+\geometry{left=2cm} %поле справа
+\geometry{right=2cm} %поле слева
+\parindent=1.25cm
+
+\usepackage{indentfirst}
+\linespread{1.5}
+
+\usepackage{rotating} \usepackage{epsfig}
+
+\setlength{\parskip}{0.25cm}
+\usepackage{longtable}
+
+\usepackage{booktabs}
+\begin{document}
+<% @latex_config={:parse_twice => true} %>
+<%= yield %>
+\end{document}

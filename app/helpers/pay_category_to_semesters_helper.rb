@@ -1,0 +1,2 @@
+module PayCategoryToSemestersHelper
+end

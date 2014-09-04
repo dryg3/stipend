@@ -1,0 +1,157 @@
+
+\linespread{1}
+
+
+\begin{center}
+\textsc{
+министерство образования и науки российской федерации\\
+\textbf{\small{
+федеральное государственное бюджетное образовательное\\
+учреждение высшего профессионального образования\\
+<<Московский государственный индустриальный университет>>\\
+  \vspace{-0.3cm plus 1mm minus 1mm}
+  (ФГБОУ ВПО <<МГИУ>>)
+}}}
+
+  \begin{small}\textbf{ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ТЕХНИЧЕСКОЙ ФИЗИКИ}\end{small}\\
+  \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ ФПМТФ}}
+  \end{center}
+
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
+
+  \textbf{ПРИСУТСТВОВАЛИ:}
+
+  5 человек и 5 членов Комиссии: А.И. Мартыненко, С.И. Союстова, Е.В. Афанасьева, А.А. Вернер, М.Б. Богоявленский. Кворум имеется.
+
+  \centerline{\textbf{ПОВЕСТКА ДНЯ:}}
+
+  Назначение государственной академической стипендии студентам ФПМТФ.
+
+  \centerline{\textbf{СЛУШАЛИ:}}
+
+  По вопросу повестки дня декана ФПМТФ А.И.Мартыненко.
+
+  \centerline{\textbf{РЕШИЛИ:}}
+
+  На основании Положения <<О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО <<МГИУ>>, утв. приказом ректора от 19.11.2012 № 356
+
+  1. Назначить государственную академическую стипендию следующим студентам ФПМТФ на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
+  {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
+
+  \begin{longtable}[hc]{|c|l|c|m{1.2cm}|m{1.8cm}|m{2.8cm}|m{2cm}|m{1.3cm}|}
+  %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+
+  \begin{tiny}
+
+  \textbf{№}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Ф.И.О. студента}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Группа}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Размер академической стипендии, руб.}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Размер повышенной академической стипендии, руб.}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Основание назначения повышенной стипендии: успехи в учебной, научно-иследовательской, общественной культурно-творческой или спортивной деятельности}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Размер академической стипендии нуждающимся студентам, руб. (доплата до 6307 руб. с учетом социальной стипендии)}
+
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{ИТОГО: руб.}
+
+  \end{tiny}
+
+  \\
+
+
+  \hline
+
+  <%n=0 %>
+
+  <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+
+
+
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+          <% if s.name ==student_group.group.name%>
+              <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+              <% unless pay_to_month_student.academic.zero?%>
+                  <%n+=1 %>
+                  \begin{footnotesize}<%=n%>\end{footnotesize}
+                  &\begin{footnotesize}
+                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= s.name%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= pay_to_month_student.academic %>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= pay_to_month_student.sum unless pay_to_month_student.sum.zero?%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%=StudentGroup::TYPE_ACADEM_STIPEND_MIN[1] unless pay_to_month_student.study.zero?%><%=StudentGroup::TYPE_ACADEM_STIPEND_MIN[2] unless pay_to_month_student.public.zero?%><%=StudentGroup::TYPE_ACADEM_STIPEND_MIN[3] unless pay_to_month_student.scientific.zero?%><%=StudentGroup::TYPE_ACADEM_STIPEND_MIN[4] unless pay_to_month_student.cultural.zero?%><%=StudentGroup::TYPE_ACADEM_STIPEND_MIN[5] unless pay_to_month_student.sports.zero?%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= pay_to_month_student.surcharge unless pay_to_month_student.surcharge.zero?%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%=pay_to_month_student.sum+ pay_to_month_student.academic+pay_to_month_student.surcharge%>\hfil\end{footnotesize}\\ \hline
+              <% end %>
+          <% end %>
+      <% end %>
+
+
+
+
+  <% end %>
+
+
+  \end{longtable}
+  }
+
+  2. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Левченко Виталию Андреевичу в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+  3. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Бурдину Александр Михайлович в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+  4. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студентке 5 курса Бурдиной Дарье Олеговне в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
+
+
+
+
+  ГОЛОСОВАЛИ:<<ЗА>> 5 чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
+
+\vspace{1.5cm plus 1mm minus 1mm}
+
+\parindent=0.5cm
+
+  \begin{tabular}{l}
+  Председатель\\
+Члены комиссии\\
+  \\
+  \\
+  \\
+  \end{tabular}
+  \hfill
+  \begin{tabular}{l}
+  А.И. Мартыненко\\
+С.И. Союстова\\
+  Е.В. Афанасьева\\
+  А.А. Вернер\\
+  М.Б. Богоявленский\\
+  \end{tabular}
+
+
+  \linespread{1.5}

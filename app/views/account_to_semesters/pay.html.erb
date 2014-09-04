@@ -1,0 +1,184 @@
+<p>
+  <strong>Факультет: </strong>
+  <%= @account_to_semester.faculty.name %>
+</p>
+
+<p>
+ <h2>Кол-во людей на факультете получающих стипендию по категории</h2>
+</p>
+
+<table class="table table-striped">
+  <tr>
+
+
+    <th> Соц. </th>
+    <th>Хор </th>
+    <th>Отл</th>
+
+    <th>Соц. 1</th>
+    <th>Хор 1</th>
+    <th>Отл 1</th>
+
+    <th>уч. д-ть</th>
+    <th>общ. д-ть</th>
+    <th>нид</th>
+    <th>культ. д-ть</th>
+    <th>спорт. д-ть</th>
+
+
+  </tr>
+
+
+  <tr>
+
+    <td><%= @category.social %></td>
+    <td><%= @category.four%></td>
+    <td><%= @category.five %></td>
+
+    <td><%= @category.social1 %></td>
+    <td><%= @category.four1%></td>
+    <td><%= @category.five1 %></td>
+
+    <td><%= @category.study %></td>
+    <td><%= @category.public %></td>
+    <td><%= @category.scientific %></td>
+    <td><%= @category.cultural %></td>
+    <td><%= @category.sports %></td>
+
+  </tr>
+
+</table>
+
+
+<%= form_tag({:action => 'pay',:id => "#{@account_to_semester.id}"}) do |f| %>
+    <div class="row">
+      <div class="col-md-3">
+        Социальная стипендия:<br>
+        <%= text_field_tag(:social,  params[:social])%><br>
+
+        Хор<br>
+       <%= text_field_tag(:four, params[:four]) %><br>
+
+        Отл  <br>
+         <%= text_field_tag(:five, params[:five]) %><br>
+        <strong>Первый курс:</strong><br>
+        Социальная стипендия:<br>
+        <%= text_field_tag(:social1,  params[:social1])%><br>
+
+        Хор<br>
+        <%= text_field_tag(:four1, params[:four1]) %><br>
+
+        Отл  <br>
+        <%= text_field_tag(:five1, params[:five1]) %><br>
+
+      </div>
+
+      <div class="col-md-3 ">
+        <strong>Категория повышенной стипендии:</strong><br>
+
+        <p>
+          учебная дечтельность<br>
+          <%=  text_field_tag(:study, params[:study]) %>
+
+        </p>
+        <p>
+          общественая дечтельность<br>
+          <%= text_field_tag(:public, params[:public])%>
+
+        </p>
+        <p>
+          науч-ис. дечтельность<br>
+          <%=  text_field_tag(:scientific, params[:scientific]) %>
+
+        </p>
+        <p>
+          культурная дечтельность <br>
+          <%=  text_field_tag(:cultural, params[:cultural])%>
+
+        </p>
+        <p>
+          спортивная дечтельность <br>
+          <%=  text_field_tag(:sports, params[:sports]) %>
+        </p>
+
+      </div>
+
+      <div class="col-md-3 ">
+        Категория повышенной стипендии:
+
+
+      </div>
+
+    </div>
+<button class="btn btn-large btn-info" type="submit" > Обновить</button>
+<% end %>
+
+<p>
+<h2>Стипендия по категориям</h2>
+</p>
+<table class="table table-striped">
+  <tr>
+
+    <th> Соц. </th>
+    <th>Хор </th>
+    <th>Отл</th>
+
+    <th>Соц. 1</th>
+    <th>Хор 1</th>
+    <th>Отл 1</th>
+
+    <th>уч. д-ть</th>
+    <th>общ. д-ть</th>
+    <th>нид</th>
+    <th>культ. д-ть</th>
+    <th>спорт. д-ть</th>
+
+  </tr>
+
+
+  <tr>
+
+
+    <td><%= @pay_category_to_semester.social %></td>
+    <td><%= @pay_category_to_semester.four%></td>
+    <td><%= @pay_category_to_semester.five %></td>
+
+    <td><%= @pay_category_to_semester.social1 %></td>
+    <td><%= @pay_category_to_semester.four1%></td>
+    <td><%= @pay_category_to_semester.five1 %></td>
+
+    <td><%= @pay_category_to_semester.study %></td>
+    <td><%= @pay_category_to_semester.public %></td>
+    <td><%= @pay_category_to_semester.scientific %></td>
+    <td><%= @pay_category_to_semester.cultural %></td>
+    <td><%= @pay_category_to_semester.sports %></td>
+
+  </tr>
+
+</table>
+
+
+<h2>Создание нового расчета</h2>
+<%= form_tag("/pay_category_to_semesters", method: "get") do |f| %>
+    <% if @pay_category_to_semester.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@pay_category_to_semester.errors.count, "error") %> prohibited
+            this pay_category_to_semester from being saved:</h2>
+          <ul>
+            <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <p>
+      Дата начала<br>
+      <%= date_select :pay_category_to_semester, :date_start %>
+    </p>
+    <p>
+      Дата окончания<br>
+      <%= date_select :pay_category_to_semester, :date_finish %>
+    </p>
+    <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+<% end %>

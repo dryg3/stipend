@@ -1,0 +1,198 @@
+<h2>Студенты</h2>
+<div class="well  well-small">
+    <%= form_tag("/student_groups", method: "get") do |f| %>
+        <div class="row">
+            <div class="col-md-4">
+              Фамилия:<br>
+              <%= text_field_tag(:surname,  params[:surname])%><br>
+
+              Имя:<br>
+              <%= text_field_tag(:firstname, params[:firstname]) %><br>
+
+              Отчество:  <br>
+              <%= text_field_tag(:secondname, params[:secondname]) %> <br>
+
+              Комментарии:<br>
+              <%= text_field_tag(:text, params[:text])%>
+            </div>
+
+            <div class="col-md-4 col-md-offset-0">
+                <p>
+                    Группа:<br>
+                    <%= text_field_tag(:gname, params[:gname]) %>
+                </p>
+                <p>
+                  Учебный год:<br>
+                  <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years] ), { include_blank: true })%>
+                </p>
+                <p>
+                  Курс:
+                  <%= select_tag(:kurs, options_for_select((1..6).collect {|p| p },params[:kurs] ), { include_blank: true,  :style => "width:50px"})%>
+                  Семестр:
+                  <%= select_tag(:semester, options_for_select((1..2).collect {|p| p },params[:semester] ), { include_blank: true,  :style => "width:50px"})%>
+                </p>
+           </div>
+           <div class="col-md-2 col-md-offset-2" >
+              <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+              <button class="btn btn-large" type="reset"  >Очистить</button>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+
+<p>
+  <% if  can? :create, Student  %>
+        <%= link_to 'Новый студент группы', new_student_group_path,class: "btn btn-large btn-success enabled" %>
+        <%= link_to 'Новый студент (этих кнопок не будет)', new_student_path,class: "btn btn-large btn-success enabled" %>
+    <%end%>
+    <%= link_to 'Загрузить новые данные', '#',class: "btn btn-large btn-success enabled" %>
+</p>
+
+<% unless @student_groups==[]%>
+<div class="row" style="text-align: center">
+    <div class="col-md-1">
+        <p>
+            <strong> Группы:</strong>     <br>
+        </p>
+        <% Group.where("faculty_id = '#{current_user.faculty_id}'").sort_by{|q| q.name}.each do |group| %>
+        <p>
+            <%= link_to " #{group.name}", action: "index", gname: group.name %><br>
+        </p>
+        <% end %>
+    </div>
+    <div class="col-md-11">
+        <table class="table table-hover ">
+            <tr>
+                <th></th>
+                <th>ФИО cтудента </th>
+                <th>Основание обучения</th>
+                <th>Возврат</th>
+                <th>Академическая стипендия</th>
+                <th>Социальная стипендия</th>
+                <th>Тип повышенной академической стипендии</th>
+                <th>Справки студента</th>
+                <th>Выплаты студенту</th>
+            </tr>
+            <%size=0 %>
+            <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+                <tr>
+                    <th  colspan="0" class="group"  >
+                      <% if  can? :read, Group  %>
+                        <%=link_to " Группа №  #{s.name}", s %>
+                      <%else%>
+                        Группа №  <%=s.name%>
+                      <% end %>
+                    </th>
+                </tr>
+                <%n=0 %>
+                <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+                    <% if s.name ==student_group.group.name%>
+                        <%size+=1 %><%n+=1 %>
+                        <tr>
+                            <td>
+                                <% if  can? :read,StudentGroup  %>
+                                    <%= link_to "#{n}", edit_student_group_path(student_group)  %>
+                                <%else%>
+                                    <%=n%>
+                                <% end %>
+                            </td>
+                            <td>
+                              <% if  can? :read,Student  %>
+                                 <%= link_to " #{student_group.student.surname} #{student_group.student.firstname} #{student_group.student.secondname}", edit_student_path(student_group.student_id)  %>
+                              <%else%>
+                                  <%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%>
+                              <% end %>
+                            </td>
+                            <td>
+                                <% if student_group.commerce %>
+                                    К
+                                <%else%>
+
+                                <% end %>
+                            </td>
+                            <td>
+                                <% if student_group.refund %>
+                                    ОК
+                                <%else%>
+                                    -
+                                <% end %>
+                            </td>
+                            <td><%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%></td>
+                            <td>
+                                <% if student_group.social%>
+                                    C
+                                <%else%>
+                                    -
+                                <% end %>
+                            </td>
+                            <td>
+                                <% if student_group.study%>
+                                    учебная
+                                <% end %>
+                                <% if student_group.public%>
+                                    общественная
+                                <% end %>
+                                <% if student_group.scientific%>
+                                    нид
+                                <% end %>
+                                <% if student_group.cultural%>
+                                    культ
+                                <% end %>
+                                <% if student_group.sports%>
+                                    спорт
+                                <% end %>
+                            </td>
+
+                            <%certificat=Certificat.where("student_id = ? ",student_group.student_id).order(:date_finish).last %>
+                            <% unless certificat.nil? %>
+                                <td>
+                                  <% if  can? :read,Certificat  %>
+                                    <%=  link_to "#{certificat.date_finish.strftime("%d.%m.%Y")}", controller: "students", action: "certificat", student_id: student_group.student_id %>
+                                  <% else %>
+                                    <%= certificat.date_finish.strftime("%d.%m.%Y") %>
+                                  <% end %>
+                                </td>
+                            <% else%>
+                                <td>
+                                  <% if  can? :create,Certificat  %>
+                                    <%=  link_to "+", controller: "students", action: "certificat", student_id: student_group.student_id %>
+                                  <% end %>
+                                </td>
+                            <% end %>
+                            <%pay=PayToMonthStudent.where("student_id = ? ", student_group.student_id) %>
+                            <% unless pay.empty?%>
+                                <%pay=pay.sort_by { |s| Date.new(s.year,s.month,1)}.last %>
+                                <td>
+                                  <% if  can? :read,PayToMonthStudent  %>
+                                    <% if pay.month<10%><% paymonth="0#{pay.month}"%><%end%>
+                                    <%=  link_to "#{paymonth}.#{pay.year}", controller: "students", action: "pay", id: student_group.student_id %>
+                                  <% else %>
+                                      <% if pay.month<10%>0<%end%><%= pay.month%>.<%=pay.year %>
+                                  <% end %>
+                                </td>
+                            <% else%>
+                                <td>
+                                  <% if  can? :ceate,PayToMonthStudent  %>
+                                    <%=  link_to "+", controller: "students", action: "pay", id: student_group.student_id %>
+                                  <% end %>
+                                </td>
+                            <% end %>
+
+                        </tr>
+                    <% end %>
+                <% end %>
+            <% end %>
+            <tr>
+                <% if size!=1 and size<5 %>
+                    <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человека</th>
+                <% else%>
+                    <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человек</th>
+                <% end %>
+            </tr>
+        </table>
+    </div>
+</div>
+<% else %>
+    <h3>Ничего не найдено</h3>
+<% end %>

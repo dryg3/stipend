@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  type: 
+  sum: 1
+  faculty: MyString
+
+two:
+  type: 
+  sum: 1
+  faculty: MyString

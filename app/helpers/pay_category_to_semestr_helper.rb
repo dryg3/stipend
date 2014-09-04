@@ -1,0 +1,2 @@
+module PayCategoryToSemestrHelper
+end

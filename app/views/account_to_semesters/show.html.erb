@@ -1,0 +1,20 @@
+<p>
+  <strong>Факультет: </strong>
+  <%= @account_to_semester.faculty.name %>
+</p>
+<p>
+  <strong>Тип счета: </strong>
+   <%=AccountToSemester::TYPE_ACСOUNT[@account_to_semester.type_account]%>
+</p>
+<p>
+  <strong>Сумма: </strong>
+  <%= @account_to_semester.sum %>
+</p>
+
+
+  <p>
+<%= link_to 'Изменить счет факультета на семестр', edit_account_to_semester_path(@account_to_semester) %> |
+<%= link_to 'Вернутся к списку', account_to_semesters_path %>
+  </p>
+
+

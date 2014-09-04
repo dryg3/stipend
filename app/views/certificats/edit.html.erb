@@ -1,0 +1,63 @@
+<h2>Изменение параметров справки</h2>
+ 
+<%= form_for :certificat, url: certificat_path(@certificat), method: :patch do |f| %>
+  <% if @certificat.errors.any? %>
+  <div id="error_explanation" class="error_explanation">
+    <h2>Сообщение: сохранение не удалось из-за <%= @certificat.errors.count %> ошибки:</h2>
+
+    <ul>
+    <% @certificat.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+	<p>
+	  Студент:<br>
+	  <%= select("certificat", "student_id", Student.all.sort_by { |x|x.surname}.collect {|p| [ p.surname+" "+p.firstname+" "+p.secondname, p.id ] }, { include_blank: true })%>
+	</p>
+<p>
+    № справки<br>
+    <%= f.text_field :number %>
+  </p>
+ 
+  <p>
+    Кем выдан<br>
+    <%= f.text_field :who %>
+  </p>
+   <p>
+    Дата выдачи<br>
+    <%= date_select :certificat, :when %>
+  </p>
+<p>
+  Начало выплат<br>
+  <%= f.text_field :month_start %>
+  <%= f.text_field :year_start %>
+</p>
+
+<p>
+  Конец выплат<br>
+  <%= f.text_field :month_finish %>
+  <%=f.text_field :year_finish %>
+</p>
+
+<p>
+Дата окончания <br>
+  <%= date_select :certificat, :date_finish %>
+
+
+</p> 
+ 
+       <div class="form-actions">
+    <button type="submit" class="btn btn-success">Сохранить</button>
+    <button type="reset" class="btn">Отменить</button>
+    </div>
+<% end %>
+
+
+
+  <p>  
+  <a href="/certificats" class="btn btn-large btn-primary enabled">Вернутся к списку</a>
+  </p>
+  
+

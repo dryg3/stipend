@@ -1,0 +1,40 @@
+<p>
+  <strong>Группа №:</strong>
+  <%= @group.name %>
+</p>
+      <td>Курс <%= @group.kurs %></td>
+      <td><%= @group.semester %></td>
+      <td><%= @group.year %></td>
+<table>
+  <tr>
+     <th>Фамилия</th>
+      <th>Имя</th>
+     <th>Отчество</th>
+     <th>Прочее</th>
+
+     
+  </tr>
+ 
+  <% @group.students.each do |student| %>
+    <tr>
+		<td><%= student.surname %></td>
+		<td><%= student.firstname %></td>
+		<td><%= student.secondname %></td>
+		<td><%= student.text %></td>
+
+     
+      <td><%= link_to 'Show', student %></td>
+    
+	  <td><%= link_to 'Edit', edit_student_path(student) %></td>
+	      <td><%= link_to 'Destroy', student_path(student),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+
+  <p>
+<%= link_to 'Изменить группу', edit_group_path(@group) %> |
+<%= link_to 'Вернутся к списку', groups_path %>
+  </p>
+
+

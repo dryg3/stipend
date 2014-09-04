@@ -1,0 +1,77 @@
+<h2>Создание нового выплаты на месяц конкретного студента</h2>
+<%= form_for :pay_to_month_student , url: pay_to_month_students_path do |f| %>
+  <% if @pay_to_month_student.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@pay_to_month_student.errors.count, "error") %> prohibited
+        this pay_to_month_student from being saved:</h2>
+    <ul>
+    <% @pay_to_month_student.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+  	<p>
+	  Студент:<br>
+	  <%= select("pay_to_month_student", "student_id", Student.all.collect {|p| [ p.surname+" "+p.firstname+" "+p.secondname, p.id ] }, { include_blank: true })%>
+	</p>
+
+<p>
+  Начало выплат<br>
+  <%= f.text_field :month %>
+  <%= f.text_field :year %>
+</p>
+
+<p>
+	социальная стипендия <br>
+	<%= f.text_field :social %>
+</p>
+ 
+<p>
+	Академическая стипендия<br>
+	<%= f.text_field :academic%>
+</p>
+  
+  Категория повышенной стипендии:
+
+	<p>
+	 учебная дечтельность<br>
+	<%= f.text_field :study %>
+	 
+	</p>
+	<p>
+	  общественая дечтельность<br>
+	 <%= f.text_field :public %>
+	  
+	</p>
+	<p>
+	  науч-ис. дечтельность<br>
+	<%= f.text_field  :scientific %>
+	  
+	</p>
+	<p>
+	 культурная дечтельность <br>
+	<%= f.text_field  :cultural %>
+	  
+	</p>
+	<p>
+	спортивная дечтельность <br>
+	<%= f.text_field  :sports %>
+	</p>
+
+	Выплата<br>
+	<%= select("pay_to_month_student", "type_pay", PayToMonthStudent::TYPE_PAY.map{|k, v| [v, k]}, { include_blank: true })%>
+</p>
+  
+
+	<p>
+	Размер доплаты <br>
+	<%= f.text_field  :surcharge %>
+	</p>
+  <p>
+    <%= f.submit:Сохранить %>
+  </p>
+<% end %>
+
+
+

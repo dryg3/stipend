@@ -1,0 +1,30 @@
+<p>
+	<h2><strong><%= @certificat.student.surname%> <%= @certificat.student.firstname%> <%= @certificat.student.secondname%></strong></h2>
+</p>
+<p>
+  <strong>Справка № </strong><%= @certificat.number %>
+</p>
+<p>
+  <%=@certificat.who %>
+</p>
+
+<p>
+  <strong>от</strong> <%= @certificat.when.strftime("%d.%m.%Y") %>
+</p>
+
+<p>
+  <strong>Дейстительна с</strong> <%= @certificat.month_start %>.<%= @certificat.year_start %>  <strong>по </strong>  <%= @certificat.month_finish %>.<%= @certificat.year_finish %>
+</p>
+
+<p>
+  <strong>Дата окончания выплат</strong>
+  <%= @certificat.date_finish.strftime("%d.%m.%Y")%>
+</p> 
+ 
+  <p>
+<%= link_to 'Изменить параметры справки', edit_certificat_path(@certificat) %> |
+<%= link_to 'Вернутся к списку', certificats_path %>
+  </p>
+
+
+<%= link_to "print", certificat_path(@certificat,:format => :pdf) %>

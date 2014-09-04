@@ -1,0 +1,55 @@
+<h1>Расчет на семестр</h1>
+<p>
+  <%= link_to 'Новый расчет на семестр', {controller: "pay_category_to_semesters", action: "kalkul", faculty_id: current_user.faculty_id}, class: "btn btn-success"  %>
+</p>
+
+
+<table class="table table-striped">
+  <tr>
+    <% if  can? :manager, :all  %><th>Факультет</th><%end%>
+    <th>Дата начала и окончания</th>
+
+    <th>Социальная стипендия</th>
+    <th>"Хорошистов"</th>
+    <th>"Отличников"</th>
+
+    <th>учебная деятельность</th>
+    <th>общественая деятельность</th>
+    <th>научно-иследовательская деятельность</th>
+    <th>культурная деятельность</th>
+    <th>спортивная деятельность</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @pay_category_to_semesters.each do |pay_category_to_semester| %>
+      <tr>
+        <% if  can? :manager, :all  %><td><%=pay_category_to_semester.faculty.short_name %></td><%end%>
+        <td><%= pay_category_to_semester.date_start.strftime("%d.%m.%Y") %>-<%= pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %></td>
+
+        <td><%= pay_category_to_semester.social1 %>/<%= pay_category_to_semester.social %></td>
+        <td><%= pay_category_to_semester.four1%>/<%= pay_category_to_semester.four%></td>
+        <td><%= pay_category_to_semester.five1 %>/<%= pay_category_to_semester.five %></td>
+        <td><%= pay_category_to_semester.study %></td>
+        <td><%= pay_category_to_semester.public %></td>
+        <td><%= pay_category_to_semester.scientific %></td>
+        <td><%= pay_category_to_semester.cultural %></td>
+        <td><%= pay_category_to_semester.sports %></td>
+
+        <td>
+          <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary"   %>
+        </td>
+        <td>
+          <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success"  %>
+        </td>
+        <td>
+          <% if  can? :manager, :all  %>
+              <%= link_to 'Show', pay_category_to_semester %>
+              <%= link_to 'Edit', edit_pay_category_to_semester_path(pay_category_to_semester) %>
+              <%= link_to 'Destroy', pay_category_to_semester_path(pay_category_to_semester), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+

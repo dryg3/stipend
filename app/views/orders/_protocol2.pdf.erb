@@ -1,0 +1,151 @@
+
+\linespread{1}
+
+
+\begin{center}
+\textsc{
+министерство образования и науки российской федерации\\
+\textbf{\small{
+федеральное государственное бюджетное образовательное\\
+учреждение высшего профессионального образования\\
+<<Московский государственный индустриальный университет>>\\
+  \vspace{-0.3cm plus 1mm minus 1mm}
+  (ФГБОУ ВПО <<МГИУ>>)
+  }}}
+
+  \begin{small}\textbf{ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ТЕХНИЧЕСКОЙ ФИЗИКИ}\end{small}\\
+  \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ ФПМТФ}}
+  \end{center}
+
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
+
+  \textbf{ПРИСУТСТВОВАЛИ:}
+
+  5 человек и 5 членов Комиссии: А.И. Мартыненко, С.И. Союстова, Е.В. Афанасьева, А.А. Вернер, М.Б. Богоявленский. Кворум имеется.
+
+  \centerline{\textbf{ПОВЕСТКА ДНЯ:}}
+
+  Назначение государственной социальной стипендии студентам ФПМТФ.
+
+  \centerline{\textbf{СЛУШАЛИ:}}
+
+  По вопросу повестки дня декана ФПМТФ А.И. Мартыненко.
+
+  \centerline{\textbf{РЕШИЛИ:}}
+
+  На основании Положения <<О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО <<МГИУ>>, утв. приказом ректора от 19.11.2012 № 356
+
+  Назначить государственную социальную стипендию следующим студентам ФПМТФ
+
+
+  {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
+
+  \begin{longtable}[hc]{|c|m{2.7cm}|m{1.0cm}|m{1.5cm}|m{1.5cm}|m{2.5cm}|m{5cm}|}
+
+
+  %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+
+  \begin{tiny}
+
+  \textbf{№}
+
+  \end{tiny}
+  &\begin{tiny}
+\hfil
+  \textbf{Фамилия И.О.}
+\hfil
+  \end{tiny}
+  &\begin{tiny}
+\hfil
+  \textbf{Курс}
+\hfil
+  \end{tiny}
+  &\begin{tiny}
+\hfil
+  \textbf{Группа}
+\hfil
+  \end{tiny}
+  &\begin{tiny}
+\hfil
+  \textbf{Руб./мес.}
+\hfil
+  \end{tiny}
+  &\begin{tiny}
+
+  \textbf{Срок \hskip 2cm назначения}
+
+  \end{tiny}
+  &\begin{tiny}
+\hfil
+  \textbf{Документ-основание}
+\hfil
+  \end{tiny}
+  \\
+
+
+  \hline
+
+  <%n=0 %>
+
+  <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+
+
+
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+          <% if s.name ==student_group.group.name%>
+
+              <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+              <% unless pay_to_month_student.social.zero?%>
+                  <%n+=1 %>
+                  \begin{footnotesize}\hfil<%=n%>.\hfil\end{footnotesize}
+                  &\begin{footnotesize}
+                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= s.kurs%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= s.name%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= pay_to_month_student.social %>\hfil\end{footnotesize}
+                  <%if pay_to_month_student.social!=0%>
+                      <%cer=Certificat.where('student_id = ?',  student_group.student_id).sort_by{|q| q.date_finish}.last%>
+                      <%unless cer.nil?%>
+                          &\vspace{-0.3cm}\begin{footnotesize}  с <%= @pays.date_start.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                         \begin{footnotesize} по <%=(cer.date_finish < @pays.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y").to_s  :  @pays.date_finish.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                          &\vspace{-0.3cm}\hspace{-0.2cm}\begin{footnotesize} Справка № <%=cer.number%> <%=cer.who%> \end{footnotesize}
+                          \\
+                          &&&&&&\hspace{-0.1cm}\begin{footnotesize} от~<%=cer.when.strftime("%d.%m.%Y").to_s%>\end{footnotesize}\\ \hline
+                      <%end%>
+                  <%end%>
+
+
+              <% end %>
+          <% end %>
+      <% end %>
+
+
+
+
+  <% end %>
+
+
+  \end{longtable}
+  }
+ГОЛОСОВАЛИ:<<ЗА>> 5 чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
+
+  \begin{tabular}{l}
+  Председатель\\
+Члены комиссии\\
+  \\
+  \\
+  \\
+  \end{tabular}
+  \hfill
+  \begin{tabular}{l}
+  А.И. Мартыненко\\
+С.И. Союстова\\
+  Е.В. Афанасьева\\
+  А.А. Вернер\\
+  М.Б. Богоявленский\\
+  \end{tabular}
+
+
+  \linespread{1.5}

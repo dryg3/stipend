@@ -1,0 +1,40 @@
+<h2>Изменение параметров счета</h2>
+
+<%= form_for :operation, url: operation_path(@operation), method: :patch do |f| %>
+  <% if @operation.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@operation.errors.count, "error") %> prohibited
+        this operation from being saved:</h2>
+    <ul>
+    <% @operation.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+   	<p>
+	  Счет:<br>
+	  <%= select("operation", "account_to_semester_id", AccountToSemester.all.collect {|p| [ AccountToSemester::TYPE_ACСOUNT[p.type_account]+" ("+p.faculty.name+")", p.id ] }, { include_blank: true })%>
+	</p>
+     <p>
+    Тип операции 
+        <%= select("operation", "type_op", Operation::TYPE_OP.map{|k, v| [v, k]}, { include_blank: true })%>
+    
+</p>
+     <p>
+    Сумма    <%= f.number_field :sum %>
+</p>
+     <p>
+    Дата операции    <%= f.date_select :date_op %>
+</p>
+     <p>
+    Коментарий    <%= f.text_field :text %>
+</p>
+     <p>
+    <%= f.submit %>
+</p>
+
+<% end %>
+
+<%= link_to 'Вернутся к списку', operations_path %>
