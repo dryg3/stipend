@@ -2,6 +2,10 @@
     <%= render 'order' %>
 <%end%>
 
+<%if @order.type_order==3%>
+    <%= render 'order2' %>
+<%end%>
+
 <%if @order.type_order==1%>
     <%= render 'protocol1' %>
 <%end%>
