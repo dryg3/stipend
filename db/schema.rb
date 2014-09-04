@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831194637) do
+ActiveRecord::Schema.define(version: 20140904134557) do
 
   create_table "account_to_semesters", force: true do |t|
     t.integer  "sum"
@@ -59,6 +59,13 @@ ActiveRecord::Schema.define(version: 20140831194637) do
   end
 
   add_index "groups", ["faculty_id"], name: "index_groups_on_faculty_id"
+
+  create_table "norms", force: true do |t|
+    t.string   "name"
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "operations", force: true do |t|
     t.integer  "sum"
