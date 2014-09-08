@@ -2,16 +2,18 @@
 <%= link_to 'Новый факультет', new_faculty_path %> 
 
 
-<table>
+<table class="table table-striped">
   <tr>
       <th>Имя</th>
-
+    <th></th>
+    <th>Old_id</th>
   </tr>
  
   <% @faculties.sort_by {|word| word.name}.each do |faculty| %>
     <tr>
 		<td><%= faculty.name %></td>
-
+          <td><%= faculty.short_name %></td>
+          <td><%= faculty.old_id %></td>
       
 
      
@@ -22,8 +24,9 @@
     </tr>
   <% end %>
 </table>
+
+
+
   <p>
-<a href = "/">На первую страницу</a>
+  <a href="/" class="btn btn-large btn-primary enabled">На первую страницу</a>
   </p>
-
-

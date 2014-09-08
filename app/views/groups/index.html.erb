@@ -10,20 +10,23 @@
       <th>Семестр    </th>
 <th>Учебный год</th>
 <th>Факультет</th>
+    <th>old_id</th>
+    <th></th>
   </tr>
  
-  <% @groups.sort_by{|word| word.year }.each do |group| %>
+  <% @groups.sort_by{|word| word.faculty_id }.each do |group| %>
     <tr>
 		<td><%= group.name %></td>
 		<td><%= group.kurs %></td>
 		<td><%= group.semester %></td>
 		<td><%= group.year %></td>
-		<td><%= group.faculty.name %></td>
+		<td><%= group.faculty.short_name %></td>
+      <td><%= group.old_id %></td>
 
      
-      <td><%= link_to 'Show', group %></td>
-	  <td><%= link_to 'Edit', edit_group_path(group) %></td>
-	      <td><%= link_to 'Destroy', group_path(group),
+      <td><%= link_to 'Show', group %>
+	  <%= link_to 'Edit', edit_group_path(group) %>
+	      <%= link_to 'Destroy', group_path(group),
                     method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
