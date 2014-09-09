@@ -17,3 +17,6 @@
 
 *.pdf
 *.out
+
+#rubymine
+/.idea

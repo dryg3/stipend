@@ -13,7 +13,7 @@ class OperationsController < ApplicationController
     elsif @operation.type_op==1
       @account.sum-=@operation.sum
     elsif @operation.type_op==2
-      @operation.text<<"Предыдущая сумма равна #{@account.sum}"
+      @operation.text<<"Предыдущая сумма равна #{@account.sum}."
       @account.sum=@operation.sum
     end
     @account.save!
@@ -26,32 +26,35 @@ class OperationsController < ApplicationController
   end
   
   def index
-    @operations = Operation.all
+    if current_user.faculty.name=="all"
+      @operations = Operation.all
+    else
+      ac=AccountToSemester.where("faculty_id = '#{current_user.faculty_id}'")
+      @operations=[]
+      ac.each{|a| @operations|=Operation.where("account_to_semester_id = '#{a.id}'")}
+    end
   end
 
   def show
-  @operation = Operation.find(params[:id])
+    @operation = Operation.find(params[:id])
   end
 
   def edit
-  @operation = Operation.find(params[:id])
+    @operation = Operation.find(params[:id])
   end
-
 
   def update
     @operation = Operation.find(params[:id])
-
     if @operation.update(operation_params)
       redirect_to @operation
     else
       render action: 'edit'
     end
-
   end
 
 
   def destroy
-  @operation = Operation.find(params[:id])
+    @operation = Operation.find(params[:id])
     @operation.destroy
      redirect_to operations_path
     

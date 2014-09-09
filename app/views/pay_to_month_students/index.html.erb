@@ -6,7 +6,7 @@
 <table class="table table-striped">
   <tr>
   <th>ФИО студента </th>
-  <th>Начало выплат</th>
+  <th>Дата</th>
  <th>Соц. </th>
  <th>Акад. </th>
  <th>уч. д-ть</th>
@@ -17,6 +17,7 @@
  <th>Тип</th>
   <th>Доплата</th>
   <th>Всего</th>
+    <th></th>
   </tr>
  
  
@@ -37,9 +38,9 @@
 <td><%= pay_to_month_student.surcharge %></td>
 <td><%=pay_to_month_student.social.to_i+pay_to_month_student.academic.to_i+pay_to_month_student.study.to_i+pay_to_month_student.public.to_i+pay_to_month_student.scientific.to_i+pay_to_month_student.cultural.to_i+pay_to_month_student.sports.to_i+pay_to_month_student.surcharge.to_i %></td>
 
-      <td><%= link_to 'Show', pay_to_month_student %></td>
-	  <td><%= link_to 'Edit', edit_pay_to_month_student_path(pay_to_month_student) %></td>
-	      <td><%= link_to 'Destroy', pay_to_month_student_path(pay_to_month_student),
+      <td><%= link_to 'Show', pay_to_month_student %>
+	  <%= link_to 'Edit', edit_pay_to_month_student_path(pay_to_month_student) %>
+	      <%= link_to 'Destroy', pay_to_month_student_path(pay_to_month_student),
                     method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>

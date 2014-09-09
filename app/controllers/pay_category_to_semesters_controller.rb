@@ -212,7 +212,11 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def index
-    @pay_category_to_semesters = PayCategoryToSemester.all
+    if current_user.faculty.name== "all"
+      @pay_category_to_semesters =PayCategoryToSemester.all
+    else
+      @pay_category_to_semesters = PayCategoryToSemester.where("faculty_id = '#{current_user.faculty_id}'")
+    end
   end
 
   def update

@@ -24,13 +24,27 @@ class CertificatsController < ApplicationController
   def index
     if params[:surname].nil? or params[:number].nil?
       @certificats  = []
+    elsif params[:surname].empty? and params[:number].empty?
+      student_group=[]
+      student =[]
+      certificats = []
+      group=Group.where("faculty_id = '#{current_user.faculty_id}' AND year = '#{year_today}' AND semester = '#{sem_today}'")
+      group.each { |s| student_group|=StudentGroup.where("group_id = ? ", s.id) }
+      student_group.each { |s| student|=Student.where("id = ?",s.student_id) }
+      student.each{ |s| certificats |=Certificat.where("student_id = '#{s.id}'")}
+      @certificats  = Certificat.all
+      @certificats &= certificats
     else
+
+
+
+
       student = Student.where("surname LIKE '%#{params[:surname]}%'") unless params[:surname].empty?
       certificats = []
       @certificats  = Certificat.all
       @certificats &= Certificat.where("number LIKE '%#{params[:number]}%'") unless params[:number].empty?
       student.each{ |s| certificats |=Certificat.where("student_id = '#{s.id}'")} unless student.nil?
-      @certificats &= certificats unless certificats ==[]
+      @certificats &= certificats
     end
   end
   

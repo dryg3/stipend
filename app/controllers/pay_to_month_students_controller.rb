@@ -104,9 +104,12 @@ class PayToMonthStudentsController < ApplicationController
   end
 
   def index
-    pay_metod unless params[:pay_category_to_semester].nil?
-
-    @pay_to_month_students = PayToMonthStudent.all
+    @pay_to_month_students = []
+    unless params[:pay_category_to_semester].nil?
+      pay_metod
+      pays=PayCategoryToSemester.find(params[:pay_category_to_semester])
+      @pay_to_month_students = PayToMonthStudent.where("month = ? AND year = ?",pays.date_start.month,pays.date_start.year)
+    end
   end
   
   def edit

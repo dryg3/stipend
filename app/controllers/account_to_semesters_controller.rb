@@ -77,9 +77,14 @@ end
   end
 
   def index
-    @account_to_semesters = []
+    @account_to_semesters = AccountToSemester.where("year LIKE '%#{year_today}%'")
     @account_to_semesters = AccountToSemester.where("year LIKE '%#{params[:years].to_s}%'") unless params[:years].nil? or params[:years].empty?
-
+    if  current_user.faculty.name == "all"
+      ac= AccountToSemester.all
+    else
+      ac=AccountToSemester.where("faculty_id = '#{current_user.faculty_id}'")
+    end
+    @account_to_semesters&=ac
 
   end
   # def index

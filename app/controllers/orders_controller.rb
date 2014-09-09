@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
   def index
-    @orders = Order.all
+    if current_user.faculty.name=="all"
+      @orders = Order.all
+    else
+      @orders = Order.where("faculty_id = '#{current_user.faculty_id}'")
+    end
   end
 
   def show

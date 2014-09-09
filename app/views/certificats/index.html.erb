@@ -28,7 +28,7 @@
         <th>Конец выплат </th>
         <th>Дата окончания </th>
         <% if can? :delete,Certificat %>
-          <th> Редактирование</th>
+          <th> </th>
         <%end%>
     </tr>
  
@@ -42,7 +42,7 @@
             <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
             <td><%= certificat.date_finish.strftime("%d.%m.%Y") %></td>
             <% if can? :delete,Certificat and (Date.today-certificat.date_finish).to_i<180%>
-                <td><%= link_to 'X', certificat_path(certificat), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <td><%= link_to 'X', certificat_path(certificat), method: :delete, data: { confirm: 'Вы дествительно хотите удалить?' } %></td>
             <% end %>
         </tr>
     <% end %>

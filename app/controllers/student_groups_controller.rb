@@ -23,13 +23,11 @@ end
 #  end
 
 def index
-
-
   @groups=[]
   g= []
   @student_groups=[]
   unless params[:surname].nil?
-  unless params[:surname].nil? or (params[:surname].empty? and params[:firstname].empty? and params[:secondname].empty? and params[:text].empty?)
+  unless  (params[:susrname].empty? and params[:firstname].empty? and params[:secondname].empty? and params[:text].empty?)
     student = Student.all
     student &= Student.where("surname LIKE '%#{params[:surname]}%'") unless params[:surname].nil? or  params[:surname].empty?
     student &= Student.where("firstname LIKE '%#{params[:firstname]}%'") unless params[:firstname].nil? or  params[:firstname].empty?
