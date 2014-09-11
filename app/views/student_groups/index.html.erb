@@ -31,6 +31,13 @@
                   Семестр:
                   <%= select_tag(:semester, options_for_select((1..2).collect {|p| p },params[:semester] ), { include_blank: true,  :style => "width:50px"})%>
                 </p>
+             <% if  can? :manager, StudentGroup  %>
+              <p>
+                  Институт:<br>
+                 <%=select_tag(:faculty, options_for_select(Faculty.all.collect {|p| [ p.short_name, p.id ] },params[:faculty]), { include_blank: true })%>
+
+                </p>
+               <%end%>
            </div>
            <div class="col-md-2 col-md-offset-2" >
               <button class="btn btn-large btn-info" type="submit" >Поиск</button>

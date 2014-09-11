@@ -11,7 +11,7 @@ begin
 # term: 1-осень, 2-весна
 # output format: [group_id, group_name, term, kurs, faculty_id, faculty_short_name, faculty_name]
 
-   result = client.call("scholarship.groups_list", '2013/2014', '2')
+   # result = client.call("scholarship.groups_list", '2013/2014', '2')
 
 #==========faculty
   # faculty=[]
@@ -127,21 +127,20 @@ begin
     end
   end
 =end
-
-  result = client.call("scholarship.students_list", "14401")
-  p result
+  result1 = client.call("scholarship.groups_list", '2014/2015', '1')
+  result2 = client.call("scholarship.groups_list", '2013/2014', '2')
 
 #===========student student_group
-  group=[]
-  for i in 0...result.size
-    r=result[i]
-    if Faculty.find_by(old_id:r[4]).id==7
-      group<<result[i][0]
-    end
-  end
-  #p  faculty.uniq!
-  group.uniq!
-  p group
+  # group=[]
+  # for i in 0...result.size
+  #   r=result[i]
+  #   if Faculty.find_by(old_id:r[4]).id==7
+  #     group<<result[i][0]
+  #   end
+  # end
+  # #p  faculty.uniq!
+  # group.uniq!
+  # p group
   # group.each do |group_id|
   #   p group_id
   #   # group_id=14169

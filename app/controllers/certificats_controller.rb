@@ -22,18 +22,25 @@ class CertificatsController < ApplicationController
   end
 
   def index
+
+#a=Certificat.includes(:student=>[:student_groups=>[:group=>:faculty]])
+# a.each{|g|  group.each{|q| p q.name if q.faculty_id=7}}
     if params[:surname].nil? or params[:number].nil?
       @certificats  = []
     elsif params[:surname].empty? and params[:number].empty?
-      student_group=[]
-      student =[]
-      certificats = []
-      group=Group.where("faculty_id = '#{current_user.faculty_id}' AND year = '#{year_today}' AND semester = '#{sem_today}'")
-      group.each { |s| student_group|=StudentGroup.where("group_id = ? ", s.id) }
-      student_group.each { |s| student|=Student.where("id = ?",s.student_id) }
-      student.each{ |s| certificats |=Certificat.where("student_id = '#{s.id}'")}
-      @certificats  = Certificat.all
-      @certificats &= certificats
+      if current_user.faculty.name== "all"
+        @certificats  = Certificat.all
+      else
+        student_group=[]
+        student =[]
+        certificats = []
+        group=Group.where("faculty_id = '#{current_user.faculty_id}' AND year = '#{year_today}' AND semester = '#{sem_today}'")
+        group.each { |s| student_group|=StudentGroup.where("group_id = ? ", s.id) }
+        student_group.each { |s| student|=Student.where("id = ?",s.student_id) }
+        student.each{ |s| certificats |=Certificat.where("student_id = '#{s.id}'")}
+        @certificats  = Certificat.all
+        @certificats &= certificats
+    end
     else
 
 

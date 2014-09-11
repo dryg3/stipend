@@ -5,29 +5,30 @@
       <td>Курс <%= @group.kurs %></td>
       <td><%= @group.semester %></td>
       <td><%= @group.year %></td>
-<table>
+<table class="table table-striped">
   <tr>
+    <th></th>
      <th>Фамилия</th>
       <th>Имя</th>
      <th>Отчество</th>
-     <th>Прочее</th>
-
+     <th></th>
+<th></th>
      
   </tr>
- 
-  <% @group.students.each do |student| %>
+ <%n=0%>
+  <% @group.students.sort_by { |s| s.surname}.each do |student| %>
     <tr>
+      <%n+=1%>
+      <td><%=n%></td>
 		<td><%= student.surname %></td>
 		<td><%= student.firstname %></td>
 		<td><%= student.secondname %></td>
 		<td><%= student.text %></td>
 
      
-      <td><%= link_to 'Show', student %></td>
-    
-	  <td><%= link_to 'Edit', edit_student_path(student) %></td>
-	      <td><%= link_to 'Destroy', student_path(student),
-                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= link_to 'Show', student %>
+        <%= link_to 'Edit', edit_student_path(student) %>
+        <%= link_to 'Destroy', student_path(student),  method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
 </table>

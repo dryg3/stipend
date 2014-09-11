@@ -16,7 +16,15 @@ end
     @group = Group.find(params[:id])
   end
   def index
-    @groups = Group.all
+
+    if  params[:faculty].nil?
+      @groups=[]
+      elsif  params[:faculty].empty?
+        @groups=Group.all
+      else
+        @groups=Group.where("faculty_id = '#{params[:faculty]}'")
+      end
+
   end
   
   def edit

@@ -1,8 +1,26 @@
 <h1>Группы</h1>
+<div class="well  well-small">
+    <%= form_tag("/groups", method: "get") do |f| %>
+        <div class="row">
+            <div class="col-md-4">
+              <p>
+                  Институт:<br>
+                 <%=select_tag(:faculty, options_for_select(Faculty.all.collect {|p| [ p.short_name, p.id ] },params[:faculty]), { include_blank: true })%>
+
+                </p>
+
+           </div>
+           <div class="col-md-2 col-md-offset-2" >
+              <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+
+            </div>
+        </div>
+    <% end %>
+</div>
   <p>  
   <a href="/groups/new" class="btn btn-large btn-success enabled">Новая группа</a>
   </p>
-  
+
 <table class="table table-striped">
   <tr>
       <th>Имя</th>
@@ -14,7 +32,7 @@
     <th></th>
   </tr>
  
-  <% @groups.sort_by{|word| word.faculty_id }.each do |group| %>
+  <% @groups.sort_by{|word| word.kurs }.each do |group| %>
     <tr>
 		<td><%= group.name %></td>
 		<td><%= group.kurs %></td>
