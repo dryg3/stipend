@@ -325,7 +325,7 @@ private
       File.open('simplex_data.txt', 'w'){ |file| file.write string }
       system "./a.out"
      # system "rm simplex_data.txt"
-#exec "./a.out | rm simplex_data.txt | ruby 1.rb"
+
 
       File.open('simplex_out.txt', 'r'){ |file| x=file.read.split}
     #  system "rm simplex_out.txt"
@@ -358,7 +358,7 @@ private
     File.open('simplex_data.txt', 'w'){ |file| file.write string }
     system "./a.out"
 #system "rm simplex_data.txt"
-#exec "./a.out | rm simplex_data.txt | ruby 1.rb"
+
 
     File.open('simplex_out.txt', 'r'){ |file| x=file.read.split}
 #   system "rm simplex_out.txt"

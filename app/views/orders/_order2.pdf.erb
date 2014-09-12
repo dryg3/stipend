@@ -74,7 +74,7 @@
   <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
   <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
   <% @groups.sort_by{|q| q.kurs}.each do |s| %>
-      <% if s.kurs == 1 && s.semestr==1%>
+      <% if s.kurs == 1 && s.semester==1%>
           \multicolumn{11}{|c|}{\begin{footnotesize}\textbf{Группа  <%=s.name%>}\end{footnotesize}}\\ \hline
 
           <%n=0 %>
@@ -196,10 +196,10 @@
 
   \parindent=1.25cm
   \begin{table}[b]
-  Исп. Союстова С. И.\\
+  Исп. <%=current_user.name%>\\
   Тел. 17132\\
 
-  Рассылка: деканат <%=current_user.faculty.short_name%> , ПФО, стипендиальный отдел
+  Рассылка: институт <%=current_user.faculty.short_name%> , ПФО, стипендиальный отдел
   \end{table}
 
   \linespread{1.5}
