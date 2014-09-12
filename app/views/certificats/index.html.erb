@@ -20,6 +20,7 @@
 <%unless @certificats==[]%>
 <table class="table table-hover" >
     <tr align=center>
+      <th></th>
         <th>ФИО студента </th>
         <th>№ справки</th>
         <th>Кем выдан</th>
@@ -31,13 +32,15 @@
           <th> </th>
         <%end%>
     </tr>
- 
+ <%n=0%>
     <% @certificats.sort_by { |s| s.date_finish}.reverse.each do |certificat| %>
+      <%n+=1%>
       <%if Date.today>certificat.date_finish%>
         <tr align=center bgcolor="#8fbc8f">
         <% else %>
       <tr align=center >
         <% end %>
+      <td><%=n%></td>
             <td><%=  link_to " #{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", certificat.student %></td>
             <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
             <td><%= certificat.who %></td>
