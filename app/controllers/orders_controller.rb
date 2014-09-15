@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
     @pays=PayCategoryToSemester.find(@order.pay_category_to_semester_id)
     @pay=PayToMonthStudent.where("month = ? AND year = ?",@pays.date_start.month, @pays.date_start.year)
     @student_groups=[]
-    @groups=Group.where('year = ? AND semester = ?', year_today,sem_today)
+    @groups=Group.where('year = ? AND semester = ?', @order.year, @order.sem_today)
     groups=[]
     @groups.each { |g| groups<<g.id }
     @pay.each do |pay|
@@ -34,6 +34,8 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.faculty_id=current_user.faculty_id
+    @order.year=year_today
+    @order.semester=sem_today
     #@order.pay_category_to_semester_id=params[:pay_category_to_semester_id]
     #raise @order.inspect
     if @order.save

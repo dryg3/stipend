@@ -62,7 +62,7 @@
         <p>
             <strong> Группы:</strong>     <br>
         </p>
-        <% Group.where("faculty_id = '#{current_user.faculty_id}'").sort_by{|q| q.name}.each do |group| %>
+        <% Group.where("faculty_id = '#{current_user.faculty_id}'").sort_by{ |q| [ q.kurs, q.name] }.each do |group| %>
         <p>
             <%= link_to " #{group.name}", action: "index", gname: group.name %><br>
         </p>
@@ -82,7 +82,7 @@
                 <th>Выплаты студенту</th>
             </tr>
             <%size=0 %>
-            <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+            <% @groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
                 <tr>
                     <th  colspan="0" class="group"  >
                       <% if  can? :read, Group  %>
@@ -191,12 +191,120 @@
                 <% end %>
             <% end %>
             <tr>
+              <th colspan="0" style="text-align: left"  class="group">
+                <% if size!=1 and size<5 %>
+                    Всего: <%=size%> человека,
+                <% else%>
+                    Всего: <%=size%> человек,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1)}%>
+                <% if t==1 %>
+                    <%=t%> хорошист,
+                <% elsif t<5 %>
+                    <%=t%> хорошиста,
+                <% else%>
+                    <%=t%> хорошистов,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2)}%>
+                <% if t==1 %>
+                    <%=t%> отличник,
+                <% elsif t<5 %>
+                    <%=t%> отличника,
+                <% else%>
+                    <%=t%> отличников,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true)}%>
+                <% if t==1 %>
+                    <%=t%> социальщик.
+                <% elsif t<5 %>
+                    <%=t%> социальщика.
+                <% else%>
+                    <%=t%> социальщиков.
+                <% end %>
+
+
+              </th>
+            </tr>
+            <tr>
+              <th colspan="0" style="text-align: left"  class="group">
+                <% t=0%><%@student_groups.each{|q| t+=1 if ( q.commerce==false)}%>
+                <% if t!=1 and t<5 %>
+                    Из них бюджетных: <%=t%> человека,
+                <% else%>
+                    Из них бюджетных: <%=t%> человек,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1 and q.commerce==false)}%>
+                <% if t==1 %>
+                    <%=t%> хорошист,
+                <% elsif t<5 %>
+                    <%=t%> хорошиста,
+                <% else%>
+                    <%=t%> хорошистов,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2 and q.commerce==false)}%>
+                <% if t==1 %>
+                    <%=t%> отличник,
+                <% elsif t<5 %>
+                    <%=t%> отличника,
+                <% else%>
+                    <%=t%> отличников,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true and q.commerce==false)}%>
+                <% if t==1 %>
+                    <%=t%> социальщик.
+                <% elsif t<5 %>
+                    <%=t%> социальщика.
+                <% else%>
+                    <%=t%> социальщиков.
+                <% end %>
+
+
+              </th>
+            </tr>
+
+          <!--
+            <tr>
+                <td colspan="0" style="text-align: left"  > Хорошистов: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1)}%><%=t%> </td>
+
+            </tr>
+            <tr>
+                <td colspan="0" style="text-align: left"  > Отличников: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2)}%><%=t%> </td>
+            </tr>
+            <tr>
+                <td colspan="0" style="text-align: left" > Социальная: <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true)}%><%=t%> </td>
+
+            </tr>
+
+            <tr>
+              <th colspan="0" style="text-align: left"  class="group"> Из них бюджетных:</th>
+            </tr>
+
+            <tr>
                 <% if size!=1 and size<5 %>
                     <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человека</th>
                 <% else%>
                     <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человек</th>
                 <% end %>
+
             </tr>
+            <tr>
+                <td colspan="0" style="text-align: left" > Хорошистов: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1 and q.commerce==false)}%><%=t%> </td>
+
+            </tr>
+            <tr>
+                <td colspan="0" style="text-align: left"  > Отличников: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2 and q.commerce==false)}%><%=t%> </td>
+            </tr>
+            <tr>
+                <td colspan="0" style="text-align: left"  > Социальная: <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true and q.commerce==false)}%><%=t%> </td>
+
+
+            </tr>-->
         </table>
     </div>
 </div>
