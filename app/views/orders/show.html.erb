@@ -1,10 +1,10 @@
-<%=@order.bottom%>
 
-<p>
+
+<h1>
     <strong>
         <%=Order::TYPE_ORDER[@order.type_order]%> № <%= @order.number %> от <%= l @order.date, format: :default%>
     </strong>
-</p>
+</h1>
 
 Назначить стипендию следующим студентам ФПМТФ на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно:
 
@@ -81,7 +81,7 @@
               </tr>
           <% end %>
       <% end %>
-      <tr>
+      <tr >
         <th></th>
         <th></th>
         <th><%=s3%></th>
@@ -97,7 +97,7 @@
       <%ss3+=s3%><%ss4+=s4%><%ss5+=s5%><%ss6+=s6%><%ss7+=s7%><%ss8+=s8%><%ss9+=s9%><%ss11+=s11%>
       <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
   <% end %>
-  <tr>
+  <tr class="group" >
     <th></th>
     <th></th>
     <th><%=ss3%></th>
@@ -125,6 +125,8 @@
     <%end%>
     </p>
 <%end%>
+
+<%=@order.bottom%>
 
 <p>
     <%= link_to 'Изменить приказ', edit_order_path(@order) %> |

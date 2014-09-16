@@ -2,7 +2,7 @@
 \vspace{5.2cm plus 1mm minus 1mm}
 
 
-  \hspace{-1cm}\textbf{\scriptsize{О назначении стипендии студентам ФПМТФ}}
+  \hspace{-1cm}\textbf{\scriptsize{О назначении стипендии студентам <%=@order.faculty.short_name%>}}
 
 
 \vspace{0.5cm plus 1mm minus 1mm}
@@ -11,7 +11,7 @@
 \vspace{0.5cm plus 1mm minus 1mm}
   ПРИКАЗЫВАЮ:
 
-  1. Назначить государственную стипендию следующим студентам ФПМТФ на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
+  1. Назначить государственную стипендию следующим студентам <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
   \begin{longtable}[hc]{|m{0.5em}|l|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
@@ -200,10 +200,10 @@
 
   \parindent=1.25cm
   \begin{table}[b]
-  Исп. Союстова С. И.\\
-  Тел. 17132\\
 
-  Рассылка: деканат ФПМТФ, ПФО, стипендиальный отдел
+  Исп. <%=current_user.name%>\\
+
+
+  Рассылка: институт <%=@order.faculty.short_name%> , ПФО, стипендиальный отдел
   \end{table}
-
   \linespread{1.5}

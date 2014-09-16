@@ -3,7 +3,7 @@
 
 
   \hspace{-1cm}\parbox{7cm}
-{\textbf{\scriptsize{О назначении стипендии первому курсу студентам <%=current_user.faculty.short_name%>}}}
+{\textbf{\scriptsize{О назначении стипендии первому курсу студентам <%=@order.faculty.short_name%>}}}
 
 
 \vspace{0.5cm plus 1mm minus 1mm}
@@ -13,7 +13,7 @@
 \vspace{0.5cm plus 1mm minus 1mm}
   ПРИКАЗЫВАЮ:
 
-  Назначить государственную стипендию следующим студентам первого курса <%=current_user.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
+  Назначить государственную стипендию следующим студентам первого курса <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
   \begin{longtable}[hc]{|m{0.5em}|l|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
@@ -74,7 +74,7 @@
   <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
   <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
   <% @groups.sort_by{|q| q.kurs}.each do |s| %>
-      <% if s.kurs == 1 && s.semester==1%>
+
           \multicolumn{11}{|c|}{\begin{footnotesize}\textbf{Группа  <%=s.name%>}\end{footnotesize}}\\ \hline
 
           <%n=0 %>
@@ -126,7 +126,7 @@
 
           <%ss3+=s3%><%ss4+=s4%><%ss5+=s5%><%ss6+=s6%><%ss7+=s7%><%ss8+=s8%><%ss9+=s9%><%ss11+=s11%>
           <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
-      <% end %>
+
   <% end %>
   \multicolumn{2}{|c|}{}
   &\begin{footnotesize}\hfil<%=ss3%>\hfil\end{footnotesize}
@@ -197,9 +197,9 @@
   \parindent=1.25cm
   \begin{table}[b]
   Исп. <%=current_user.name%>\\
-  Тел. 17132\\
 
-  Рассылка: институт <%=current_user.faculty.short_name%> , ПФО, стипендиальный отдел
+
+  Рассылка: институт <%=@order.faculty.short_name%> , ПФО, стипендиальный отдел
   \end{table}
 
   \linespread{1.5}

@@ -28,7 +28,7 @@
     <%if @order.up.nil?%>
         <%if @order.type_order==0%>
            <% File.open('./app/views/orders/up0.txt', 'r'){ |file| @text=file.read}%>
-            <% %>
+
             <%end%>
         <p>
           Шаблон<br>
@@ -43,7 +43,9 @@
     <p>
       Согласовано:<br>
     </p>
-    <table><%i=0%>
+    <%if @order.bottom.nil?%>
+    <table>
+        <%i=0%>
         <%Order::LIST.map do |k, v|%>
             <%= f.fields_for :list, index: i  do |b| %>
                 <tr>
@@ -52,9 +54,18 @@
                     <td><%=v[1] %> </td>
                 </tr>
             <% end %>
-            <%= i+=1%>
+            <% i+=1%>
         <%end%>
         <tr>
+            <%= f.fields_for :list, index: i  do |b| %>
+                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list].nil? ? i : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+
+                <td><%=b.text_field :name1, value:"Директор #{@order.faculty.short_name}"%></td>
+                <td><%=b.text_field :name2, value:"#{Order::FACULTY[@order.faculty.id]}"%></td>
+            <% end %>
+        </tr>
+        <tr>
+            <% i+=1%>
             <%= f.fields_for :list, index: i  do |b| %>
                 <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
                 <td><%= b.text_field :name1 %></td>
@@ -62,7 +73,7 @@
             <% end %>
         </tr>
         <tr>
-            <%= i+=1%>
+            <% i+=1%>
             <%= f.fields_for :list, index: i  do |b| %>
                 <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
                 <td><%= b.text_field :name1 %></td>
@@ -70,9 +81,15 @@
             <% end %>
         </tr>
     </table>
-      <p>
-        <%= f.submit %>
-      </p>
+        <%else%>
+               <p>
+            <%= f.text_area :bottom, style: "width: 670px; height: 150px;" %>
+        </p>
+        <% end %>
+         <div class="form-actions">
+          <button type="submit" class="btn btn-success">Сохранить</button>
+          <button type="reset" class="btn">Отменить</button>
+        </div>
 <% end %>
 
 
