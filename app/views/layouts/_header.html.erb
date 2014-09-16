@@ -19,7 +19,12 @@
         <ul class="nav pull-right">
           <% if signed_in? %>
               <li class="divider-vertical"></li>
-             <li id="fat-menu" class="dropdown">
+              <%current_user.roles.each{|w| @t=1 if w.name=="admin"}%>
+              <% if @t==1%>
+                <li class="divider-vertical"></li>
+                <li><a href="/users">Пользователи</a></li>
+              <%end%>
+              <li id="fat-menu" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   Институт: <%=current_user.faculty.short_name%>, <%=current_user.name%> <b class="caret"></b>
                 </a>

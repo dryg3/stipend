@@ -1,14 +1,25 @@
-<% provide(:title, 'All users') %>
-<h1>All users</h1>
+<% provide(:title, 'Пользователи') %>
+<h1>Пользователи</h1>
 
-<ul class="users">
+
+<table class="table table-hover">
+  <tr>
+    <th>Фамилия И.О.</th>
+    <th>Логин</th>
+    <th>Факультет</th>
+    <th></th>
+  </tr>
   <% @users.each do |user| %>
-    <li>
-     <%= link_to user.name, user %>
-  <% if can? :destroy, user %>
-    | <%= link_to "delete", user, method: :delete,
-                                  data: { confirm: "You sure?" } %>
+      <tr>
+        <td><%=user.name%></td>
+        <td><%=user.email%></td>
+        <td><%=user.faculty.short_name%></td>
+        <% if can? :manager, :all %>
+            <td><%= link_to 'Show', user %></td>
+            <td><%= link_to 'Edit', edit_user_path(user) %></td>
+            <td><%= link_to 'Destroy', user_path(user),
+                            method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
   <% end %>
-    </li>
-  <% end %>
-</ul>
+</table>
