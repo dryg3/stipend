@@ -81,20 +81,24 @@
         </p>
         <p>
           Начало выплат:<br>
-          <%= f.text_field :month_start %>
-          <%= f.text_field :year_start %>
+          <%#= f.text_field :month_start %>
+          <%= select_month(Date.today, field_name: 'month_start', :prefix => 'certificat')%>
+          <%#=f.text_field :year_start %>
+          <%= select_year(Date.today, field_name: 'year_start', :prefix => 'certificat')%>
         </p>
 
         <p>
           Конец выплат:<br>
-          <%= f.text_field :month_finish %>
-          <%=f.text_field :year_finish %>
+          <%#= f.text_field :month_finish %>
+          <%= select_month(Date.today.next_year, field_name: 'month_finish', :prefix => 'certificat')%>
+          <%#=f.text_field :year_finish %>
+          <%= select_year(Date.today.next_year, field_name: 'year_finish', :prefix => 'certificat')%>
         </p>
 
         <p>
           Дествительно до:<br>
-          <%= date_select :certificat, :date_finish %>
-
+          <%= date_select :certificat, :date_finish, selected: Date.today.next_year %>
+<%#=date_select("certificat", "date_finish", order: [:day,:month], selected: Date.today-1)%>
 
         </p>
 

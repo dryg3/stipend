@@ -8,19 +8,19 @@
 
 <h2>Справки</h2>
 <table class="table table-striped">
-  <tr>
+    <tr>
 
-    <th>№ справки</th>
-    <th>Кем выдан</th>
-    <th>Дата выдачи </th>
-    <th>Начало выплат </th>
-    <th>Конец выплат </th>
-    <th>Дата окончания </th>
-    <th>Редактирование</th>
-  </tr>
+        <th>№ справки</th>
+        <th>Кем выдан</th>
+        <th>Дата выдачи </th>
+        <th>Начало выплат </th>
+        <th>Конец выплат </th>
+        <th>Дата окончания </th>
+        <th>Редактирование</th>
+    </tr>
 
-  <% @student.certificats.each do |certificat| %>
-      <tr>
+    <% @student.certificats.each do |certificat| %>
+        <tr>
 
         <td><%= certificat.number %></td>
         <td><%= certificat.who %></td>
@@ -29,85 +29,89 @@
         <td><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
         <td><%= certificat.date_finish %></td>
 
-        <td><%= link_to 'Show', certificat %>
-          <%= link_to 'Edit', edit_certificat_path(certificat) %>
-          <%= link_to 'Destroy', certificat_path(certificat),
-                      method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-  <% end %>
+        <% if can? :manager,Certificat %>
+            <td>
+                <%= link_to 'Show', certificat %>
+                <%= link_to 'Edit', edit_certificat_path(certificat) %>
+                <%= link_to 'Destroy', certificat_path(certificat), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
+            </td>
+        <% end %>
+        </tr>
+    <% end %>
 </table>
 
 
-<h2>Добавить справку:</h2>
-<%= form_for([@student, @student.certificats.build]) do |f| %>
 
-    <% @student.certificats.map(&:errors).each do |e|%>
-        <%if e.messages.any?%>
-            <div id="error_explanation" class="error_explanation">
-              <h2>Сообщение: сохранение не удалось из-за <%= e.count %> ошибки:</h2>
-              <ul>
-                <% e.full_messages.each do |msg| %>
-                    <li><%= msg %></li>
-                <% end %>
-              </ul>
-            </div>
-        <% end %>
-    <% end %>
+<h2>Группы</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Название</th>
+        <th>Курс</th>
+        <th>Семестр    </th>
+        <th>Учебный год</th>
+        <th>Факультет</th>
 
-    <% if @student.errors.any? %>
-        <div id="error_explanation" class="error_explanation">
-          <h2>Сообщение: сохранение не удалось из-за <%= @student.errors.count %> ошибки:</h2>
-          <ul>
-            <% @student.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
+    </tr>
+
+
+    <% @student.groups.sort_by{|word| word.kurs }.each do |group| %>
+        <tr>
+            <td><%= group.name %></td>
+            <td><%= group.kurs %></td>
+            <td><%= group.semester %></td>
+            <td><%= group.year %></td>
+            <td><%= group.faculty.short_name %></td>
+
+            <% if can? :manager,Group %>
+                <td>
+                    <%= link_to 'Show', group %>
+                    <%= link_to 'Edit', edit_group_path(group) %>
+                    <%= link_to 'Destroy', group_path(group), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
+                </td>
             <% end %>
-          </ul>
-        </div>
+        </tr>
     <% end %>
+</table>
 
+<h2>Выплаты по месяцам</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Дата выплат</th>
+        <th>Соц. </th>
+        <th>Акад. </th>
+        <th>уч. д-ть</th>
+        <th>общ. д-ть</th>
+        <th>нид</th>
+        <th>культ. д-ть</th>
+        <th>спорт. д-ть</th>
+        <th>Тип</th>
+        <th>Доплата</th>
+        <th>Всего</th>
+        <th></th>
+    </tr>
 
+    <% @student.pay_to_month_students.sort_by { |q| Date.new(q.year,q.month,1)}.reverse.each do |pay_to_month_student| %>
+        <tr>
+            <td><%= pay_to_month_student.month %>.<%= pay_to_month_student.year %></td>
+            <td><%= pay_to_month_student.social %></td>
+            <td><%= pay_to_month_student.academic %></td>
+            <td><%= pay_to_month_student.study %></td>
+            <td><%= pay_to_month_student.public %></td>
+            <td><%= pay_to_month_student.scientific %></td>
+            <td><%= pay_to_month_student.cultural %></td>
+            <td><%= pay_to_month_student.sports %></td>
 
-    <p>
-      Номер<br>
-      <%= f.text_field :number %>
-    </p>
+            <td><%=PayToMonthStudent::TYPE_PAY_SHORT[pay_to_month_student.type_pay]%></td>
+            <td><%= pay_to_month_student.surcharge %></td>
+            <td><%=pay_to_month_student.social.to_i+pay_to_month_student.academic.to_i+pay_to_month_student.study.to_i+pay_to_month_student.public.to_i+pay_to_month_student.scientific.to_i+pay_to_month_student.cultural.to_i+pay_to_month_student.sports.to_i+pay_to_month_student.surcharge.to_i %></td>
 
-    <p>
-      Кем выдано<br>
-      <%= f.text_field :who %>
-    </p>
-    <p>
-      От какого числа<br>
-      <%= f.text_field :when %>
-    </p>
-    <p>
-      Месяц начала выплат<br>
-      <%= f.text_field :month_start %>
-    </p>
-
-    <p>
-      Год начала выплат<br>
-      <%= f.text_field :year_start %>
-    </p>
-
-    <p>
-      Месяц окончания выплат<br>
-      <%= f.text_field :month_finish %>
-    </p>
-
-    <p>
-      Год оканчания выплат<br>
-      <%=f.text_field :year_finish %>
-    </p>
-
-    <p>
-      До какого числа действительна<br>
-      <%= f.text_field :date_finish %>
-    </p>
-    <p>
-      <%= f.submit :Сохранить %>
-    </p>
-<% end %>
-
-<%= link_to 'Изменить параметры студента', edit_student_path(@student) %> |
-<%= link_to 'Вернутся к списку', students_path %>
+            <% if can? :manager,PayToMonthStudent %>
+                <td>
+                  <%= link_to 'Show', pay_to_month_student %>
+                  <%= link_to 'Edit', edit_pay_to_month_student_path(pay_to_month_student) %>
+                  <%= link_to 'Destroy', pay_to_month_student_path(pay_to_month_student), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
+                </td>
+             <% end %>
+        </tr>
+    <% end %>
+</table>

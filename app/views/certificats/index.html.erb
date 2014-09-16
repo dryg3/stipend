@@ -41,14 +41,14 @@
       <tr align=center >
         <% end %>
       <td><%=n%></td>
-            <td><%=  link_to " #{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", certificat.student %></td>
+            <td><nobr><%=  link_to "#{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", controller: "students", action: "certificat", student_id: certificat.student_id %></nobr></td>
             <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
             <td><%= certificat.who %></td>
             <td><%= certificat.when.strftime("%d.%m.%Y") %></td>
             <td><% if certificat.month_start<10%>0<%end%><%= certificat.month_start %>.<%= certificat.year_start %></td>
             <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
             <td><%= certificat.date_finish.strftime("%d.%m.%Y") %></td>
-            <% if can? :delete,Certificat and (Date.today-certificat.date_finish).to_i<180%>
+            <% if can? :delete,Certificat and (Date.today<certificat.date_finish)%>
                 <td><%= link_to 'X', certificat_path(certificat), method: :delete, data: { confirm: 'Вы дествительно хотите удалить?' } %></td>
             <% end %>
         </tr>

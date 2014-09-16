@@ -13,7 +13,8 @@
 	<p>
 	  Студент:<br>
 	  <%= select("certificat", "student_id", Student.all.collect {|p| [ p.surname+" "+p.firstname+" "+p.secondname, p.id ] }, { include_blank: true })%>
-	</p>
+
+    </p>
 <p>
     № справки<br>
     <%= f.text_field :number %>

@@ -39,11 +39,12 @@
         <td><%=PayToMonthStudent::TYPE_PAY_SHORT[pay_to_month_student.type_pay]%></td>
         <td><%= pay_to_month_student.surcharge %></td>
         <td><%=pay_to_month_student.social.to_i+pay_to_month_student.academic.to_i+pay_to_month_student.study.to_i+pay_to_month_student.public.to_i+pay_to_month_student.scientific.to_i+pay_to_month_student.cultural.to_i+pay_to_month_student.sports.to_i+pay_to_month_student.surcharge.to_i %></td>
-
+<% if can? :manager,PayToMonthStudent %>
         <td><%= link_to 'Show', pay_to_month_student %>
           <%= link_to 'Edit', edit_pay_to_month_student_path(pay_to_month_student) %>
           <%= link_to 'Destroy', pay_to_month_student_path(pay_to_month_student),
                         method: :delete, data: { confirm: 'Are you sure?' } %></td>
+     <% end %>
       </tr>
   <% end %>
 </table>
