@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'http://gems.msiu.ru'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -54,3 +55,7 @@ gem 'bootstrap-sass', '3.1.1.1'
 gem 'cancan'#, github: 'ryanb/cancan'
 
 gem 'rails-i18n'#, github: 'svenfuchs/rails-i18n'
+
+
+# For CAS client support
+gem 'rubycas-client-msiu'
