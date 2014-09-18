@@ -11,10 +11,9 @@
   <%= @account_to_semester.sum %>
 </p>
 
-
-  <p>
-<%= link_to 'Изменить счет факультета на семестр', edit_account_to_semester_path(@account_to_semester) %> |
-<%= link_to 'Вернутся к списку', account_to_semesters_path %>
-  </p>
+<p>
+    <%= link_to 'Изменить счет факультета на семестр', edit_account_to_semester_path(@account_to_semester),class: "btn btn-success " %> |
+    <a href="/account_to_semesters" class="btn btn-large btn-primary enabled">Вернутся к списку</a>
+</p>
 
 

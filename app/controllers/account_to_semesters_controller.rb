@@ -1,18 +1,19 @@
 class AccountToSemestersController < ApplicationController
-    def new
-  @account_to_semester = AccountToSemester.new
-end
- 
-def create
-  @account_to_semester = AccountToSemester.new(account_to_semester_params)
-  @account_to_semester.semester=sem_today
-  @account_to_semester.year=year_today
-  if @account_to_semester.save
-    redirect_to @account_to_semester
-  else
-    render 'new'
+  def new
+    @account_to_semester = AccountToSemester.new
   end
-end
+
+  def create
+    @account_to_semester = AccountToSemester.new(account_to_semester_params)
+    @account_to_semester.faculty_id=current_user.faculty.id
+    @account_to_semester.semester=sem_today
+    @account_to_semester.year=year_today
+    if @account_to_semester.save
+      redirect_to @account_to_semester
+    else
+      render 'new'
+    end
+  end
   
   def show
     @account_to_semester = AccountToSemester.find(params[:id])

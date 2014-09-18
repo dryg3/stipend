@@ -8,6 +8,7 @@ class OperationsController < ApplicationController
     @operation = Operation.new(operation_params)
     @account=AccountToSemester.find(@operation.account_to_semester_id)
     @operation.user_id=current_user.id
+    @operation.date_op=Date.today
     if @operation.type_op==0
       @account.sum+=@operation.sum
     elsif @operation.type_op==1

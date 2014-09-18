@@ -18,12 +18,12 @@
     </thead>
 
     <tbody>
-        <% @operations.each do |operation| %>
+        <% @operations.sort_by { |q| q.date_op}.reverse.each do |operation| %>
             <tr>
                 <td><%= AccountToSemester::TYPE_ACСOUNT[operation.account_to_semester.type_account]%>(<%= operation.account_to_semester.faculty.short_name%>)</td>
                 <td><%=Operation::TYPE_OP[operation.type_op]%></td>
                 <td><%= operation.sum %></td>
-                <td><%= operation.date_op.strftime("%d.%m.%Y") %></td>
+                <td><%=l operation.date_op %></td>
                 <td><%= operation.user.name %></td>
                 <td><%= operation.text %></td>
                 <%if can? :manager, Operation%>

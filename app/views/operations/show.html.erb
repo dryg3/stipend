@@ -1,33 +1,24 @@
-
-
 <p>
-  <strong>Type op:</strong>
-  <%= @operation.account_to_semester_id%>
-</p>
-
-<p>
-  <strong>Type op:</strong>
+  <strong>Тип операции:</strong>
   <%= @operation.type_op %>
 </p>
 
 <p>
-  <strong>Sum:</strong>
+  <strong>Сумма:</strong>
   <%= @operation.sum %>
 </p>
 
 <p>
-  <strong>Date op:</strong>
-  <%= @operation.date_op %>
+  <strong>Дата операции:</strong>
+  <%=l @operation.date_op %>
 </p>
 
 <p>
-  <strong>Text:</strong>
+  <strong>Комментарий:</strong>
   <%= @operation.text %>
 </p>
 
 
- <p>
-<%= link_to 'Изменить операцию', edit_operation_path(@operation) %> | <%= link_to 'Вернутся к списку', operations_path %>
- 
-
-  </p>
+<p>
+    <a href="/operations" class="btn btn-large btn-primary enabled">Вернутся к списку</a>
+</p>
