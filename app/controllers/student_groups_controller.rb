@@ -1,4 +1,5 @@
 class StudentGroupsController < ApplicationController
+  include StudentGroupsHelper
   load_and_authorize_resource
   #http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 def new
@@ -23,6 +24,8 @@ end
 #  end
 
   def index
+    download(current_user.faculty.id) unless params[:download].nil? or params[:download].empty?
+    # raise @qq.inspect
     @groups=[]
     g= []
     @student_groups=[]

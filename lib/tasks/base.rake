@@ -20,7 +20,7 @@ begin
   group=[]
 
 
-#=================group
+p "\n=================group=================\n"
   for i in 0...result.size
      r=result[i]
 
@@ -29,9 +29,11 @@ begin
         g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
 
         if (old=Group.find_by(old_id:r[0])).nil?
+          p "new"
+
           p g
           #p g.name.size
-           g.save!
+           #g.save!
         else
           # p old
           old.old_id = g.old_id
@@ -41,7 +43,7 @@ begin
           old.faculty_id=g.faculty_id
           old.year=g.year
            p old
-          old.save!
+         # old.save!
         end
      end
   end
@@ -56,7 +58,7 @@ begin
   group.uniq!
   # p group
 
-
+p "\n=================student=================\n"
   group.each do |id,name|
     result = client.call("scholarship.students_list_without_marks", "#{id}")
      p result
@@ -66,21 +68,22 @@ begin
       # p s
       if r[5]=="обучается"
         if (old=Student.find_by(old_id:r[0])).nil?
-        s.save!
+       # s.save!
+       p "new"
          p s
         else
         old.old_id = s.old_id
         old.surname=s.surname
         old.firstname=s.firstname
         old.secondname=s.secondname
-        old.save!
+        #old.save!
            p old
         end
       end
     end
   end
 
-
+p "\n=================student_group=================\n"
 
   new=[]
   group.each do |id,name|
@@ -112,22 +115,25 @@ new << [r0,id]
           sg.student_id=s.id
           p sg
           if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
-            sg.save!
-            p sg
+            #sg.save!
+            p "new"
+
+          p sg
           else
             old.group_id=sg.group_id
             old.student_id=sg.student_id
             old.commerce=sg.commerce
             old.type_stipend=sg.type_stipend
-            old.save!
+            #old.save!
+            p "stold==="
             p old
           end
         else
           unless (s=Student.find_by(old_id: r[0])).nil?
             old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
-            p "old==="
+            p "del"
             p old
-            old.delete unless old.nil?
+            #old.delete unless old.nil?
           end
 
         end
@@ -146,25 +152,67 @@ new << [r0,id]
           sg.student_id=s.id
           p sg
           if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
-            sg.save!
-            p sg
+            #sg.save!
+            p "new"
+
+          p sg
           else
             old.group_id=sg.group_id
             old.student_id=sg.student_id
             old.commerce=sg.commerce
             old.type_stipend=sg.type_stipend
-            old.save!
+            #old.save!
              p "stold==="
             p old
           end
         else
           unless (s=Student.find_by(old_id: r[0])).nil?
             old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
-            p "old==="
+            p "del"
             p old
-            old.delete unless old.nil?
+            #old.delete unless old.nil?
           end
 
+        end
+      end
+      result2 = client.call("scholarship.students_list_without_marks", "#{id_old}")
+      p "result2"
+      for i in 0...result.size
+       result2-=[result[i][0]]
+      end
+      p result2
+      unless result2.empty?
+        for i in 0...result2.size
+          r=result2[i]
+          if r[5]=="обучается"
+            s=Student.find_by(old_id: r[0])
+            sg=StudentGroup.new(group_id: Group.find_by(old_id: id_old).id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0)
+            p s
+            sg.student_id=s.id
+            p sg
+            if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
+              #sg.save!
+              p "new"
+
+            p sg
+            else
+              old.group_id=sg.group_id
+              old.student_id=sg.student_id
+              old.commerce=sg.commerce
+              old.type_stipend=sg.type_stipend
+              #old.save!
+              p "stold==="
+              p old
+            end
+          else
+            unless (s=Student.find_by(old_id: r[0])).nil?
+              old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
+              p "del"
+              p old
+              #old.delete unless old.nil?
+            end
+
+          end
         end
       end
     end
