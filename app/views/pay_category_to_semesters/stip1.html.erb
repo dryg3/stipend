@@ -8,13 +8,11 @@
   <%= @student %>
 </p>
 <%= form_tag({:action => 'stip1',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
-    <table  width="800">
+    <table  width="500">
         <tr>
             <th>Социальная </th>
             <th>"Хорошистов"</th>
             <th>"Отличников"</th>
-            <th>Соц+Хор</th>
-            <th>Соц+Отл</th>
             <th>сумма итог</th>
         </tr>
         <tr>
@@ -23,10 +21,6 @@
             <td><%= @four %> <%= text_field_tag(:four1, params[:four1].nil? ? @s : params[:four1],  :style => "width:80px")%>
             + </td>
             <td><%= @five %> <%= text_field_tag(:five1, params[:five1].nil? ? @s : params[:five1],  :style => "width:80px") %>
-            + </td>
-            <td><%= @socfour %> <%= text_field_tag(:socfour, @sfour, disabled: true,  :style => "width:80px")%>
-            + </td>
-            <td><%= @socfive %> <%= text_field_tag(:socfive, @sfive, disabled: true,  :style => "width:80px") %>
             =</td>
             <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
         </tr>

@@ -20,8 +20,7 @@ class PayCategoryToSemestersController < ApplicationController
     sum_soc=0
     sum_hor=0
     sum_otl=0
-    sum_soc_hor=0
-    sum_soc_otl=0
+    sum=0
     g = Group.where('(kurs = ? AND semester = ?) AND semester = ? AND faculty_id= ? AND year=?',1,1,@account_to_semester.semester,@account_to_semester.faculty_id,@account_to_semester.year)
     g.each  do |c|
       s = StudentGroup.where('group_id = ? AND commerce= ? AND social=?',c.id,false,true)
@@ -33,30 +32,25 @@ class PayCategoryToSemestersController < ApplicationController
       s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,1)
       sum_hor+=s.size
 
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,2,true)
-      sum_soc_otl+=s.size
 
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,1,true)
-      sum_soc_hor+=s.size
+      s = StudentGroup.where('group_id = ? AND (type_stipend=? OR social=? OR  type_stipend=?)',c.id,1,true,2)
+      sum+=s.size
+
     end
 
     #metod(sum_soc,sum_hor,sum_otl)
     @social=sum_soc
     @five=sum_otl
     @four=sum_hor
-    @socfive=sum_soc_otl
-    @socfour=sum_soc_hor
     #pay_category (@account_to_semester)
-    @sfive=0 if (@sfive=6307-params[:social1].to_i-params[:five1].to_i)<0
-    @sfour=0 if (@sfour=6307-params[:social1].to_i-params[:four1].to_i)<0
-    @student=@social+@five+@four
+    #@student=@social+@five+@four
+    @student=sum
     @s=@sum/@student if @student!=0
     @summa=0
     @summa+=@social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
     @summa+=@five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
     @summa+=@four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
-    @summa+=@five*@sfive
-    @summa+=@four*@sfour
+
 
   end
   def stip2
@@ -67,6 +61,7 @@ class PayCategoryToSemestersController < ApplicationController
     sum_otl=0
     sum_soc_hor=0
     sum_soc_otl=0
+    sum=0
     g = Group.where('(kurs != ? OR semester != ?) AND semester = ? AND faculty_id= ? AND year=?',1,1,@account_to_semester.semester,@account_to_semester.faculty_id,@account_to_semester.year)
     g.each  do |c|
       s = StudentGroup.where('group_id = ? AND commerce= ? AND social=?',c.id,false,true)
@@ -83,6 +78,9 @@ class PayCategoryToSemestersController < ApplicationController
 
       s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,1,true)
       sum_soc_hor+=s.size
+
+      s = StudentGroup.where('group_id = ? AND (type_stipend=? OR social=? OR  type_stipend=?)',c.id,1,true,2)
+      sum+=s.size
     end
 
     #metod(sum_soc,sum_hor,sum_otl)
@@ -94,7 +92,8 @@ class PayCategoryToSemestersController < ApplicationController
     #pay_category (@account_to_semester)
     @sfive=0 if (@sfive=6307-params[:social].to_i-params[:five].to_i)<0
     @sfour=0 if (@sfour=6307-params[:social].to_i-params[:four].to_i)<0
-    @student=@social+@five+@four
+    #@student=@social+@five+@four
+    @student=sum
     @s=@sum/@student if @student!=0
     @summa=0
     @summa+=@social* params[:social].to_i unless params[:social].nil? or params[:social].empty?

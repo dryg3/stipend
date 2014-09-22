@@ -1,95 +1,123 @@
 <h2>Создание нового приказа</h2>
 
 <%= form_for :order , url: order_path(@order), method: :patch do |f| %>
-  <% if @order.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@order.errors.count, "ошибка") %> prohibited
-        this order from being saved:</h2>
-    <ul>
-    <% @order.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+    <% if @order.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@order.errors.count, "ошибка") %> prohibited
+            this order from being saved:</h2>
+            <ul>
+                <% @order.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
     <% end %>
-    </ul>
-  </div>
-  <% end %>
-  
-   <p>
-    Номер<br>
-    <%= f.text_field :number %>
-  </p>
-    <p>
-      Дата<br>
-      <%= date_select :order, :date%>
-    </p>
-    <p>
-      Тип<br>
-      <%= select("order", "type_order", Order::TYPE_ORDER.map{|k, v| [v, k]}, { include_blank: true })%>
-    </p>
-    <%if @order.up.nil?%>
-        <%if @order.type_order==0%>
-           <% File.open('./app/views/orders/up0.txt', 'r'){ |file| @text=file.read}%>
 
-            <%end%>
-        <p>
-          Шаблон<br>
-          <%= f.text_area :up, value: "#{@text}", style: "width: 670px; height: 150px;" %>
-        </p>
+    <p>
+        Номер<br>
+        <%= f.text_field :number %>
+    </p>
+    <p>
+        Дата<br>
+        <%= date_select :order, :date%>
+    </p>
+
+    <%if @order.up.nil?%>
+        <%if @order.type_order==0 or @order.type_order==3%>
+            <p>
+                Шаблон<br>
+                <%= f.text_area :up, value: "На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утв. приказом ректора от 19.11.2012 № 356; решения Ученого совета ФГБОУ ВПО «МГИУ» от 28.08.2014 (протокол № 1) и решений стипендиальной комиссии #{@order.faculty.name} от dd.mm.yyyy (протоколы № n и № n)", style: "width: 670px; height: 150px;" %>
+            </p>
+        <%end%>
+        <%if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5%>
+            <p>
+                Шаблон<br>
+                <%= f.text_area :up, value: "На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356", style: "width: 670px; height: 150px;" %>
+            </p>
+        <%end%>
     <%else%>
         <p>
-          Шаблон<br>
-          <%= f.text_area :up, style: "width: 670px; height: 150px;" %>
+            Шаблон<br>
+            <%= f.text_area :up, style: "width: 670px; height: 150px;" %>
         </p>
     <%end%>
     <p>
-      Согласовано:<br>
+        Согласовано:<br>
     </p>
     <%if @order.bottom.nil?%>
-    <table>
-        <%i=0%>
-        <%Order::LIST.map do |k, v|%>
-            <%= f.fields_for :list, index: i  do |b| %>
+        <table>
+            <%i=0%>
+            <%if @order.type_order==0 or @order.type_order==3%>
+                <%Order::LIST.map do |k, v|%>
+                    <%= f.fields_for :list, index: i  do |b| %>
+                        <tr>
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%=v[0] %> </td>
+                            <td><%=v[1] %> </td>
+                        </tr>
+                    <% end %>
+                    <% i+=1%>
+                <%end%>
                 <tr>
-                    <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                    <td><%=v[0] %> </td>
-                    <td><%=v[1] %> </td>
+                    <%= f.fields_for :list, index: i  do |b| %>
+                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list].nil? ? i : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                        <td><%=b.text_field :name1, value:"Директор #{@order.faculty.short_name}"%></td>
+                        <td><%=b.text_field :name2, value:"#{Order::FACULTY[@order.faculty.id]}"%></td>
+                    <% end %>
                 </tr>
-            <% end %>
-            <% i+=1%>
-        <%end%>
-        <tr>
-            <%= f.fields_for :list, index: i  do |b| %>
-                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list].nil? ? i : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                <tr>
+                    <% i+=1%>
+                    <%= f.fields_for :list, index: i  do |b| %>
+                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                        <td><%= b.text_field :name1 %></td>
+                        <td><%= b.text_field :name2 %></td>
+                    <% end %>
+                </tr>
+                <tr>
+                    <% i+=1%>
+                    <%= f.fields_for :list, index: i  do |b| %>
+                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                        <td><%= b.text_field :name1 %></td>
+                        <td><%= b.text_field :name2 %></td>
+                    <% end %>
+                </tr>
+            <%end%>
 
-                <td><%=b.text_field :name1, value:"Директор #{@order.faculty.short_name}"%></td>
-                <td><%=b.text_field :name2, value:"#{Order::FACULTY[@order.faculty.id]}"%></td>
-            <% end %>
-        </tr>
-        <tr>
-            <% i+=1%>
-            <%= f.fields_for :list, index: i  do |b| %>
-                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                <td><%= b.text_field :name1 %></td>
-                <td><%= b.text_field :name2 %></td>
-            <% end %>
-        </tr>
-        <tr>
-            <% i+=1%>
-            <%= f.fields_for :list, index: i  do |b| %>
-                <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                <td><%= b.text_field :name1 %></td>
-                <td><%= b.text_field :name2 %></td>
-            <% end %>
-        </tr>
-    </table>
-        <%else%>
-               <p>
+            <%if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5%>
+                <%Order::LIST2[@order.faculty.id].map do |k, v|%>
+                    <%= f.fields_for :list, index: i  do |b| %>
+                        <tr>
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%=v %> </td>
+
+                        </tr>
+                    <% end %>
+                    <% i+=1%>
+                <%end%>
+            <%end%>
+            <tr>
+                <%= f.fields_for :list, index: i  do |b| %>
+                    <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                    <td><%= b.text_field :name1 %></td>
+                <% end %>
+            </tr>
+            <tr>
+                <% i+=1%>
+                <%= f.fields_for :list, index: i  do |b| %>
+                    <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                    <td><%= b.text_field :name1 %></td>
+                <% end %>
+            </tr>
+        </table>
+    <%else%>
+        <p>
             <%= f.text_area :bottom, style: "width: 670px; height: 150px;" %>
         </p>
-        <% end %>
-         <div class="form-actions">
-          <button type="submit" class="btn btn-success">Сохранить</button>
-          <button type="reset" class="btn">Отменить</button>
-        </div>
+    <% end %>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="reset" class="btn">Отменить</button>
+    </div>
 <% end %>
 
 

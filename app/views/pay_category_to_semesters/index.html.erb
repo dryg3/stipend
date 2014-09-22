@@ -22,7 +22,7 @@
     <th></th>
   </tr>
 
-  <% @pay_category_to_semesters.each do |pay_category_to_semester| %>
+  <% @pay_category_to_semesters.sort_by { |q| q.date_finish}.reverse.each do |pay_category_to_semester| %>
       <tr>
         <% if  can? :manager, :all  %><td><%=pay_category_to_semester.faculty.short_name %></td><%end%>
         <td><%= pay_category_to_semester.date_start.strftime("%d.%m.%Y") %>-<%= pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %></td>

@@ -16,18 +16,17 @@
         <th>Начало выплат </th>
         <th>Конец выплат </th>
         <th>Дата окончания </th>
-        <th>Редактирование</th>
     </tr>
 
     <% @student.certificats.each do |certificat| %>
         <tr>
 
-        <td><%= certificat.number %></td>
+        <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
         <td><%= certificat.who %></td>
-        <td><%= certificat.when %></td>
-        <td><%= certificat.month_start %>.<%= certificat.year_start %></td>
-        <td><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
-        <td><%= certificat.date_finish %></td>
+        <td><%=l certificat.when %></td>
+        <td><% if certificat.month_start<10%>0<%end%><%= certificat.month_start %>.<%= certificat.year_start %></td>
+        <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
+        <td><%=l certificat.date_finish %></td>
 
         <% if can? :manager,Certificat %>
             <td>
@@ -56,7 +55,7 @@
 
     <% @student.groups.sort_by{|word| word.kurs }.each do |group| %>
         <tr>
-            <td><%= group.name %></td>
+            <td><%=link_to "#{group.name}", group %></td>
             <td><%= group.kurs %></td>
             <td><%= group.semester %></td>
             <td><%= group.year %></td>
@@ -87,7 +86,7 @@
         <th>Тип</th>
         <th>Доплата</th>
         <th>Всего</th>
-        <th></th>
+
     </tr>
 
     <% @student.pay_to_month_students.sort_by { |q| Date.new(q.year,q.month,1)}.reverse.each do |pay_to_month_student| %>

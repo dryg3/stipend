@@ -1,6 +1,7 @@
 class PayCategoryToSemester < ActiveRecord::Base
 	belongs_to :faculty
-		
+  has_many :orders
+
 	validates_presence_of  :date_start,:date_finish,
 	:social,:five,:four,
 	:study,:public,:scientific,:cultural,:sports,

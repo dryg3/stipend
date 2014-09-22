@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    @order.faculty_id=current_user.faculty_id
+    @order.faculty_id=@order.pay_category_to_semester.faculty_id
     @order.year=year_today
     @order.semester=sem_today
     #@order.pay_category_to_semester_id=params[:pay_category_to_semester_id]
@@ -48,29 +48,46 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-    #raise params[:order][:list][6.to_s]["name1"].to_s.inspect
+    #raise params[:order][:list].inspect
     if @order.bottom.nil?
       @order.bottom=""
       arr=Array.new(params[:order][:list].size+1)
 
-      for i in 0...params[:order][:list].size
-        if i >= Order::LIST.size
-          unless params[:order][:list][i.to_s]["id"]==""
-            arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\t"<<params[:order][:list][i.to_s]["name2"]<<"\n"
-          end
-        else
-          unless params[:order][:list][i.to_s]["id"]==""
-            arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s<<"\t"<<Order::LIST[i][1].to_s<<"\n"
+      if @order.type_order==0 or @order.type_order==3
+        for i in 0...params[:order][:list].size
+          if i >= Order::LIST.size
+            unless params[:order][:list][i.to_s]["id"]==""
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\t"<<params[:order][:list][i.to_s]["name2"]<<"\n"
+            end
+          else
+            unless params[:order][:list][i.to_s]["id"]==""
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s<<"\t"<<Order::LIST[i][1].to_s<<"\n"
+            end
           end
         end
-       # raise arr.inspect
+      end
+
+      if @order.type_order==1 or @order.type_order==2
+        for i in 0...params[:order][:list].size
+          if i >= Order::LIST2[@order.faculty.id].size
+            unless params[:order][:list][i.to_s]["id"]==""
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\n"
+            end
+          else
+            unless params[:order][:list][i.to_s]["id"]==""
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s<<"\n"
+            end
+          end
+        end
+        # raise arr.inspect
       end
 
       for i in 0...arr.size
         @order.bottom<<arr[i] unless arr[i].nil?
       end
-      #raise @order.bottom.inspect
+      # raise @order.bottom.inspect
     end
+
     if @order.update(order_params)
       redirect_to action: 'index'
     else

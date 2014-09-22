@@ -104,7 +104,12 @@ class PayToMonthStudentsController < ApplicationController
   end
 
   def index
-    @pay_to_month_students = []
+    if current_user.faculty.name== "all"
+      @pay_to_month_students =PayToMonthStudent.all
+    else
+       @pay_to_month_students = []
+    end
+
     unless params[:pay_category_to_semester].nil?
       pay_metod
       pays=PayCategoryToSemester.find(params[:pay_category_to_semester])
