@@ -13,12 +13,11 @@
   (ФГБОУ ВПО <<МГИУ>>)
   }}}
 
-  \begin{small}\textbf{ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ТЕХНИЧЕСКОЙ ФИЗИКИ}\end{small}\\
-  \textbf{\textsc{Ффакультет<%=lesc @order.faculty.name%>}}
-  \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ ФПМТФ}}
+  \large{\textbf{\textsc{<%= @order.faculty.name%>}}}\\
+  \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ <%=@order.faculty.short_name%>}}
   \end{center}
 
-  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}
 
   \textbf{ПРИСУТСТВОВАЛИ:}
 
@@ -30,7 +29,7 @@
 
   \centerline{\textbf{СЛУШАЛИ:}}
 
-  По вопросу повестки дня декана <%=@order.faculty.short_name%> <%=@order.bottom.split("\n")[0]%>.
+  По вопросу повестки дня директора <%=@order.faculty.short_name%> <%=@order.bottom.split("\n")[0]%>.
 
   \centerline{\textbf{РЕШИЛИ:}}
 
@@ -41,7 +40,7 @@
 
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
-  \begin{longtable}[hc]{|c|m{2.7cm}|m{1.0cm}|m{1.5cm}|m{1.5cm}|m{2.5cm}|m{5cm}|}
+  \begin{longtable}[hc]{|c|m{2.8cm}|m{1.0cm}|m{1.5cm}|m{1.5cm}|m{2.5cm}|m{5cm}|}
 
 
   %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
@@ -132,20 +131,24 @@
   }
 ГОЛОСОВАЛИ:<<ЗА>> 5 чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
 
+\vspace{1.5cm plus 1mm minus 1mm}
+
+\parindent=0.5cm
+
   \begin{tabular}{l}
   Председатель\\
-Члены комиссии\\
+  Члены комиссии\\
   \\
   \\
   \\
   \end{tabular}
   \hfill
   \begin{tabular}{l}
-  А.И. Мартыненко\\
-С.И. Союстова\\
-  Е.В. Афанасьева\\
-  А.А. Вернер\\
-  М.Б. Богоявленский\\
+  <%o=@order.bottom.split("\n")%>
+  <%o.each do |bottom|%>
+      <%=bottom%>\\
+  <%end%>
+
   \end{tabular}
 
 

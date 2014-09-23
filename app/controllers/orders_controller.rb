@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
     @pay=PayToMonthStudent.where("month = ? AND year = ?",@pays.date_start.month, @pays.date_start.year)
     @student_groups=[]
     @groups=Group.where('year = ? AND semester = ? AND faculty_id = ?', @order.year, @order.semester,@order.faculty_id)
-    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ?', @order.year, @order.semester,@order.faculty_id,1) if  @order.type_order==3
+    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ?', @order.year, @order.semester,@order.faculty_id,1) if  @order.type_order==3 or @order.type_order==4 or @order.type_order== 5
     groups=[]
     @groups.each { |g| groups<<g.id }
     @pay.each do |pay|
@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
         end
       end
 
-      if @order.type_order==1 or @order.type_order==2
+      if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order== 5
         for i in 0...params[:order][:list].size
           if i >= Order::LIST2[@order.faculty.id].size
             unless params[:order][:list][i.to_s]["id"]==""
