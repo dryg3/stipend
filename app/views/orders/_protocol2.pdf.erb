@@ -17,23 +17,23 @@
   \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ <%=@order.faculty.short_name%>}}
   \end{center}
 
-  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
 
   \textbf{ПРИСУТСТВОВАЛИ:}
 
-  <%=@order.bottom.split("\n").size%> человек и <%=@order.bottom.split("\n").size%> членов Комиссии:  <%=@order.bottom.split("\n")[0]%>, <%=@order.bottom.split("\n")[1]%>, <%=@order.bottom.split("\n")[2]%>, <%=@order.bottom.split("\n")[3]%>, <%=@order.bottom.split("\n")[4]%>. Кворум имеется.
+  <%=@order.bottom.split("\n").size%> человек и <%=@order.bottom.split("\n").size%> членов Комиссии:  <%=@order.bottom.split("\n")[0]%>, <%=@order.bottom.split("\n")[1]%>, <%=@order.bottom.split("\n")[2]%>, <%=@order.bottom.split("\n")[3]%>, <%=@order.bottom.split("\n")[4]%>. Кворум имеется.\\
 
   \centerline{\textbf{ПОВЕСТКА ДНЯ:}}
 
-  Назначение государственной академической стипендии студентам <%=@order.faculty.short_name%>.
+  Назначение государственной социальной стипендии студентам <%=@order.faculty.short_name%>.\\
 
   \centerline{\textbf{СЛУШАЛИ:}}
 
-  По вопросу повестки дня директора <%=@order.faculty.short_name%> <%=@order.bottom.split("\n")[0]%>.
+  По вопросу повестки дня директора <%=@order.faculty.short_name%> <%=Order::FACULTY0[@order.faculty.id]%>.\\
 
   \centerline{\textbf{РЕШИЛИ:}}
 
-  <%=lesc @order.up%>
+  \linespread{0.5}<%= @order.up%>
 
   Назначить государственную социальную стипендию следующим студентам <%=@order.faculty.short_name%>
 
@@ -80,8 +80,7 @@
 \hfil
   \textbf{Документ-основание}
 \hfil
-  \end{tiny}
-  \\
+  \end{tiny}\\
 
 
   \hline
@@ -129,11 +128,13 @@
 
   \end{longtable}
   }
+
+  
+   %2. Поставить с 04.09.2014 студента 3 курса Убеева Дмитрия Владимировича 04.09.1996 года рождения, на полное государственное обеспечение на период всего обучения \linebreak в {ФГБОУ} ВПО «МГИУ».\\
+
+
+
 ГОЛОСОВАЛИ:<<ЗА>> 5 чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
-
-\vspace{1.5cm plus 1mm minus 1mm}
-
-\parindent=0.5cm
 
   \begin{tabular}{l}
   Председатель\\

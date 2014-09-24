@@ -20,7 +20,7 @@
   Назначить государственную стипендию следующим студентам первого курса <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
-  \begin{longtable}[hc]{|m{0.5em}|m{6.8em}|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
+  \begin{longtable}[hc]{|m{0.5em}|m{7.1em}|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
   %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
 
   \hline
@@ -77,7 +77,7 @@
 
   <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
   <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
-  <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+  <% @groups.sort_by{|q| [q.kurs, q.name]}.each do |s| %>
 
 
 <%qq=0%>
@@ -92,15 +92,15 @@
                   <%n+=1 %>
                   <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
                 \begin{footnotesize}<%=n%>\end{footnotesize}
-                <%if pay_to_month_student.student.surname.size<15%>
+                <%if pay_to_month_student.student.surname.size<12%>
                   &\begin{footnotesize}
                   \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
                   \end{footnotesize}
                 <%else%>
                     &\begin{footnotesize}
-                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname%>
+                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname[0...15]%>
 
-                  \vspace{-0.4cm plus 5mm minus 5mm}\hspace{-0.2cm}<%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \vspace{-0.3cm plus 5mm minus 5mm}\hspace{-0.2cm}<%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
                   \end{footnotesize}
                 <%end%>
                   &\begin{footnotesize}\hfil<%= pay_to_month_student.social unless pay_to_month_student.social.zero?%>\hfil\end{footnotesize}

@@ -60,7 +60,7 @@ class PayToMonthStudentsController < ApplicationController
 
           pay.sum=pay.public+pay.scientific+pay.cultural+pay.sports+pay.study
 
-          pay.surcharge+=6307-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && (kurs==1 || kurs==2) && (6307-pay.academic-pay.social-pay.sum>0)
+          pay.surcharge+=6307-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (6307-pay.academic-pay.social-pay.sum>0)
 
           p "qwertyuiop[vbhnjmkl;ghjkl"
           if (old=PayToMonthStudent.find_by(month: pay.month, year: pay.year, student_id: pay.student_id)).nil?
@@ -68,6 +68,7 @@ class PayToMonthStudentsController < ApplicationController
             p pay
             pay.save!  if (pay.sum+pay.academic+pay.social!=0)
           else
+          if (pay.sum+pay.academic+pay.social!=0)
             p old
             old.social=pay.social
             old.academic=pay.academic
@@ -79,8 +80,9 @@ class PayToMonthStudentsController < ApplicationController
             old.surcharge=pay.surcharge
             p "=========================="
             p pay.sum+pay.academic+pay.social
-            old.delete if (pay.sum+pay.academic+pay.social==0)
+            #old.delete if (pay.sum+pay.academic+pay.social==0)
             old.save!
+             end
           end
           p pay
 
@@ -104,16 +106,14 @@ class PayToMonthStudentsController < ApplicationController
   end
 
   def index
-    if current_user.faculty.name== "all"
-      @pay_to_month_students =PayToMonthStudent.all
-    else
-       @pay_to_month_students = []
-    end
-
+    @pay_to_month_students = []
     unless params[:pay_category_to_semester].nil?
       pay_metod
       pays=PayCategoryToSemester.find(params[:pay_category_to_semester])
       @pay_to_month_students = PayToMonthStudent.where("month = ? AND year = ?",pays.date_start.month,pays.date_start.year)
+    end
+    if current_user.faculty.name== "all"
+      @pay_to_month_students =PayToMonthStudent.all
     end
   end
   

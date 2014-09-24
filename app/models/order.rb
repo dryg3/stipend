@@ -56,6 +56,13 @@ class Order < ActiveRecord::Base
       6 => 'А.А.А.А.'
   }
 
+  FACULTY0 = {
+      7 => 'А.И. Мартыненко',
+      3 => 'А.И. Мартыненко',
+      10 => 'Л.А. Марюшина',
+      6 => 'А.А.А.А.'
+  }
+
   validates_inclusion_of :type_order, in: TYPE_ORDER.keys,
   message: "Тип приказа должен быть заполнин"
   validates_presence_of :number

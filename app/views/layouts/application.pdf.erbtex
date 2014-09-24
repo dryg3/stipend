@@ -12,7 +12,7 @@ stringstyle=\ttfamily,xleftmargin=1cm}
 \parindent=1.25cm
 
 \usepackage{indentfirst}
-\linespread{1.5}
+\linespread{1.2}
 
 \usepackage{rotating} \usepackage{epsfig}
 

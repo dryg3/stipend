@@ -134,7 +134,7 @@ module StudentGroupsHelper
                unless old.nil?
                  p "del"
                   p old
-                 # old.delete
+                  old.delete
                end
             end
           end
@@ -172,7 +172,7 @@ module StudentGroupsHelper
               unless old.nil?
                  p "del"
                   p old
-                 # old.delete
+                  old.delete
                end
             end
           end
@@ -212,7 +212,7 @@ module StudentGroupsHelper
                 unless old.nil?
                  p "del"
                   p old
-                 # old.delete
+                  old.delete
                end
               end
             end

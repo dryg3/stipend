@@ -1,20 +1,20 @@
 .
-\vspace{5.2cm plus 1mm minus 1mm}
-
+\vspace{5.3cm plus 1mm minus 1mm}
+\pagestyle{empty}
 
   \hspace{-1cm}\textbf{\scriptsize{О назначении стипендии студентам <%=@order.faculty.short_name%>}}
 
 
 \vspace{0.5cm plus 1mm minus 1mm}
-  На основании Положения <<О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО <<МГИУ>> утв. приказом ректора от 19.11.2012 № 356; решения Ученого совета ФГБОУ ВПО <<МГИУ>> от 19.02.2014 (протокол № 5), решения Ученого совета ФПМТФ от 18.06.2014 (протокол № 9) и решения стипендиальной комиссии ФПМТФ от 04.07.2014 (протоколы № 10 и № 11)
+  <%=lesc @order.up%>
 
 \vspace{0.5cm plus 1mm minus 1mm}
   ПРИКАЗЫВАЮ:
 
-  1. Назначить государственную стипендию следующим студентам <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
+   Назначить государственную стипендию следующим студентам <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> 
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
-  \begin{longtable}[hc]{|m{0.5em}|l|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
+  \begin{longtable}[hc]{|m{0.5em}|m{7.1em}|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
   %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
 
   \hline
@@ -71,7 +71,10 @@
 
   <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
   <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
-  <% @groups.sort_by{|q| q.kurs}.each do |s| %>
+  <% @groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
+<%qq=0%>
+  <%@student_groups.each{ |student_group| qq=1 if s.name ==student_group.group.name}%>
+    <%if qq==1%>
       \multicolumn{11}{|c|}{\begin{footnotesize}\textbf{Группа  <%=s.name%>}\end{footnotesize}}\\ \hline
 
       <%n=0 %>
@@ -80,9 +83,17 @@
               <%n+=1 %>
               <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
             \begin{footnotesize}<%=n%>\end{footnotesize}
-              &\begin{footnotesize}
-              \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
-              \end{footnotesize}
+                <%if pay_to_month_student.student.surname.size<12%>
+                  &\begin{footnotesize}
+                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \end{footnotesize}
+                <%else%>
+                    &\begin{footnotesize}
+                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname[0...12]%>
+
+                  \vspace{-0.3cm plus 5mm minus 5mm}\hspace{-0.2cm}<%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \end{footnotesize}
+                <%end%>
               &\begin{footnotesize}\hfil<%= pay_to_month_student.social unless pay_to_month_student.social.zero?%>\hfil\end{footnotesize}
               <%s3+=pay_to_month_student.social%>
               &\begin{footnotesize}\hfil<%= pay_to_month_student.academic unless pay_to_month_student.academic.zero?%>\hfil\end{footnotesize}
@@ -124,7 +135,7 @@
       <%ss3+=s3%><%ss4+=s4%><%ss5+=s5%><%ss6+=s6%><%ss7+=s7%><%ss8+=s8%><%ss9+=s9%><%ss11+=s11%>
       <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
   <% end %>
-
+  <% end %>
   \multicolumn{2}{|c|}{}
   &\begin{footnotesize}\hfil<%=ss3%>\hfil\end{footnotesize}
   &\begin{footnotesize}<%=ss4%>\end{footnotesize}
@@ -132,7 +143,7 @@
   &\begin{footnotesize}\hfil<%=ss6%>\hfil\end{footnotesize}
   &\begin{footnotesize}\hfil<%=ss7%>\hfil\end{footnotesize}
   &\begin{footnotesize}\hfil<%=ss8%>\hfil\end{footnotesize}
-  &\begin{footnotesize}\hfil<%=ss9%>\hfil\end{footnotesize}
+  &\begin{footnotesize}\hspace{-0.3cm}\hfil<%=ss9%>\hfil\end{footnotesize}
   &
   &\begin{footnotesize}\hfil<%=ss11%>\hfil\end{footnotesize}
   \\ \hline
@@ -142,20 +153,13 @@
 
   \end{longtable}
   }
-
-2. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Левченко Виталию Андреевичу в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
-
-3. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студенту 5 курса Бурдину Александр Михайлович в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
-
-4. Назначить на период с 01.07.2014 по 31.08.2014 государственную академическую стипендию студентке 5 курса Бурдиной Дарье Олеговне в размере 8660 руб. ежемесячно в связи с предоставлением каникул в пределах освоения основной образовательной программы высшего профессионального образования до 31.08.2014.
-
-
-
-
+<%n=2%>
   <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
 
       <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
       <%unless pay_to_month_student.surcharge.zero?%>
+<%=n%>.
+<%n+=1%>
           Назначить дополнительную академическую стипендию на период
           с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%>
           студенту группы <%=student_group.group.name%>
@@ -204,6 +208,6 @@
   Исп. <%=current_user.name%>\\
 
 
-  Рассылка: институт <%=@order.faculty.short_name%> , ПФО, стипендиальный отдел
+  Рассылка: ОООП <%=@order.faculty.short_name%>, ПФО, стипендиальный отдел
   \end{table}
   \linespread{1.5}

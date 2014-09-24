@@ -24,7 +24,7 @@ p "\n=================group=================\n"
   for i in 0...result.size
      r=result[i]
 
-     if Faculty.find_by(old_id:r[4]).id==10
+     if Faculty.find_by(old_id:r[4]).id==7
 
         g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
 
@@ -50,7 +50,7 @@ p "\n=================group=================\n"
 
   for i in 0...result.size
   r=result[i]
-    if Faculty.find_by(old_id:r[4]).id==10
+    if Faculty.find_by(old_id:r[4]).id==7
       group<<[r[0],r[1]] #[id,name]
     end
   end
@@ -178,12 +178,13 @@ new << [r0,id]
       result2 = client.call("scholarship.students_list_without_marks", "#{id_old}")
       p "result2"
       for i in 0...result.size
-       result2-=[result[i][0]]
+       result[i]=result[i][0]
       end
-      p result2
-      unless result2.empty?
-        for i in 0...result2.size
-          r=result2[i]
+      result3=result2-result
+      p result3
+      unless result3.empty?
+        for i in 0...result3.size
+          r=result3[i]
           if r[5]=="обучается"
             s=Student.find_by(old_id: r[0])
             sg=StudentGroup.new(group_id: Group.find_by(old_id: id_old).id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0)
@@ -209,7 +210,7 @@ new << [r0,id]
               old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
               p "del"
               p old
-              #old.delete unless old.nil?
+              old.delete unless old.nil?
             end
 
           end

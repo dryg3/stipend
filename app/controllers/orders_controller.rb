@@ -12,8 +12,8 @@ class OrdersController < ApplicationController
     @pays=PayCategoryToSemester.find(@order.pay_category_to_semester_id)
     @pay=PayToMonthStudent.where("month = ? AND year = ?",@pays.date_start.month, @pays.date_start.year)
     @student_groups=[]
-    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ?', @order.year, @order.semester,@order.faculty_id)
-    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ?', @order.year, @order.semester,@order.faculty_id,1) if  @order.type_order==3 or @order.type_order==4 or @order.type_order== 5
+    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND (kurs != ? OR semester != ?)', @order.year, @order.semester,@order.faculty_id,1,1) if  @order.type_order==0 or @order.type_order==1 or @order.type_order== 2
+    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ? AND semester = ?', @order.year, @order.semester,@order.faculty_id,1,1) if  @order.type_order==3 or @order.type_order==4 or @order.type_order== 5
     groups=[]
     @groups.each { |g| groups<<g.id }
     @pay.each do |pay|

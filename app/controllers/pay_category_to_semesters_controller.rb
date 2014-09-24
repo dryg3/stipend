@@ -72,12 +72,14 @@ class PayCategoryToSemestersController < ApplicationController
 
       s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,1)
       sum_hor+=s.size
-
+if (c.kurs==1 or c.kurs==2)
       s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,2,true)
       sum_soc_otl+=s.size
-
+end
+if (c.kurs==1 or c.kurs==2)
       s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,1,true)
       sum_soc_hor+=s.size
+end
 
       s = StudentGroup.where('group_id = ? AND (type_stipend=? OR social=? OR  type_stipend=?)',c.id,1,true,2)
       sum+=s.size
@@ -99,8 +101,8 @@ class PayCategoryToSemestersController < ApplicationController
     @summa+=@social* params[:social].to_i unless params[:social].nil? or params[:social].empty?
     @summa+=@five* params[:five].to_i unless params[:five].nil? or params[:five].empty?
     @summa+=@four* params[:four].to_i unless params[:four].nil? or params[:four].empty?
-    @summa+=@five*@sfive
-    @summa+=@four*@sfour
+    @summa+=@socfive*@sfive
+    @summa+=@socfour*@sfour
 
   end
 
