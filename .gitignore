@@ -20,4 +20,8 @@
 
 #rubymine
 /.idea
+
+
 /apxiv
+*.xls
+*.csv
