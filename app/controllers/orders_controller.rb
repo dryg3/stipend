@@ -12,8 +12,11 @@ class OrdersController < ApplicationController
     @pays=PayCategoryToSemester.find(@order.pay_category_to_semester_id)
     @pay=PayToMonthStudent.where("month = ? AND year = ?",@pays.date_start.month, @pays.date_start.year)
     @student_groups=[]
-    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND (kurs != ? OR semester != ?)', @order.year, @order.semester,@order.faculty_id,1,1) if  @order.type_order==0 or @order.type_order==1 or @order.type_order== 2
-    @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ? AND semester = ?', @order.year, @order.semester,@order.faculty_id,1,1) if  @order.type_order==3 or @order.type_order==4 or @order.type_order== 5
+    if  [0,1,2].include?(@order.type_order)
+      @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND (kurs != ? OR semester != ?)', @order.year, @order.semester,@order.faculty_id,1,1)
+    elsif [3,4,5].include?(@order.type_order)
+      @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ? AND semester = ?', @order.year, @order.semester,@order.faculty_id,1,1)
+    end
     groups=[]
     @groups.each { |g| groups<<g.id }
     @pay.each do |pay|
@@ -49,8 +52,8 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
     #raise params[:order][:list].inspect
-    if @order.bottom.nil?
-      @order.bottom=""
+    if @order.signature.nil? or @order.signature.empty?
+      @order.signature=""
       arr=Array.new(params[:order][:list].size+1)
 
       if @order.type_order==0 or @order.type_order==3
@@ -83,7 +86,7 @@ class OrdersController < ApplicationController
       end
 
       for i in 0...arr.size
-        @order.bottom<<arr[i] unless arr[i].nil?
+        @order.signature+=arr[i] unless arr[i].nil?
       end
       # raise @order.bottom.inspect
     end
@@ -98,6 +101,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:number, :type_order,:date,:up,:bottom,:pay_category_to_semester_id)
+    params.require(:order).permit(:number, :type_order,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
   end
 end

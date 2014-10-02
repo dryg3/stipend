@@ -107,7 +107,7 @@
                             </td>
                             <td>
                               <% if  can? :read,Student  %>
-                                 <%= link_to " #{student_group.student.surname} #{student_group.student.firstname} #{student_group.student.secondname}", edit_student_path(student_group.student_id)  %>
+                                 <%= link_to " #{student_group.student.surname} #{student_group.student.firstname} #{student_group.student.secondname}", student_group.student  %>
                               <%else%>
                                   <%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%>
                               <% end %>
@@ -173,6 +173,7 @@
                                 <%pay=pay.sort_by { |s| Date.new(s.year,s.month,1)}.last %>
                                 <td>
                                   <% if  can? :read,PayToMonthStudent  %>
+
                                     <% if pay.month<10%><% paymonth="0#{pay.month}"%><%end%>
                                     <%=  link_to "#{paymonth}.#{pay.year}", controller: "students", action: "pay", id: student_group.student_id %>
                                   <% else %>

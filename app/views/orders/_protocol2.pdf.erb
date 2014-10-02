@@ -1,4 +1,4 @@
-<%@order.bottom.delete!("\r")%>
+<%@order.signature.delete!("\r")%>
 \linespread{1}
 
 
@@ -17,25 +17,14 @@
   \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ <%=@order.faculty.short_name%>}}
   \end{center}
 
-  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}
 
   \textbf{ПРИСУТСТВОВАЛИ:}
 
-  <%=@order.bottom.split("\n").size%> человек и <%=@order.bottom.split("\n").size%> членов Комиссии:  <%=@order.bottom.split("\n")[0]%>, <%=@order.bottom.split("\n")[1]%>, <%=@order.bottom.split("\n")[2]%>, <%=@order.bottom.split("\n")[3]%>, <%=@order.bottom.split("\n")[4]%>. Кворум имеется.\\
+  <%=@order.signature.split("\n").size%> человек и <%=@order.signature.split("\n").size%> членов Комиссии:  <%=@order.signature.split("\n")[0]%>, <%=@order.signature.split("\n")[1]%>, <%=@order.signature.split("\n")[2]%>, <%=@order.signature.split("\n")[3]%>, <%=@order.signature.split("\n")[4]%>. Кворум имеется.\\
 
-  \centerline{\textbf{ПОВЕСТКА ДНЯ:}}
+  <%= @order.up%>
 
-  Назначение государственной социальной стипендии студентам <%=@order.faculty.short_name%>.\\
-
-  \centerline{\textbf{СЛУШАЛИ:}}
-
-  По вопросу повестки дня директора <%=@order.faculty.short_name%> <%=Order::FACULTY0[@order.faculty.id]%>.\\
-
-  \centerline{\textbf{РЕШИЛИ:}}
-
-  \linespread{0.5}<%= @order.up%>
-
-  Назначить государственную социальную стипендию следующим студентам <%=@order.faculty.short_name%>
 
 
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
@@ -129,12 +118,12 @@
   \end{longtable}
   }
 
-  
-   %2. Поставить с 04.09.2014 студента 3 курса Убеева Дмитрия Владимировича 04.09.1996 года рождения, на полное государственное обеспечение на период всего обучения \linebreak в {ФГБОУ} ВПО «МГИУ».\\
+
+ <%=lesc @order.bottom%>
 
 
 
-ГОЛОСОВАЛИ:<<ЗА>> 5 чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
+ГОЛОСОВАЛИ:<<ЗА>> <%=@order.signature.split("\n").size%> чел.,<<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.
 
   \begin{tabular}{l}
   Председатель\\
@@ -145,9 +134,9 @@
   \end{tabular}
   \hfill
   \begin{tabular}{l}
-  <%o=@order.bottom.split("\n")%>
-  <%o.each do |bottom|%>
-      <%=bottom%>\\
+  <%o=@order.signature.split("\n")%>
+  <%o.each do |signature|%>
+      <%=signature%>\\
   <%end%>
 
   \end{tabular}

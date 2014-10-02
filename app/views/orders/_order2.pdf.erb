@@ -11,14 +11,10 @@
 {\textbf{\scriptsize{студентам <%=@order.faculty.short_name%>}}}
 
 
-\vspace{0.1cm plus 1mm minus 1mm}
-  <%=lesc @order.up%>
 
-\vspace{0.5cm plus 1mm minus 1mm}
-  ПРИКАЗЫВАЮ:
+  <%= @order.up%>
 
-  Назначить государственную стипендию следующим студентам первого курса <%=@order.faculty.short_name%> на период с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%> ежемесячно
-  {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
+{\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
   \begin{longtable}[hc]{|m{0.5em}|m{7.1em}|m{2.6em}|m{2.6em}|m{2.3em}|m{2.3em}|m{2.7em}|m{2.4em}|m{2.4em}|m{4.1em}|m{3em}|}
   %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
@@ -163,51 +159,34 @@
   \end{longtable}
   }
 
-
-
-  <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
-
-      <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
-      <%unless pay_to_month_student.surcharge.zero?%>
-          Назначить дополнительную академическую стипендию на период
-          с <%= l @pays.date_start, format: :default%> по <%=l @pays.date_finish, format: :default%>
-          студенту группы <%=student_group.group.name%>
-          <%= pay_to_month_student.student.surname%>
-          <%= pay_to_month_student.student.firstname[0]%>.
-          <%= pay_to_month_student.student.secondname[0]%>.
-          в размере <%=pay_to_month_student.surcharge%> руб. ежемесячно
-          (доплата до 6307 руб. с учетом социальной стипендии).
-      <%end%>
-
-  <%end%>
-
+<%=lesc @order.bottom%>
 
 \vspace{1.5cm plus 1mm minus 1mm}
   \begin{tabular}{l}
-  <%=@order.bottom.split("\n").first.split("\t")[0]%>\\
+  <%=@order.signature.split("\n").first.split("\t")[0]%>\\
   \end{tabular}
   \hfill
   \begin{tabular}{l}
-  <%=@order.bottom.split("\n").first.split("\t")[1]%>\\
+  <%=@order.signature.split("\n").first.split("\t")[1]%>\\
   \end{tabular}
 
   \newpage
   \noindent СОГЛАСОВАНО:
 
   \parindent=0.5cm
-  <%o=@order.bottom.split("\n")%>
+  <%o=@order.signature.split("\n")%>
   <%o.shift%>
-  \begin{tabular}{p{8.5cm}}
-  <%o.each do |bottom|%>
-      <%=bottom.split("\t")[0]%>\\
+  \begin{tabular}{p{8.2cm}}
+  <%o.each do |signature|%>
+      <%=signature.split("\t")[0]%>\\
   <%end%>
   \end{tabular}
   \hfill
   \begin{tabular}{l}
-  <%o.each do |bottom|%>
+  <%o.each do |signature|%>
 
-      <%=bottom.split("\t")[1]%>\\
-      <%if bottom.split("\t")[0].size>40%>\\ <%end%>
+      <%=signature.split("\t")[1]%>\\
+      <%if signature.split("\t")[0].size>40%>\\ <%end%>
   <%end%>
   \end{tabular}
 

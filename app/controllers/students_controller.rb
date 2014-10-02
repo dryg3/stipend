@@ -35,12 +35,6 @@ class StudentsController < ApplicationController
     student &= Student.find(:all, :conditions => ['text LIKE ? ', "%#{params[:text]}%"]) unless params[:text].nil? or  params[:text].empty?
   end
 
-
-
-  def edit
-    @student = Student.find(params[:id])
-  end
-  
   def update
     @student = Student.find(params[:id])
    
@@ -66,6 +60,6 @@ class StudentsController < ApplicationController
   
   private
   def student_params
-    params.require(:student).permit(:firstname,:surname, :secondname, :text)
+    params.require(:student).permit(:firstname,:surname, :surname_dp, :surname_rp,:secondname, :text)
   end
 end

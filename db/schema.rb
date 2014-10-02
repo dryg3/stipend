@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912112622) do
+ActiveRecord::Schema.define(version: 20140930123957) do
 
   create_table "account_to_semesters", force: true do |t|
     t.integer  "sum"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20140912112622) do
   create_table "orders", force: true do |t|
     t.date     "date"
     t.text     "up"
-    t.text     "bottom"
+    t.text     "signature"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "type_order"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 20140912112622) do
     t.integer  "faculty_id"
     t.string   "year"
     t.integer  "semester"
+    t.string   "bottom"
   end
 
   add_index "orders", ["faculty_id"], name: "index_orders_on_faculty_id"
@@ -173,6 +174,8 @@ ActiveRecord::Schema.define(version: 20140912112622) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "old_id"
+    t.string   "surname_dp"
+    t.string   "surname_rp"
   end
 
   create_table "users", force: true do |t|
