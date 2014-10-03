@@ -1,11 +1,11 @@
 <h2>Расчет повышенной стипендии</h2>
 <p>
 <strong>Требуется распределить: </strong>
-<%= @sum %>
+<%= @sum[0] %>
 </p>
 <p>
 <strong>Кол-во людей на факультете, получающих стипендию:</strong>
-<%= @student %>
+<%= @sum[1] %>
 </p>
 <%= form_tag({:action => 'kalkul',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
 <table  width="800">
@@ -19,17 +19,17 @@
   </tr>
   <tr>
 
-    <td><%= @category.study %> <%=  text_field_tag(:study, params[:study].nil? ? @s : params[:study],  :style => "width:80px") %>
+    <td><%= @category.study %> <%=  text_field_tag(:study, params[:study].nil? ? @sum[2] : params[:study],  :style => "width:80px") %>
   + </td>
-    <td><%= @category.public %> <%= text_field_tag(:public, params[:public].nil? ? @s : params[:public],  :style => "width:80px")%>
+    <td><%= @category.public %> <%= text_field_tag(:public, params[:public].nil? ? @sum[2] : params[:public],  :style => "width:80px")%>
   + </td>
-    <td><%= @category.scientific %> <%=  text_field_tag(:scientific, params[:scientific].nil? ? @s : params[:scientific],  :style => "width:80px") %>
+    <td><%= @category.scientific %> <%=  text_field_tag(:scientific, params[:scientific].nil? ? @sum[2] : params[:scientific],  :style => "width:80px") %>
   +</td>
-    <td><%= @category.cultural %> <%=  text_field_tag(:cultural, params[:cultural].nil? ? @s : params[:cultural],  :style => "width:80px")%>
+    <td><%= @category.cultural %> <%=  text_field_tag(:cultural, params[:cultural].nil? ? @sum[2] : params[:cultural],  :style => "width:80px")%>
   +</td>
-    <td><%= @category.sports %> <%=  text_field_tag(:sports, params[:sports].nil? ? @s : params[:sports],  :style => "width:80px") %>
+    <td><%= @category.sports %> <%=  text_field_tag(:sports, params[:sports].nil? ? @sum[2] : params[:sports],  :style => "width:80px") %>
   =</td>
-    <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
+    <td><%=  text_field_tag(:summa, @sum[3],  :style => "width:80px") %></td>
   </tr>
 </table>
 

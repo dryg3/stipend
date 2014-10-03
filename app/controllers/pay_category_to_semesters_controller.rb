@@ -1,109 +1,58 @@
 class PayCategoryToSemestersController < ApplicationController
   def kalkul
-    @account_to_semester=AccountToSemester.where("faculty_id = ? AND type_account = ? AND year = ? AND semester = ?", params[:faculty_id],1,year_today,sem_today).last
-    @sum=@account_to_semester.sum
-    pay_category (@account_to_semester)
-    @student=@category.study+@category.public+@category.scientific+@category.cultural+@category.sports
-    @s=@sum/@student if @student!=0
-    @summa=0
-    @summa+=@category.study* params[:study].to_i unless params[:study].nil? or params[:study].empty?
-    @summa+=@category.public* params[:public].to_i unless params[:public].nil? or params[:public].empty?
-    @summa+=@category.scientific* params[:scientific].to_i unless params[:scientific].nil? or params[:scientific].empty?
-    @summa+=@category.cultural* params[:cultural].to_i unless params[:cultural].nil? or params[:cultural].empty?
-    @summa+=@category.sports* params[:sports].to_i unless params[:sports].nil? or params[:sports].empty?
-
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where("commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?",false,sem_today, params[:faculty_id], year_today,1).references(:group)
+    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+    @category = PayCategoryToSemester.new
+    @category.study=@s_g_all.find_all{|x| x.study}.size
+    @category.public=@s_g_all.find_all{|x| x.public}.size
+    @category.scientific=@s_g_all.find_all{|x| x.scientific}.size
+    @category.cultural=@s_g_all.find_all{|x| x.cultural}.size
+    @category.sports=@s_g_all.find_all{|x| x.sports}.size
+    @sum[1]=@s_g_all.find_all{|x| x.study or x.public or x.scientific or x.cultural or x.sports}.size
+    @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
+    # [sum account,size, default, sum_end]
+    @sum[3]=0
+    @sum[3]+= @category.study* params[:study].to_i unless params[:study].nil? or params[:study].empty?
+    @sum[3]+= @category.public* params[:public].to_i unless params[:public].nil? or params[:public].empty?
+    @sum[3]+= @category.scientific* params[:scientific].to_i unless params[:scientific].nil? or params[:scientific].empty?
+    @sum[3]+= @category.cultural* params[:cultural].to_i unless params[:cultural].nil? or params[:cultural].empty?
+    @sum[3]+= @category.sports* params[:sports].to_i unless params[:sports].nil? or params[:sports].empty?
   end
 
   def stip1
-    @account_to_semester=AccountToSemester.where("faculty_id = ? AND type_account = ? AND year = ? AND semester = ?", params[:faculty_id],0,year_today,sem_today).last
-    @sum=@account_to_semester.sum
-    sum_soc=0
-    sum_hor=0
-    sum_otl=0
-    sum=0
-    g = Group.where('(kurs = ? AND semester = ?) AND semester = ? AND faculty_id= ? AND year=?',1,1,@account_to_semester.semester,@account_to_semester.faculty_id,@account_to_semester.year)
-    g.each  do |c|
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND social=?',c.id,false,true)
-      sum_soc+=s.size
-
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,2)
-      sum_otl+=s.size
-
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,1)
-      sum_hor+=s.size
-
-
-      s = StudentGroup.where('group_id = ? AND (type_stipend=? OR social=? OR  type_stipend=?)',c.id,1,true,2)
-      sum+=s.size
-
-    end
-
-    #metod(sum_soc,sum_hor,sum_otl)
-    @social=sum_soc
-    @five=sum_otl
-    @four=sum_hor
-    #pay_category (@account_to_semester)
-    #@student=@social+@five+@four
-    @student=sum
-    @s=@sum/@student if @student!=0
-    @summa=0
-    @summa+=@social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
-    @summa+=@five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
-    @summa+=@four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
-
-
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs = ? AND groups.semester = ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, params[:faculty_id], year_today,0).references(:group)
+    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+    @category = PayCategoryToSemester.new
+    @category.social=@s_g_all.find_all{|x| x.social}.size
+    @category.five=@s_g_all.find_all{|x| x.type_stipend == 2}.size
+    @category.four=@s_g_all.find_all{|x| x.type_stipend == 1}.size
+    @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
+    @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
+    @sum[3]=0
+    @sum[3]+=@category.social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
+    @sum[3]+=@category.five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
+    @sum[3]+=@category.four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
   end
+
   def stip2
-    @account_to_semester=AccountToSemester.where("faculty_id = ? AND type_account = ? AND year = ? AND semester = ?", params[:faculty_id],2,year_today,sem_today).last
-    @sum=@account_to_semester.sum
-    sum_soc=0
-    sum_hor=0
-    sum_otl=0
-    sum_soc_hor=0
-    sum_soc_otl=0
-    sum=0
-    g = Group.where('(kurs != ? OR semester != ?) AND semester = ? AND faculty_id= ? AND year=?',1,1,@account_to_semester.semester,@account_to_semester.faculty_id,@account_to_semester.year)
-    g.each  do |c|
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND social=?',c.id,false,true)
-      sum_soc+=s.size
-
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,2)
-      sum_otl+=s.size
-
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=?',c.id,false,1)
-      sum_hor+=s.size
-if (c.kurs==1 or c.kurs==2)
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,2,true)
-      sum_soc_otl+=s.size
-end
-if (c.kurs==1 or c.kurs==2)
-      s = StudentGroup.where('group_id = ? AND commerce= ? AND type_stipend=? AND social=?',c.id,false,1,true)
-      sum_soc_hor+=s.size
-end
-
-      s = StudentGroup.where('group_id = ? AND (type_stipend=? OR social=? OR  type_stipend=?)',c.id,1,true,2)
-      sum+=s.size
-    end
-
-    #metod(sum_soc,sum_hor,sum_otl)
-    @social=sum_soc
-    @five=sum_otl
-    @four=sum_hor
-    @socfive=sum_soc_otl
-    @socfour=sum_soc_hor
-    #pay_category (@account_to_semester)
-    @sfive=0 if (@sfive=6307-params[:social].to_i-params[:five].to_i)<0
-    @sfour=0 if (@sfour=6307-params[:social].to_i-params[:four].to_i)<0
-    #@student=@social+@five+@four
-    @student=sum
-    @s=@sum/@student if @student!=0
-    @summa=0
-    @summa+=@social* params[:social].to_i unless params[:social].nil? or params[:social].empty?
-    @summa+=@five* params[:five].to_i unless params[:five].nil? or params[:five].empty?
-    @summa+=@four* params[:four].to_i unless params[:four].nil? or params[:four].empty?
-    @summa+=@socfive*@sfive
-    @summa+=@socfour*@sfour
-
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs != ? OR groups.semester != ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, params[:faculty_id], year_today,2).references(:group)
+    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+    @category = PayCategoryToSemester.new
+    @category.social=@s_g_all.find_all{|x| x.social}.size
+    @category.five=@s_g_all.find_all{|x| x.type_stipend == 2}.size
+    @category.four=@s_g_all.find_all{|x| x.type_stipend == 1}.size
+    @socfive=[@s_g_all.find_all{|x| x.type_stipend == 2 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size]
+    @socfour=[@s_g_all.find_all{|x| x.type_stipend == 1 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size]
+    @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
+    @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
+    @socfive[1]=0 if (@socfive[1]=6307-params[:social].to_i-params[:five].to_i)<0
+    @socfour[1]=0 if (@socfour[1]=6307-params[:social].to_i-params[:four].to_i)<0
+    @sum[3]=0
+    @sum[3]+=@category.social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
+    @sum[3]+=@category.five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
+    @sum[3]+=@category.four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
+    @sum[3]+=@socfive[0]*@socfive[1]
+    @sum[3]+=@socfour[0]*@socfour[1]
   end
 
   def new2
@@ -393,99 +342,5 @@ end
     #@pay_category_to_semester.save!
   end
 
-  def metod1(sum,x,k,a,b)
 
-    string=""
-    string<< "5 "+(11-(x-[0]).size).to_s+"\r\n\r\n"
-
-    kcp=0
-    k.each{|s| kcp+=s}
-    kcp=(sum.to_f/kcp).to_i if kcp!=0
-
-    k.each{|s| string<< s.to_s+" "}
-    string<<"-> max\r\n"
-
-    if x[0]==0
-      string<<"\r\n1 0 0 0 0 >= " << (a[0]*kcp).to_s
-      string<<"\r\n1 0 0 0 0 <= " << (b[0]*kcp).to_s
-    else
-      string<<"\r\n1 0 0 0 0 = " << x[0].to_s
-    end
-
-    if x[1]==0
-      string<<"\r\n0 1 0 0 0 >= " << (a[1]*kcp).to_s
-      string<<"\r\n0 1 0 0 0 <= " << (b[1]*kcp).to_s
-    else
-      string<<"\r\n0 1 0 0 0 = " << x[1].to_s
-    end
-
-    if x[2]==0
-      string<<"\r\n0 0 1 0 0 >= " << (a[2]*kcp).to_s
-      string<<"\r\n0 0 1 0 0 <= " << (b[2]*kcp).to_s
-    else
-      string<<"\r\n0 0 1 0 0 = " << x[2].to_s
-    end
-
-    if x[3]==0
-      string<<"\r\n0 0 0 1 0 >= " << (a[3]*kcp).to_s
-      string<<"\r\n0 0 0 1 0 <= " << (b[3]*kcp).to_s
-    else
-      string<<"\r\n0 0 0 1 0 = " << x[3].to_s
-    end
-
-    if x[4]==0
-      string<<"\r\n0 0 0 0 1 >= " << (a[4]*kcp).to_s
-      string<<"\r\n0 0 0 0 1 <= " << (b[4]*kcp).to_s
-    else
-      string<<"\r\n0 0 0 0 1 = " << x[4].to_s
-    end
-    string<<"\r\n"
-
-    k.each{|s| string<< s.to_s+" "}
-    string<<"<= "+sum.to_s
-
-    File.open('simplex_data.txt', 'w'){ |file| file.write string }
-    system "./a.out"
-    # system "rm simplex_data.txt"
-
-
-    File.open('simplex_out.txt', 'r'){ |file| x=file.read.split}
-    #  system "rm simplex_out.txt"
-    x.map!{|i| i=i.to_i}
-
-    return x
-  end
-
-  def metod2(sum,x,k,a,b,c)
-
-    string=""
-    string<< "3 "+(6+x.compact.size).to_s+"\r\n\r\n"
-
-    k.each{|s| string<< s.to_s+" "}
-    string<<"-> max\r\n"
-
-    string<<"\r\n1 " << (-a).to_s << " 0 >= 0"
-    string<<"\r\n1 " << (-b).to_s << " 0 <= 0"
-
-    (x[0]==0) ? string<<"\r\n0 1 0 >= " << c[0].to_s : string<<"\r\n0 1 0 = " << x[0].to_s
-
-    string<<"\r\n0 1 = " << x[1].to_s if x[1]!=0
-    (x[2]==0) ? string<<"\r\n0 0 1 >= " << c[1].to_s : string<<"\r\n0 0 1 = " << x[2].to_s
-    string<<"\r\n0 1 1 >= " << c[2].to_s #if (x[2].nil?)
-    string<<"\r\n"
-
-    k.each{|s| string<< s.to_s+" "}
-    string<<"<= "+sum.to_s
-
-    File.open('simplex_data.txt', 'w'){ |file| file.write string }
-    system "./a.out"
-    #system "rm simplex_data.txt"
-
-
-    File.open('simplex_out.txt', 'r'){ |file| x=file.read.split}
-    p x
-    #   system "rm simplex_out.txt"
-    x.map!{|i| i=i.to_i}
-    return x
-  end
 end

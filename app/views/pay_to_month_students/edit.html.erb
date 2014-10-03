@@ -69,9 +69,10 @@
 	Размер доплаты <br>
 	<%= f.text_field  :surcharge %>
 	</p>
-  <p>
-    <%= f.submit:Сохранить %>
-  </p>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
 <% end %>
 
  

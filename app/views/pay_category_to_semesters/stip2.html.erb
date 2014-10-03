@@ -1,11 +1,11 @@
 <h2>Расчет стипендии</h2>
 <p>
   <strong>Требуется распределить: </strong>
-  <%= @sum %>
+  <%= @sum[0] %>
 </p>
 <p>
   <strong>Кол-во людей на факультете, получающих стипендию:</strong>
-  <%= @student %>
+  <%= @sum[1] %>
 </p>
 <%= form_tag({:action => 'stip2',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
     <table  width="800">
@@ -18,17 +18,17 @@
             <th>сумма итог</th>
         </tr>
         <tr>
-            <td><%= @social %> <%= text_field_tag(:social, params[:social].nil? ? @s : params[:social],  :style => "width:80px") %>
+            <td><%= @category.social %> <%= text_field_tag(:social, params[:social].nil? ? @sum[2] : params[:social],  :style => "width:80px") %>
             + </td>
-            <td><%= @four %> <%= text_field_tag(:four, params[:four].nil? ? @s : params[:four],  :style => "width:80px")%>
+            <td><%= @category.four %> <%= text_field_tag(:four, params[:four].nil? ? @sum[2] : params[:four],  :style => "width:80px")%>
             + </td>
-            <td><%= @five %> <%= text_field_tag(:five, params[:five].nil? ? @s : params[:five],  :style => "width:80px") %>
+            <td><%= @category.five %> <%= text_field_tag(:five, params[:five].nil? ? @sum[2] : params[:five],  :style => "width:80px") %>
             + </td>
-            <td><%= @socfour %> <%= text_field_tag(:socfour, @sfour, disabled: true,  :style => "width:80px")%>
+            <td><%= @socfour[0] %> <%= text_field_tag(:socfour, @socfour[1], disabled: true,  :style => "width:80px")%>
             + </td>
-            <td><%= @socfive %> <%= text_field_tag(:socfive, @sfive, disabled: true,  :style => "width:80px") %>
+            <td><%= @socfive[0] %> <%= text_field_tag(:socfive, @socfour[1], disabled: true,  :style => "width:80px") %>
             =</td>
-            <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
+            <td><%=  text_field_tag(:summa, @sum[3],  :style => "width:80px") %></td>
         </tr>
     </table>
 

@@ -1,13 +1,13 @@
 <h2>Расчет стипендии для первого курса первого семестра</h2>
 <p>
   <strong>Требуется распределить: </strong>
-  <%= @sum %>
+  <%= @sum[0] %>
 </p>
 <p>
   <strong>Кол-во людей на факультете, получающих стипендию:</strong>
-  <%= @student %>
+  <%= @sum[1] %>
 </p>
-<%= form_tag({:action => 'stip1',:faculty_id => "#{params[:faculty_id]}"}) do |f| %>
+<%= form_tag({:action => 'stip1',:faculty_id => "#{params[:faculty_id]}"}) do  %>
     <table  width="500">
         <tr>
             <th>Социальная </th>
@@ -16,13 +16,13 @@
             <th>сумма итог</th>
         </tr>
         <tr>
-            <td><%= @social %> <%= text_field_tag(:social1, params[:social1].nil? ? @s : params[:social1],  :style => "width:80px") %>
+            <td><%= @category.social %> <%= text_field_tag(:social1, params[:social1].nil? ? @sum[2] : params[:social1],  :style => 'width:80px') %>
             + </td>
-            <td><%= @four %> <%= text_field_tag(:four1, params[:four1].nil? ? @s : params[:four1],  :style => "width:80px")%>
+            <td><%= @category.four %> <%= text_field_tag(:four1, params[:four1].nil? ? @sum[2] : params[:four1],  :style => 'width:80px')%>
             + </td>
-            <td><%= @five %> <%= text_field_tag(:five1, params[:five1].nil? ? @s : params[:five1],  :style => "width:80px") %>
+            <td><%= @category.five %> <%= text_field_tag(:five1, params[:five1].nil? ? @sum[2] : params[:five1],  :style => 'width:80px') %>
             =</td>
-            <td><%=  text_field_tag(:summa, @summa,  :style => "width:80px") %></td>
+            <td><%=  text_field_tag(:summa, @sum[3],  :style => 'width:80px') %></td>
         </tr>
     </table>
 
@@ -35,7 +35,7 @@
 
     <div class="form-actions">
         <button class="btn btn-large btn-info" type="submit" > Посчитать</button>
-        <%=  link_to "Далее >>>", { controller: "pay_category_to_semesters", action: "stip2", faculty_id: current_user.faculty_id, sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],five1: params[:five1],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
+        <%=  link_to 'Далее >>>', { controller: 'pay_category_to_semesters', action: 'stip2', faculty_id: current_user.faculty_id, sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],five1: params[:five1],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
     </div>
 <%end%>
 
