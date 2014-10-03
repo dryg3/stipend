@@ -24,13 +24,13 @@
                 </p>
                 <p>
                   Учебный год:<br>
-                  <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years] ), { include_blank: true })%>
+                  <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
                 </p>
                 <p>
                   Курс:
                   <%= select_tag(:kurs, options_for_select((1..6).collect {|p| p },params[:kurs] ), { include_blank: true,  :style => "width:50px"})%>
                   Семестр:
-                  <%= select_tag(:semester, options_for_select((1..2).collect {|p| p },params[:semester] ), { include_blank: true,  :style => "width:50px"})%>
+                  <%= select_tag(:semester, options_for_select((1..2).collect {|p| p }, params[:semester].nil? ? sem_today : params[:semester]), {include_blank: true, :style => "width:50px"})%>
                 </p>
              <% if  can? :manager, StudentGroup  %>
               <p>
@@ -63,7 +63,7 @@
         <p>
             <strong> Группы:</strong>     <br>
         </p>
-        <% Group.where("faculty_id = '#{current_user.faculty_id}'").sort_by{ |q| [ q.kurs, q.name] }.each do |group| %>
+        <% @s_g_all.map{|x| x.group}.uniq.find_all{|x| x.faculty_id == current_user.faculty_id}.sort_by{ |q| [ q.kurs, q.name] }.each do |group| %>
         <p>
             <%= link_to " #{group.name}", action: "index", gname: group.name %><br>
         </p>
@@ -83,7 +83,7 @@
                 <th>Выплаты студенту</th>
             </tr>
             <%size=0 %>
-            <% @groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
+            <% @student_groups.map{|x| x.group}.uniq.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
                 <tr>
                     <th  colspan="0" class="group"  >
                       <% if  can? :read, Group  %>
@@ -152,7 +152,7 @@
                                 <% end %>
                             </td>
 
-                            <%certificat=Certificat.where("student_id = ? ",student_group.student_id).order(:date_finish).last %>
+                            <%certificat=student_group.student.certificats.sort_by{|x| x.date_finish}.last %>
                             <% unless certificat.nil? %>
                                 <td>
                                   <% if  can? :read,Certificat  %>
@@ -168,22 +168,25 @@
                                   <% end %>
                                 </td>
                             <% end %>
-                            <%pay=PayToMonthStudent.where("student_id = ? ", student_group.student_id) %>
-                            <% unless pay.empty?%>
-                                <%pay=pay.sort_by { |s| Date.new(s.year,s.month,1)}.last %>
-                                <td>
-                                  <% if  can? :read,PayToMonthStudent  %>
-
-                                    <% if pay.month<10%><% paymonth="0#{pay.month}"%><%end%>
-                                    <%=  link_to "#{paymonth}.#{pay.year}", controller: "students", action: "pay", id: student_group.student_id %>
-                                  <% else %>
-                                      <% if pay.month<10%>0<%end%><%= pay.month%>.<%=pay.year %>
-                                  <% end %>
-                                </td>
-                            <% else%>
-                                <td>
-                                  <% if  can? :ceate,PayToMonthStudent  %>
+                            <%pay=student_group.student.pay_to_month_students.sort_by { |x| Date.new(x.year,x.month,1)}.last %>
+                            <% if pay.nil?%>
+                              <td>
+                                <% if  can? :ceate,PayToMonthStudent  %>
                                     <%=  link_to "+", controller: "students", action: "pay", id: student_group.student_id %>
+                                <% end %>
+                              </td>
+                            <% else%>
+                              <td>
+                                <% if  can? :read,PayToMonthStudent  %>
+
+                                    <% if pay.month<10%>
+                                        <% month="0#{pay.month}"%>
+                                    <% else%>
+                                        <% month=pay.month%>
+                                    <%end%>
+                                    <%=  link_to "#{month}.#{pay.year}", controller: "students", action: "pay", id: student_group.student_id %>
+                            <% else%>
+                                    <% if pay.month<10%>0<%end%><%= pay.month%>.<%=pay.year %>
                                   <% end %>
                                 </td>
                             <% end %>
@@ -269,44 +272,6 @@
 
               </th>
             </tr>
-
-          <!--
-            <tr>
-                <td colspan="0" style="text-align: left"  > Хорошистов: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1)}%><%=t%> </td>
-
-            </tr>
-            <tr>
-                <td colspan="0" style="text-align: left"  > Отличников: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2)}%><%=t%> </td>
-            </tr>
-            <tr>
-                <td colspan="0" style="text-align: left" > Социальная: <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true)}%><%=t%> </td>
-
-            </tr>
-
-            <tr>
-              <th colspan="0" style="text-align: left"  class="group"> Из них бюджетных:</th>
-            </tr>
-
-            <tr>
-                <% if size!=1 and size<5 %>
-                    <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человека</th>
-                <% else%>
-                    <th colspan="0" style="text-align: left"  class="group"> Всего: <%=size%> человек</th>
-                <% end %>
-
-            </tr>
-            <tr>
-                <td colspan="0" style="text-align: left" > Хорошистов: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1 and q.commerce==false)}%><%=t%> </td>
-
-            </tr>
-            <tr>
-                <td colspan="0" style="text-align: left"  > Отличников: <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2 and q.commerce==false)}%><%=t%> </td>
-            </tr>
-            <tr>
-                <td colspan="0" style="text-align: left"  > Социальная: <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true and q.commerce==false)}%><%=t%> </td>
-
-
-            </tr>-->
         </table>
     </div>
 </div>
