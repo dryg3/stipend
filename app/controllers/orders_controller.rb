@@ -8,23 +8,14 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.find(params[:id])
-    @pays=PayCategoryToSemester.find(@order.pay_category_to_semester_id)
-    @pay=PayToMonthStudent.where("month = ? AND year = ?",@pays.date_start.month, @pays.date_start.year)
-    @student_groups=[]
+    @order = Order.includes(:pay_category_to_semester).find(params[:id])
+    @order = Order.includes([{:faculty=>{:groups=>{:student_groups=>{:student=>[:pay_to_month_students,:certificats]}}}},:pay_category_to_semester]).where('groups.year = ? AND groups.semester = ? AND pay_to_month_students.year = ? AND pay_to_month_students.month = ?', @order.year, @order.semester, @order.pay_category_to_semester.date_start.year,@order.pay_category_to_semester.date_start.month).references(:faculty).find(params[:id])
     if  [0,1,2].include?(@order.type_order)
-      @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND (kurs != ? OR semester != ?)', @order.year, @order.semester,@order.faculty_id,1,1)
+      @student_groups=@order.faculty.groups.find_all{|x| x.kurs != 1 or x.semester != 1}.map{|x| x.student_groups}.flatten
     elsif [3,4,5].include?(@order.type_order)
-      @groups=Group.where('year = ? AND semester = ? AND faculty_id = ? AND kurs = ? AND semester = ?', @order.year, @order.semester,@order.faculty_id,1,1)
+      @student_groups=@order.faculty.groups.find_all{|x| x.kurs == 1 and x.semester == 1}.map{|x| x.student_groups}.flatten
     end
-    groups=[]
-    @groups.each { |g| groups<<g.id }
-    @pay.each do |pay|
-      StudentGroup.where("student_id = ? ", pay.student_id).each do |s|
-        @student_groups<<s if groups.include?(s.group_id)
-      end
-    end
-  #raise @student_groups.inspect
+    p "quioeyiuywdrui"
   end
 
   def new

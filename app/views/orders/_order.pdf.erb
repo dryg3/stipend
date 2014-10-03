@@ -67,27 +67,27 @@
 
   <%ss3=0%><%ss4=0%><%ss5=0%><%ss6=0%><%ss7=0%><%ss8=0%><%ss9=0%><%ss11=0%>
   <%s3=0%><%s4=0%><%s5=0%><%s6=0%><%s7=0%><%s8=0%><%s9=0%><%s11=0%>
-  <% @groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
+  <% @order.faculty.groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
 <%qq=0%>
-  <%@student_groups.each{ |student_group| qq=1 if s.name ==student_group.group.name}%>
+  <%@student_groups.each{ |student_group| qq=1 if s.id ==student_group.group_id}%>
     <%if qq==1%>
       \multicolumn{11}{|c|}{\begin{footnotesize}\textbf{Группа  <%=s.name%>}\end{footnotesize}}\\ \hline
 
       <%n=0 %>
       <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
-          <% if s.name ==student_group.group.name%>
+          <% if s.id ==student_group.group_id%>
               <%n+=1 %>
-              <%pay_to_month_student=@pay.where("student_id = ?",student_group.student_id)[0]%>
+              <%pay_to_month_student=student_group.student.pay_to_month_students[0]%>
             \begin{footnotesize}<%=n%>\end{footnotesize}
-                <%if pay_to_month_student.student.surname.size<12%>
+                <%if student_group.student.surname.size<12%>
                   &\begin{footnotesize}
-                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname%> <%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \hspace{-0.3cm}<%= student_group.student.surname%> <%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.
                   \end{footnotesize}
                 <%else%>
                     &\begin{footnotesize}
-                  \hspace{-0.3cm}<%= pay_to_month_student.student.surname[0...15]%>
+                  \hspace{-0.3cm}<%= student_group.student.surname[0...15]%>
 
-                  \vspace{-0.3cm plus 5mm minus 5mm}\hspace{-0.2cm}<%= pay_to_month_student.student.firstname[0]%>.<%= pay_to_month_student.student.secondname[0]%>.
+                  \vspace{-0.3cm plus 5mm minus 5mm}\hspace{-0.2cm}<%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.
                   \end{footnotesize}
                 <%end%>
               &\begin{footnotesize}\hfil<%= pay_to_month_student.social unless pay_to_month_student.social.zero?%>\hfil\end{footnotesize}
@@ -105,9 +105,9 @@
               &\begin{footnotesize}\hfil<%= pay_to_month_student.sports  unless pay_to_month_student.sports.zero?%>\hfil\end{footnotesize}
               <%s9+=pay_to_month_student.sports %>
               &<%if pay_to_month_student.social!=0%>
-            <%cer=Certificat.where('student_id = ?',  student_group.student_id).select(:date_finish).sort_by{|q| q.date_finish}.last%>
+            <%cer=student_group.student.certificats.sort_by{|x| x.date_finish}.last%>
             <%unless cer.nil?%>
-                    \begin{footnotesize}<%=(cer.date_finish < @pays.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y").to_s  :  @pays.date_finish.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                    \begin{footnotesize}<%=(cer.date_finish < @order.pay_category_to_semester.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y").to_s  :  @order.pay_category_to_semester.date_finish.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
             <%end%>
             <%end%>
               &\begin{footnotesize}\hfil <%=pay_to_month_student.sum+pay_to_month_student.social+ pay_to_month_student.academic%>\hfil \end{footnotesize}
@@ -183,9 +183,9 @@
   \parindent=1.25cm
   \begin{table}[b]
 
-  Исп. <%=current_user.name%>\\
+  Исп. <%=lesc current_user.name%>\\
 
 
-  Рассылка: ОООП <%=@order.faculty.short_name%>, ПФО, стипендиальный отдел
+  Рассылка: ОООП <%=lesc @order.faculty.short_name%>, ПФО, стипендиальный отдел
   \end{table}
   \linespread{1.5}
