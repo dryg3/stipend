@@ -6,6 +6,7 @@
   <tr>
     <th>Фамилия И.О.</th>
     <th>Логин</th>
+    <th>Телефон</th>
     <th>Факультет</th>
     <th></th>
   </tr>
@@ -13,6 +14,7 @@
       <tr>
         <td><%=user.name%></td>
         <td><%=user.email%></td>
+        <td><%=user.tel%></td>
         <td><%=user.faculty.short_name%></td>
         <% if can? :manager, :all %>
             <td><%= link_to 'Show', user %></td>

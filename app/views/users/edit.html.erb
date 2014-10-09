@@ -5,8 +5,8 @@
   <div class="span6 offset3">
     <%= form_for(@user) do |f| %>
         <%= render 'shared/error_messages' %>
-
-
+        IP-Телефон<br>
+        <%= f.telephone_field :tel %><br>
 
         Фамилия И.О.<br>
         <%= f.text_field :name %><br>

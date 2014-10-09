@@ -39,12 +39,12 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all
+    @users = User.includes(:faculty)
   end
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :tel, :password, :password_confirmation)
   end
 # Before filters
   def signed_in_user
