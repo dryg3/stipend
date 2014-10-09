@@ -3,29 +3,17 @@ class PayToMonthStudentsController < ApplicationController
     @pay_to_month_student = PayToMonthStudent.new
   end
   def pay_metod
-    @pay_to_month_student = PayToMonthStudent.new
-    sem=1#sem_today
-    year="2014/2015"#year_today
-    f_id=current_user.faculty_id
-    pays=PayCategoryToSemester.find(params[:pay_category_to_semester])
-    (pays.date_start.month.to_i).step(pays.date_finish.month.to_i, 1) do |month|
-      #
-      p month
-      g = Group.where(" semester = ? AND faculty_id= ? AND year=?", sem, f_id, year)
-      g.each { |g| p g.name }
-      g.each do |c|
-        s = StudentGroup.where("group_id = ? ", c.id)
-        s.each { |s| p s.student.surname+" "+s.student.firstname+" "+s.student.secondname+" "+s.group.name }
-        #p s.size
-        s.each do |s|
-          p s.student.surname+" "+s.student.firstname+" "+s.student.secondname+" "+s.group.name+" "+s.group.kurs.to_s+"курс"
+    @pays=PayCategoryToSemester.includes(:faculty=>{:groups=>{:student_groups=>{:student=>[:certificats,{:pay_to_month_students=>:student}]}}}).find(params[:pay_category_to_semester])
+    st=@pays.faculty.groups.find_all{|x| x.semester==@pays.semester and x.year==@pays.year}.map{|x| x.student_groups}.flatten.find_all{|x| !x.commerce}
+    (@pays.date_start.month.to_i).step(@pays.date_finish.month.to_i, 1) do |month|
+        st.each do |s|
           kurs=s.group.kurs
-
+          sem=s.group.semester
           pay=PayToMonthStudent.new
-          if pays.date_start.year==pays.date_finish.year
-            pay.year=pays.date_start.year
+          if @pays.date_start.year==@pays.date_finish.year
+            pay.year=@pays.date_start.year
           else
-            Date.new(pays.date_start.year, month, 1)>=pays.date_start ? pay.year=pays.date_start.year : pay.year=pays.date_finish.year
+            Date.new(@pays.date_start.year, month, 1)>=@pays.date_start ? pay.year=@pays.date_start.year : pay.year=@pays.date_finish.year
           end
           pay.month=month
           pay.type_pay=0
@@ -39,36 +27,34 @@ class PayToMonthStudentsController < ApplicationController
           pay.sports=0
           pay.surcharge=0
 
-          pay.social+=pays.social1 if s.social && kurs==1 && sem==1
-          pay.social+=pays.social if s.social && !(kurs==1 && sem==1)
+          pay.social+=@pays.social1 if s.social && kurs==1 && sem==1
+          pay.social+=@pays.social if s.social && !(kurs==1 && sem==1)
 
-          pay.academic+=pays.five1 if s.type_stipend==2 && kurs==1 && sem==1
-          pay.academic+=pays.five if s.type_stipend==2 && !(kurs==1 && sem==1)
+          pay.academic+=@pays.five1 if s.type_stipend==2 && kurs==1 && sem==1
+          pay.academic+=@pays.five if s.type_stipend==2 && !(kurs==1 && sem==1)
 
-          pay.academic+=pays.four1 if s.type_stipend==1 && kurs==1 && sem==1
-          pay.academic+=pays.four if s.type_stipend==1 && !(kurs==1 && sem==1)
+          pay.academic+=@pays.four1 if s.type_stipend==1 && kurs==1 && sem==1
+          pay.academic+=@pays.four if s.type_stipend==1 && !(kurs==1 && sem==1)
 
-          pay.study+=pays.study if s.study
+          pay.study+=@pays.study if s.study
 
-          pay.public+=pays.public if s.public
+          pay.public+=@pays.public if s.public
 
-          pay.scientific+=pays.scientific if s.scientific
+          pay.scientific+=@pays.scientific if s.scientific
 
-          pay.cultural+=pays.cultural if s.cultural
+          pay.cultural+=@pays.cultural if s.cultural
 
-          pay.sports+=pays.sports if s.sports
+          pay.sports+=@pays.sports if s.sports
 
           pay.sum=pay.public+pay.scientific+pay.cultural+pay.sports+pay.study
 
           pay.surcharge+=6307-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (6307-pay.academic-pay.social-pay.sum>0)
 
-          p "qwertyuiop[vbhnjmkl;ghjkl"
-          if (old=PayToMonthStudent.find_by(month: pay.month, year: pay.year, student_id: pay.student_id)).nil?
-
+          if (old=s.student.pay_to_month_students.find{|x| x.month==pay.month and x.year==pay.year}).nil?
             p pay
             pay.save!  if (pay.sum+pay.academic+pay.social!=0)
           else
-          if (pay.sum+pay.academic+pay.social!=0)
+          if pay.sum+pay.academic+pay.social!=0
             p old
             old.social=pay.social
             old.academic=pay.academic
@@ -85,12 +71,10 @@ class PayToMonthStudentsController < ApplicationController
              end
           end
           p pay
-
-        end
       end
     end
   end
- 
+
   def create
     @pay_to_month_student = PayToMonthStudent.new(pay_to_month_student_params)
     if @pay_to_month_student.save
@@ -107,13 +91,13 @@ class PayToMonthStudentsController < ApplicationController
 
   def index
     @pay_to_month_students = []
-    unless params[:pay_category_to_semester].nil?
+    if params[:pay_category_to_semester].nil?
+      if current_user.faculty.name== "all"
+        @pay_to_month_students =PayToMonthStudent.all
+      end
+    else
       pay_metod
-      pays=PayCategoryToSemester.find(params[:pay_category_to_semester])
-      @pay_to_month_students = PayToMonthStudent.where("month = ? AND year = ?",pays.date_start.month,pays.date_start.year)
-    end
-    if current_user.faculty.name== "all"
-      @pay_to_month_students =PayToMonthStudent.all
+      @pay_to_month_students = @pays.faculty.groups.find_all{|x| x.semester==@pays.semester and x.year==@pays.year}.map{|x| x.student_groups}.flatten.find_all{|x| !x.commerce}.map{|x| x.student.pay_to_month_students}.flatten.find_all{|x| Date.new(x.year,x.month,1)>=Date.new(@pays.date_start.year,@pays.date_start.month,1) and Date.new(x.year,x.month,1)<=Date.new(@pays.date_finish.year,@pays.date_finish.month,1)}
     end
   end
   

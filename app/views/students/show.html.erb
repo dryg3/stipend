@@ -19,7 +19,7 @@
         <th>Дата окончания </th>
     </tr>
 
-    <% @student.certificats.each do |certificat| %>
+    <% @student.certificats.sort_by {|x| x.date_finish}.reverse.each do |certificat| %>
         <tr>
 
         <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
@@ -54,7 +54,7 @@
     </tr>
 
 
-    <% @student.groups.sort_by{|word| word.kurs }.each do |group| %>
+    <% @student.groups.sort_by{|x| [x.year, x.kurs, x.semester, x.name] }.reverse.each do |group| %>
         <tr>
             <td><%=link_to "#{group.name}", group %></td>
             <td><%= group.kurs %></td>
@@ -90,7 +90,7 @@
 
     </tr>
 
-    <% @student.pay_to_month_students.sort_by { |q| Date.new(q.year,q.month,1)}.reverse.each do |pay_to_month_student| %>
+    <% @student.pay_to_month_students.sort_by { |q| [q.year,q.month]}.reverse.each do |pay_to_month_student| %>
         <tr>
             <td><%= pay_to_month_student.month %>.<%= pay_to_month_student.year %></td>
             <td><%= pay_to_month_student.social %></td>

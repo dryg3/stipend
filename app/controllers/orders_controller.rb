@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
     if current_user.faculty.name=="all"
       @orders = Order.all
     else
-      @orders = Order.where("faculty_id = '#{current_user.faculty_id}'")
+      @orders = Order.includes(:faculty).where(faculties:{id: current_user.faculty_id})
     end
   end
 
@@ -15,7 +15,6 @@ class OrdersController < ApplicationController
     elsif [3,4,5].include?(@order.type_order)
       @student_groups=@order.faculty.groups.find_all{|x| x.kurs == 1 and x.semester == 1}.map{|x| x.student_groups}.flatten
     end
-    p "quioeyiuywdrui"
   end
 
   def new
@@ -31,8 +30,9 @@ class OrdersController < ApplicationController
     @order.faculty_id=@order.pay_category_to_semester.faculty_id
     @order.year=year_today
     @order.semester=sem_today
-    #@order.pay_category_to_semester_id=params[:pay_category_to_semester_id]
-    #raise @order.inspect
+    @order.up=""
+    @order.bottom=""
+    @order.signature=""
     if @order.save
       redirect_to @order
     else

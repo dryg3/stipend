@@ -1,30 +1,30 @@
 class GroupsController < ApplicationController
-    def new
-  @group = Group.new
-end
-def create
-  @group = Group.new(group_params)
- 
-  if @group.save
-    redirect_to @group
-  else
-    render 'new'
+  def new
+    @group = Group.new
   end
-end
+
+  def create
+    @group = Group.new(group_params)
+
+    if @group.save
+      redirect_to @group
+    else
+      render 'new'
+    end
+  end
   
   def show
     @group = Group.find(params[:id])
   end
-  def index
 
+  def index
     if  params[:faculty].nil?
       @groups=[]
-      elsif  params[:faculty].empty?
+    elsif  params[:faculty].empty?
         @groups=Group.all
-      else
-        @groups=Group.where("faculty_id = '#{params[:faculty]}'")
-      end
-
+    else
+        @groups=Group.includes(:faculty).where(faculties:{id: current_user.faculty_id})
+    end
   end
   
   def edit
@@ -48,11 +48,8 @@ end
     redirect_to groups_path
   end
 
-  
 private
   def group_params
     params.require(:group).permit(:name, :year,:kurs,:semester,:faculty_id)
   end
-
-
 end

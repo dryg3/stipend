@@ -47,6 +47,7 @@
               <%= link_to 'Show', pay_category_to_semester %>
               <%= link_to 'Edit', edit_pay_category_to_semester_path(pay_category_to_semester) %>
               <%= link_to 'Destroy', pay_category_to_semester_path(pay_category_to_semester), method: :delete, data: { confirm: 'Are you sure?' } %>
+               <%= pay_category_to_semester.year%> <%=pay_category_to_semester.semester%>
           <% end %>
         </td>
       </tr>

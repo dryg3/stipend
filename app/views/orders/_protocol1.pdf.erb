@@ -11,27 +11,17 @@
 <<Московский государственный индустриальный университет>>\\
   \vspace{-0.3cm plus 1mm minus 1mm}
   (ФГБОУ ВПО <<МГИУ>>)
-}}}
+  }}}
 
   \large{\textbf{\textsc{<%= @order.faculty.name%>}}}\\
   \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ <%=@order.faculty.short_name%>}}
   \end{center}
 
-  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}\\
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}
 
   \textbf{ПРИСУТСТВОВАЛИ:}
 
-  <%=@order.signature.split("\n").size%> человек и <%=@order.signature.split("\n").size%> членов Комиссии:  <%=@order.signature.split("\n")[0]%>, <%=@order.signature.split("\n")[1]%>, <%=@order.signature.split("\n")[2]%>, <%=@order.signature.split("\n")[3]%>, <%=@order.signature.split("\n")[4]%>. Кворум имеется.
-
-  \centerline{\textbf{ПОВЕСТКА ДНЯ:}}
-
-  Назначение государственной академической стипендии студентам <%=@order.faculty.short_name%>.
-
-  \centerline{\textbf{СЛУШАЛИ:}}
-
-  По вопросу повестки дня директора <%=@order.faculty.short_name%> <%=Order::FACULTY0[@order.faculty.id]%>.
-
-  \centerline{\textbf{РЕШИЛИ:}}
+  <%=@order.signature.split("\n").size%> человек и <%=@order.signature.split("\n").size%> членов Комиссии:  <%=@order.signature.split("\n")[0]%>, <%=@order.signature.split("\n")[1]%>, <%=@order.signature.split("\n")[2]%>, <%=@order.signature.split("\n")[3]%>, <%=@order.signature.split("\n")[4]%>. Кворум имеется.\\
 
   <%= @order.up%>
 
@@ -121,7 +111,10 @@
   \end{longtable}
   }
 
-<%=lesc @order.bottom%>
+<%=lesc @order.bottom%>{\raggedright
+
+}
+
 
 
   ГОЛОСОВАЛИ:<<ЗА>> <%=@order.signature.split("\n").size%> чел., <<ПРОТИВ>> 0 чел., ВОЗДЕРЖАЛИСЬ 0 чел.

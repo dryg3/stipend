@@ -65,6 +65,8 @@ class PayCategoryToSemestersController < ApplicationController
 
   def create
     @pay_category_to_semester = PayCategoryToSemester.new(pay_category_to_semester_params)
+    @pay_category_to_semester.year=year_today
+    @pay_category_to_semester.semester=sem_today
     if @pay_category_to_semester.save
       redirect_to @pay_category_to_semester
     else
@@ -80,7 +82,7 @@ class PayCategoryToSemestersController < ApplicationController
     if current_user.faculty.name== "all"
       @pay_category_to_semesters =PayCategoryToSemester.includes(:faculty)
     else
-      @pay_category_to_semesters = PayCategoryToSemester.includes(:faculty).where("faculty_id = '#{current_user.faculty_id}'")
+      @pay_category_to_semesters = PayCategoryToSemester.includes(:faculty).where(faculties:{id: current_user.faculty_id})
     end
   end
 

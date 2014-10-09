@@ -5,22 +5,21 @@ class OperationsController < ApplicationController
   end
   
   def create
-    @operation = Operation.new(operation_params)
-    @account=AccountToSemester.find(@operation.account_to_semester_id)
+    @operation = Operation.includes(:account_to_semester).new(operation_params)
     @operation.user_id=current_user.id
     @operation.date_op=Date.today
+    @operation.text<<"Предыдущая сумма равна #{@operation.account_to_semester.sum}."
     if @operation.type_op==0
-      @account.sum+=@operation.sum
+      @operation.account_to_semester.sum+=@operation.sum
     elsif @operation.type_op==1
-      @account.sum-=@operation.sum
+      @operation.account_to_semester.sum-=@operation.sum
     elsif @operation.type_op==2
-      @operation.text<<"Предыдущая сумма равна #{@account.sum}."
-      @account.sum=@operation.sum
+      @operation.account_to_semester.sum=@operation.sum
     end
-    @account.save!
+    @operation.account_to_semester.save!
      # raise @operation.inspect
     if @operation.save
-     redirect_to @operation
+     redirect_to @operation.account_to_semester
      else
      render 'new'
 	  end
@@ -28,11 +27,9 @@ class OperationsController < ApplicationController
   
   def index
     if current_user.faculty.name=="all"
-      @operations = Operation.all
+      @operations = Operation.includes({:account_to_semester=>:faculty},:user)
     else
-      ac=AccountToSemester.where("faculty_id = '#{current_user.faculty_id}'")
-      @operations=[]
-      ac.each{|a| @operations|=Operation.where("account_to_semester_id = '#{a.id}'")}
+      @operations = Operation.includes({:account_to_semester=>:faculty},:user).where(faculties:{id: current_user.faculty_id})
     end
   end
 

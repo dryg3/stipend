@@ -32,14 +32,13 @@
         <%if @order.type_order==1 or @order.type_order==4%>
             <p>
                 Шаблон<br>
-                <%= f.text_area :up, value: "На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную академическую стипендию следующим студентам #{@order.faculty.short_name} на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} ежемесячно", style: "width: 670px; height: 150px;" %>
+                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной академической стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную академическую стипендию следующим студентам #{@order.faculty.short_name} на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} ежемесячно", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
         <%if @order.type_order==2 or @order.type_order==5%>
             <p>
               Шаблон<br>
-                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\\vspace{1cm}\\\\\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\\vspace{1cm}\\\\\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную социальную стипендию следующим студентам #{@order.faculty.short_name}", style: "width: 670px; height: 150px;" %>
-
+                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную социальную стипендию следующим студентам #{@order.faculty.short_name}", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
     <%else%>

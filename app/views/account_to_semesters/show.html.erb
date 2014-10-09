@@ -1,7 +1,9 @@
-<p>
-  <strong>Факультет: </strong>
-  <%= @account_to_semester.faculty.name %>
-</p>
+<%if can? :manager, :all%>
+    <p>
+      <strong>Факультет: </strong>
+      <%= @account_to_semester.faculty.name %>
+    </p>
+<% end %>
 <p>
   <strong>Тип счета: </strong>
    <%=AccountToSemester::TYPE_ACСOUNT[@account_to_semester.type_account]%>
@@ -11,9 +13,38 @@
   <%= @account_to_semester.sum %>
 </p>
 
+<%if can? :manager, :all%>
+    <p>
+      <%=  link_to "Изменить", { controller: "operations", action: "new", account_to_semester_id:@account_to_semester.id },  :class => "btn btn-success"  %>
+    </p>
+<% end %>
+
+<table  class="table table-striped">
+    <thead>
+        <tr>
+            <th>Тип операции</th>
+            <th>Сумма </th>
+            <th>Дата операции</th>
+            <th> Пользователь </th>
+            <th> Коментарий </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% @account_to_semester.operations.sort_by { |q| q.date_op}.reverse.each do |operation| %>
+            <tr>
+                <td><%=Operation::TYPE_OP[operation.type_op]%></td>
+                <td><%= operation.sum %></td>
+                <td><%=l operation.date_op %></td>
+                <td><%= operation.user.name %></td>
+                <td><%= operation.text %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
 <p>
-    <%= link_to 'Изменить счет факультета на семестр', edit_account_to_semester_path(@account_to_semester),class: "btn btn-success " %> |
-    <a href="/account_to_semesters" class="btn btn-large btn-primary enabled">Вернутся к списку</a>
+    <a href="/account_to_semesters" class="btn btn-large btn-primary enabled">Вернутся к списку счетов</a>
 </p>
 
 

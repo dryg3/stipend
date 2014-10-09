@@ -2,26 +2,22 @@ class StudentGroupsController < ApplicationController
   include StudentGroupsHelper
   load_and_authorize_resource
   #http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
-def new
-  @student_group = StudentGroup.new
-end
-def create
-  @student_group = StudentGroup.new(student_group_params)
- 
-  if @student_group.save
-    redirect_to @student_group
-  else
-    render 'new'
+  def new
+    @student_group = StudentGroup.new
   end
-end
+
+  def create
+    @student_group = StudentGroup.new(student_group_params)
+    if @student_group.save
+      redirect_to @student_group
+    else
+      render 'new'
+    end
+  end
   
   def show
     @student_group = StudentGroup.find(params[:id])
   end
-
-#  def index
-#    @student_groups = StudentGroup.accessible_by(current_ability)
-#  end
 
   def index
     #download(current_user.faculty.id) unless params[:download].nil? or params[:download].empty?

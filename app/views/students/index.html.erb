@@ -1,31 +1,26 @@
-<%= link_to "<<< Вернуться", :back, class: "btn btn-large btn-primary enabled"%>
-
 <div class="well  well-small">
-<%= form_tag("/students", method: "get") do |f| %>
+    <%= form_tag("/students", method: "get") do |f| %>
+        <div class="row">
+            <div class="col-md-4">
+                Фамилия:<br>
+                <%= text_field_tag(:surname,  params[:surname])%><br>
 
-<p>
-    Фамилия:<br>
-    <%= text_field_tag(:surname) %>
-  </p>
-  <p>
-    Имя:<br>
-    <%= text_field_tag(:firstname) %>
-  </p>
- <p>
-  Отчество:<br>
-  <%= text_field_tag(:secondname) %>
-</p>
-  <p>
-    Коментарии:<br>
-    <%= text_field_tag(:text) %>
-  </p>
+                Имя:<br>
+                <%= text_field_tag(:firstname, params[:firstname]) %><br>
 
+                Отчество:  <br>
+                <%= text_field_tag(:secondname, params[:secondname]) %><br>
 
-  
-  <%= submit_tag("Поиск") %>
-<% end %>
-
-  </div >
+                Комментарии:<br>
+                <%= text_field_tag(:text, params[:text])%>
+            </div>
+            <div class="col-md-4" >
+                <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+                <button class="btn btn-large" type="reset"  >Очистить</button>
+            </div>
+        </div>
+    <% end %>
+</div >
 
 
 <h1>Студенты</h1>
@@ -45,7 +40,7 @@
      
   </tr>
 
-	<% @search.sort_by {|s| s.surname}.each do |student| %>
+	<% @students.sort_by {|s| s.surname}.each do |student| %>
 			<tr>
 				<td><%= student.surname %></td>
 				<td><%= student.firstname %></td>

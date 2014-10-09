@@ -23,7 +23,7 @@ module SessionsHelper
 
 
   def current_user
-    remember_token = User.encrypt(cookies[:remember_token])
+    remember_token = User.includes(:roles,:faculty).encrypt(cookies[:remember_token])
     @current_user ||= User.includes(:faculty,:roles).find_by(remember_token: remember_token)
   end
 

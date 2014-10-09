@@ -15,24 +15,23 @@ class StudentsController < ApplicationController
   end
   
   def show
-    @student = Student.find(params[:id])
+    @student = Student.includes(:certificats,:groups,{:student_groups=>{:group=>:faculty}},:pay_to_month_students).find(params[:id])
   end
 
   def certificat
-    @student = Student.find(params[:student_id])
+    @student = Student.includes(:certificats).find(params[:student_id])
   end
 
   def pay
-    @student = Student.find(params[:id])
+    @student = Student.includes(:pay_to_month_students).find(params[:id])
   end
 
   def index
     @students = Student.all
-    @search=Student.all
-    student &= Student.find(:all, :conditions => ['surname LIKE ? ', "%#{params[:surname]}%"]) unless params[:surname].nil? or  params[:surname].empty?
-    student &= Student.find(:all, :conditions => ['firstname LIKE ? ', "%#{params[:firstname]}%"]) unless params[:firstname].nil? or  params[:firstname].empty?
-    student &= Student.find(:all, :conditions => ['secondname LIKE ?', "%#{params[:secondname]}%"]) unless params[:secondname].nil? or  params[:secondname].empty?
-    student &= Student.find(:all, :conditions => ['text LIKE ? ', "%#{params[:text]}%"]) unless params[:text].nil? or  params[:text].empty?
+    @students &= @students.find_all{|x| x.surname.include? params[:surname]} unless params[:surname].nil? or  params[:surname].empty?
+    @students &= @students.find_all{|x| x.firstname.include? params[:firstname]} unless params[:firstname].nil? or  params[:firstname].empty?
+    @students &= @students.find_all{|x| x.secondname.include? params[:secondname]} unless params[:secondname].nil? or  params[:secondname].empty?
+    @students &= @students.find_all{|x| x.text.include? params[:text]} unless params[:text].nil? or  params[:text].empty?
   end
 
   def update

@@ -30,7 +30,7 @@
 
 
     <tbody>
-    <% @account_to_semesters.sort_by {|s| s.year}.reverse.each do |account_to_semester| %>
+    <% @account_to_semesters.sort_by {|s| [s.year,s.semester]}.reverse.each do |account_to_semester| %>
       <tr>
 
         <% if can? :manager, AccountToSemester %><td><%= account_to_semester.faculty.short_name %></td><% end %>
