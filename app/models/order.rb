@@ -11,6 +11,11 @@ class Order < ActiveRecord::Base
       5 => 'Протокол социальной стипендии 1 курс 1 семестр'
   }
 
+  STATUS = {
+      0 => 'НЕ ГОТОВ',
+      1 => 'Подписан'
+  }
+
   LIST = { 0 => ["Ректор","В.И. Кошкин"],
            1 => ["Главный бухгалтер","C.А. Третьякова"],
            2 => ["Начальник Юридического отдела","Т.Н. Мартынова"],
@@ -63,7 +68,10 @@ class Order < ActiveRecord::Base
       6 => 'А.А.А.А.'
   }
 
+  validates_inclusion_of :status, in: STATUS.keys,
+  message: "Статус приказа должен быть заполнин"
   validates_inclusion_of :type_order, in: TYPE_ORDER.keys,
   message: "Тип приказа должен быть заполнин"
-  validates_presence_of :number
+  validates_presence_of :number,
+                        message: "Номер приказа должен быть заполнин"
 end

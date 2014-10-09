@@ -30,6 +30,7 @@ class OrdersController < ApplicationController
     @order.faculty_id=@order.pay_category_to_semester.faculty_id
     @order.year=year_today
     @order.semester=sem_today
+    @order.status=0
     @order.up=""
     @order.bottom=""
     @order.signature=""
@@ -92,6 +93,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:number, :type_order,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
+    params.require(:order).permit(:number,:status, :type_order,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
   end
 end

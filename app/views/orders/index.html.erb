@@ -10,7 +10,7 @@
         <th>Тип</th>
         <th></th>
     </tr>
-      <% @orders.sort_by { |x| [x.faculty_id, x.date, x.number]}.reverse.each do |order| %>
+      <% @orders.sort_by { |x| [x.faculty_id, x.status, x.date, x.number]}.reverse.each do |order| %>
         <tr>
           <td><%= link_to "#{order.number} от #{l order.date, format: :default}", order%></td>
           <!--<td><% order.number %> от <% l order.date, format: :default%></td>-->
@@ -26,7 +26,11 @@
                         method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
           <td>
-            <%= link_to 'Изменить', edit_order_path(order) , class: "btn btn-primary "%>
+            <%if order.status==0%>
+                <%= link_to 'Изменить', edit_order_path(order) , class: "btn btn-primary "%>
+            <% else %>
+                <%= link_to 'Изменить', edit_order_path(order) , class: "btn btn-primary disabled"%>
+            <% end %>
             <%= link_to 'Печать', order_path( order,:format => :pdf) , class: "btn btn-success"%>
           </td>
         </tr>
