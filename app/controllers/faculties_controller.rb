@@ -1,4 +1,7 @@
 class FacultiesController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_faculty
+
   def new
     @faculty = Faculty.new
   end
@@ -43,6 +46,10 @@ class FacultiesController < ApplicationController
 private
   def faculty_params
     params.require(:faculty).permit(:name)
+  end
+
+  def correct_faculty
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
   end
 end
 

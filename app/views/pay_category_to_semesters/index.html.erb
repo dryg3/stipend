@@ -25,7 +25,7 @@
   <% @pay_category_to_semesters.sort_by { |q| [q.faculty_id, q.date_finish]}.reverse.each do |pay_category_to_semester| %>
       <tr>
         <% if  can? :manager, :all  %><td><%=pay_category_to_semester.faculty.short_name %></td><%end%>
-        <td><%= pay_category_to_semester.date_start.strftime("%d.%m.%Y") %>-<%= pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %></td>
+        <td><%=link_to "#{pay_category_to_semester.date_start.strftime("%d.%m.%Y")}-#{pay_category_to_semester.date_finish.strftime("%d.%m.%Y")}", edit_pay_category_to_semester_path(pay_category_to_semester)%></td>
 
         <td><%= pay_category_to_semester.social1 %>/<%= pay_category_to_semester.social %></td>
         <td><%= pay_category_to_semester.four1%>/<%= pay_category_to_semester.four%></td>

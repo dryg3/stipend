@@ -1,4 +1,8 @@
 class GroupsController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_show, only: :show
+  before_action :correct_faculty, except: :show
+
   def new
     @group = Group.new
   end
@@ -14,7 +18,7 @@ class GroupsController < ApplicationController
   end
   
   def show
-    @group = Group.find(params[:id])
+    #@group = Group.find(params[:id])
   end
 
   def index
@@ -23,7 +27,7 @@ class GroupsController < ApplicationController
     elsif  params[:faculty].empty?
         @groups=Group.all
     else
-        @groups=Group.includes(:faculty).where(faculties:{id: current_user.faculty_id})
+        @groups=faculty(Group.includes(:faculty))
     end
   end
   
@@ -51,5 +55,14 @@ class GroupsController < ApplicationController
 private
   def group_params
     params.require(:group).permit(:name, :year,:kurs,:semester,:faculty_id)
+  end
+
+  def correct_faculty
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+  end
+
+  def correct_show
+    @group = Group.includes(:student_groups=>:student).find(params[:id])
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @group.faculty_id == current_user.faculty_id
   end
 end

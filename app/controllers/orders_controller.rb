@@ -1,14 +1,13 @@
 class OrdersController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
+
   def index
-    if current_user.faculty.name=="all"
-      @orders = Order.all
-    else
-      @orders = Order.includes(:faculty).where(faculties:{id: current_user.faculty_id})
-    end
+      @orders = faculty(Order.includes(:faculty))
   end
 
   def show
-    @order = Order.includes(:pay_category_to_semester).find(params[:id])
+    #@order = Order.includes(:pay_category_to_semester).find(params[:id])
     @order = Order.includes([{:faculty=>{:groups=>{:student_groups=>{:student=>[:pay_to_month_students,:certificats]}}}},:pay_category_to_semester]).where('groups.year = ? AND groups.semester = ? AND pay_to_month_students.year = ? AND pay_to_month_students.month = ?', @order.year, @order.semester, @order.pay_category_to_semester.date_start.year,@order.pay_category_to_semester.date_start.month).references(:faculty).find(params[:id])
     if  [0,1,2].include?(@order.type_order)
       @student_groups=@order.faculty.groups.find_all{|x| x.kurs != 1 or x.semester != 1}.map{|x| x.student_groups}.flatten
@@ -22,7 +21,7 @@ class OrdersController < ApplicationController
   end
 
   def edit
-    @order = Order.find(params[:id])
+    #@order = Order.find(params[:id])
   end
 
   def create
@@ -42,7 +41,7 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = Order.find(params[:id])
+    #@order = Order.find(params[:id])
     #raise params[:order][:list].inspect
     if @order.signature.nil? or @order.signature.empty?
       @order.signature=""
@@ -90,9 +89,20 @@ class OrdersController < ApplicationController
     end
 
   end
-  private
 
+  def destroy
+    #@order = Order.find(params[:id])
+    @order.destroy
+    redirect_to orders_path
+  end
+
+private
   def order_params
     params.require(:order).permit(:number,:status, :type_order,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
+  end
+
+  def correct_faculty
+    @order = Order.includes(:pay_category_to_semester).find(params[:id])
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @order.faculty_id == current_user.faculty_id
   end
 end

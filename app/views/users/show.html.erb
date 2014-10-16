@@ -1,5 +1,4 @@
-<p>
-    <%= @user.name %>, <%= @user.email %>,<%= @user.tel %>
-</p>
-<%= link_to 'Изменить параметры студента', edit_user_path(@user) %> |
-<%= link_to 'Вернутся к списку', users_path %>
+<p><strong>Фамилия И.О.: </strong><%=@user.name%></p>
+<p><strong>Логин: </strong><%=@user.email%></p>
+<p><strong>Телефон: </strong><%=@user.tel%></p>
+<p><strong>Факультет: </strong><%=@user.faculty.short_name%></p>

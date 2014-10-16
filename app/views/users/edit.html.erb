@@ -1,8 +1,8 @@
 <% provide(:title, "Edit user") %>
-<h1>Update your profile</h1>
+<h1>Редактирование профиля</h1>
 
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span3 offset3">
     <%= form_for(@user) do |f| %>
         <%= render 'shared/error_messages' %>
         IP-Телефон<br>
@@ -15,12 +15,14 @@
         <%= f.text_field :email %><br>
 
         Пороль<br>
-        <%= f.password_field :password %><br>
+        <%= f.password_field :password, value: '' %><br>
 
         <%= f.label :password_confirmation, "Повторите пороль" %><br>
         <%= f.password_field :password_confirmation %><br>
 
-        <%= f.submit "Изменить", class: "btn btn-large btn-primary" %>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Изменить</button>
+        </div>
     <% end %>
 
   </div>

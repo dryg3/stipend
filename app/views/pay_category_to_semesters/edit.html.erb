@@ -12,11 +12,6 @@
     </ul>
   </div>
    <% end %>
-     <p>
-   Факультет<br>
-   	  <%= select("pay_category_to_semester", "faculty_id", Faculty.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })%>
-
-  </p>
    <p>
     Дата выдачи<br>
     <%= date_select :pay_category_to_semester, :date_start %>
@@ -38,7 +33,7 @@
 	Отл<br>
 	<%= f.text_field :five1%><%= f.text_field :five%>
 </p>
-Категория повышенной стипендии:
+<strong>Категория повышенной стипендии:</strong>
 
 	<p>
 	 учебная дечтельность<br>
@@ -65,11 +60,9 @@
 	<%= f.text_field  :sports %>
 	</p>
 
-
-  <p>
-    <%= f.submit :Сохранить %>
-  </p>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
 <% end %>
 
- 
-<%= link_to 'Вернутся к списку', pay_category_to_semesters_path %>

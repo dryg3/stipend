@@ -1,4 +1,8 @@
 class PayCategoryToSemestersController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
+  before_action :correct_new, only: [:new]
+
   def kalkul
     @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where("commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?",false,sem_today, params[:faculty_id], year_today,1).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
@@ -75,20 +79,15 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def show
-    @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
+    #@pay_category_to_semester = PayCategoryToSemester.find(params[:id])
   end
 
   def index
-    if current_user.faculty.name== "all"
-      @pay_category_to_semesters =PayCategoryToSemester.includes(:faculty)
-    else
-      @pay_category_to_semesters = PayCategoryToSemester.includes(:faculty).where(faculties:{id: current_user.faculty_id})
-    end
+    @pay_category_to_semesters = faculty(PayCategoryToSemester.includes(:faculty))
   end
 
   def update
-    @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
-
+    #@pay_category_to_semester = PayCategoryToSemester.find(params[:id])
     if @pay_category_to_semester.update(pay_category_to_semester_params)
       redirect_to @pay_category_to_semester
     else
@@ -97,18 +96,26 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def destroy
-    @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
+    #@pay_category_to_semester = PayCategoryToSemester.find(params[:id])
     @pay_category_to_semester.destroy
-
     redirect_to pay_category_to_semesters_path
   end
 
   def edit
-    @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
+    #@pay_category_to_semester = PayCategoryToSemester.find(params[:id])
   end
 
-  private
+private
   def pay_category_to_semester_params
     params.require(:pay_category_to_semester).permit( :date_start,:date_finish,:social,:five,:four,:study,:public,:scientific,:cultural,:sports,:social1,:five1,:four1,:faculty_id)
+  end
+
+  def correct_faculty
+    @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @pay_category_to_semester.faculty_id == current_user.faculty_id
+  end
+
+  def correct_new
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
   end
 end

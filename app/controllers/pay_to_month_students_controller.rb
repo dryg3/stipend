@@ -1,7 +1,11 @@
 class PayToMonthStudentsController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
+
   def new
     @pay_to_month_student = PayToMonthStudent.new
   end
+
   def pay_metod
     @pays=PayCategoryToSemester.includes(:faculty=>{:groups=>{:student_groups=>{:student=>[:certificats,{:pay_to_month_students=>:student}]}}}).find(params[:pay_category_to_semester])
     st=@pays.faculty.groups.find_all{|x| x.semester==@pays.semester and x.year==@pays.year}.map{|x| x.student_groups}.flatten.find_all{|x| !x.commerce}
@@ -127,4 +131,7 @@ private
     params.require(:pay_to_month_student).permit(:year, :month, :social, :academic, :study, :public, :scientific, :cultural, :sports, :surcharge, :type_pay,:student_id)
   end
 
+  def correct_faculty
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+  end
 end

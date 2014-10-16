@@ -16,12 +16,12 @@
   <% end %>
 	<p>
 	  Студент:<br>
-	  <%= select("student_group", "student_id", Student.all.collect {|p| [ p.surname+" "+p.firstname+" "+p.secondname, p.id ] }, { include_blank: true })%>
+	  <strong><%=  "#{@student_group.student.surname} #{@student_group.student.firstname} #{@student_group.student.secondname}"%></strong>
 	</p>
 
 	<p>
 	Группа:<br>
-	<%= select("student_group", "group_id", Group.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })%>
+	<strong><%=  @student_group.group.name%></strong>
 	</p>
 
    <p>
@@ -40,7 +40,7 @@
 	
 </p>
  <hr />
-Категория повышенной стипендии:
+<strong>Категория повышенной стипендии:</strong>
 
 	<p>
 	 <%= f.check_box :study %>учебная деятельность

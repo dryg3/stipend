@@ -1,4 +1,6 @@
 class OperationsController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
 
   def new
     @operation = Operation.new
@@ -34,15 +36,15 @@ class OperationsController < ApplicationController
   end
 
   def show
-    @operation = Operation.find(params[:id])
+    #@operation = Operation.find(params[:id])
   end
 
   def edit
-    @operation = Operation.find(params[:id])
+    #@operation = Operation.find(params[:id])
   end
 
   def update
-    @operation = Operation.find(params[:id])
+    #@operation = Operation.find(params[:id])
     if @operation.update(operation_params)
       redirect_to @operation
     else
@@ -50,17 +52,19 @@ class OperationsController < ApplicationController
     end
   end
 
-
   def destroy
-    @operation = Operation.find(params[:id])
+    #@operation = Operation.find(params[:id])
     @operation.destroy
-     redirect_to operations_path
-    
+    redirect_to operations_path
   end
 
-  private
+private
+  def operation_params
+    params.require(:operation).permit(:type_op, :sum, :date_op, :text,:account_to_semester_id)
+  end
 
-    def operation_params
-      params.require(:operation).permit(:type_op, :sum, :date_op, :text,:account_to_semester_id)
-    end
+  def correct_faculty
+    @operation = Operation.find(params[:id])
+    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+  end
 end

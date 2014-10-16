@@ -30,11 +30,9 @@
                 </a>
                 <ul class="dropdown-menu">
                   <!--<li><%= link_to "Личный кабинет", current_user %></li>-->
-                  <!--<li><%= link_to "Редактирование профиля", edit_user_path(current_user) %></li>-->
+                  <li><%= link_to "Редактирование профиля", edit_user_path(current_user) %></li>
                   <!--<li class="divider"></li>-->
-                  <li>
-                    <%= link_to "Выход", signout_path, method: "delete" %>
-                  </li>
+                  <li><%= link_to "Выход", signout_path, method: "delete" %></li>
                 </ul>
               </li>
           <% else %>

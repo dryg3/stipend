@@ -87,7 +87,7 @@
                 <tr>
                     <th  colspan="0" class="group"  >
                       <% if  can? :read, Group  %>
-                        <%=link_to " Группа №  #{s.name}", s %>
+                        <%=link_to " Группа №  #{s.name}", s , :target => "_blank"%>
                       <%else%>
                         Группа №  <%=s.name%>
                       <% end %>
@@ -100,14 +100,14 @@
                         <tr>
                             <td>
                                 <% if  can? :read,StudentGroup  %>
-                                    <%= link_to "#{n}", edit_student_group_path(student_group)  %>
+                                    <%= link_to "#{n}", edit_student_group_path(student_group), :target => "_blank"%>
                                 <%else%>
                                     <%=n%>
                                 <% end %>
                             </td>
                             <td>
                               <% if  can? :read,Student  %>
-                                 <%= link_to " #{student_group.student.surname} #{student_group.student.firstname} #{student_group.student.secondname}", student_group.student  %>
+                                 <%= link_to " #{student_group.student.surname} #{student_group.student.firstname} #{student_group.student.secondname}", student_group.student , :target => "_blank" %>
                               <%else%>
                                   <%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%>
                               <% end %>
@@ -156,7 +156,7 @@
                             <% unless certificat.nil? %>
                                 <td>
                                   <% if  can? :read,Certificat  %>
-                                    <%=  link_to "#{certificat.date_finish.strftime("%d.%m.%Y")}", controller: "students", action: "certificat", student_id: student_group.student_id %>
+                                    <%=  link_to "#{certificat.date_finish.strftime("%d.%m.%Y")}", {controller: "students", action: "certificat", id: student_group.student_id} , :target => "_blank"%>
                                   <% else %>
                                     <%= certificat.date_finish.strftime("%d.%m.%Y") %>
                                   <% end %>
@@ -164,7 +164,7 @@
                             <% else%>
                                 <td>
                                   <% if  can? :create,Certificat  %>
-                                    <%=  link_to "+", controller: "students", action: "certificat", student_id: student_group.student_id %>
+                                    <%=  link_to "+", {controller: "students", action: "certificat", id: student_group.student_id}, :target => "_blank" %>
                                   <% end %>
                                 </td>
                             <% end %>
@@ -172,7 +172,7 @@
                             <% if pay.nil?%>
                               <td>
                                 <% if  can? :ceate,PayToMonthStudent  %>
-                                    <%=  link_to "+", controller: "students", action: "pay", id: student_group.student_id %>
+                                    <%  link_to "+", {controller: "students", action: "pay", id: student_group.student_id}, :target => "_blank" %>
                                 <% end %>
                               </td>
                             <% else%>
@@ -184,7 +184,7 @@
                                     <% else%>
                                         <% month=pay.month%>
                                     <%end%>
-                                    <%=  link_to "#{month}.#{pay.year}", controller: "students", action: "pay", id: student_group.student_id %>
+                                    <%=  link_to "#{month}.#{pay.year}", {controller: "students", action: "pay", id: student_group.student_id}, :target => "_blank" %>
                             <% else%>
                                     <% if pay.month<10%>0<%end%><%= pay.month%>.<%=pay.year %>
                                   <% end %>
