@@ -114,7 +114,9 @@
                             </td>
                             <td>
                                 <% if student_group.commerce %>
-                                    К
+                                  <div class="label label-important">
+                                   К
+                                  </div>
                                 <%else%>
 
                                 <% end %>
@@ -123,32 +125,66 @@
                                 <% if student_group.refund %>
                                     ОК
                                 <%else%>
-                                    -
+
                                 <% end %>
                             </td>
-                            <td><%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%></td>
+                            <%if student_group.type_stipend==0%>
+                              <td>
+                                <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
+                              </td>
+                            <%elsif student_group.type_stipend==1%>
+                              <td>
+                                <div class="label label-primary">
+                                  <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
+                                </div>
+                              </td>
+                            <%elsif student_group.type_stipend==2%>
+                              <td>
+                                <div class="label label-danger">
+                                  <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
+                                </div>
+                              </td>
+                            <%else%>
+                              <td>
+                                <div class="label label-inverse">
+                                  <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
+                                </div>
+                              </td>
+                            <%end%>
                             <td>
                                 <% if student_group.social%>
-                                    C
+                                  <div class="label label-info">
+                                    Социальная
+                                  </div>
                                 <%else%>
-                                    -
+                                    
                                 <% end %>
                             </td>
                             <td>
                                 <% if student_group.study%>
+                                  <div class="label label-danger">
                                     учебная
+                                  </div>
                                 <% end %>
                                 <% if student_group.public%>
-                                    общественная
+                                   <div class="label">
+                                     общественная
+                                   </div>
                                 <% end %>
                                 <% if student_group.scientific%>
+                                  <div class="label label-warning">
                                     нид
+                                  </div>
                                 <% end %>
                                 <% if student_group.cultural%>
-                                    культ
+                                  <div class="label label-info">
+                                    культурная
+                                  </div>
                                 <% end %>
                                 <% if student_group.sports%>
-                                    спорт
+                                  <div class="label btn-success">
+                                    спортивная
+                                  </div>
                                 <% end %>
                             </td>
 

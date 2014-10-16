@@ -15,9 +15,11 @@
 
 <%if can? :manager, :all%>
     <p>
-      <%=  link_to "Изменить", { controller: "operations", action: "new", account_to_semester_id:@account_to_semester.id },  :class => "btn btn-success"  %>
+      <%=  link_to "Изменить счёт", { controller: "operations", action: "new", account_to_semester_id:@account_to_semester.id },  :class => "btn btn-success"  %>
     </p>
 <% end %>
+
+<h3>Операции по счёту:</h3>
 
 <table  class="table table-striped">
     <thead>
@@ -33,7 +35,31 @@
     <tbody>
         <% @account_to_semester.operations.sort_by { |q| q.date_op}.reverse.each do |operation| %>
             <tr>
-                <td><%=Operation::TYPE_OP[operation.type_op]%></td>
+                <%if operation.type_op==0%>
+                  <td>
+                    <div class="label label-success">
+                      <%= Operation::TYPE_OP[operation.type_op]%>
+                    </div>
+                  </td>
+                <%elsif operation.type_op==1%>
+                  <td>
+                    <div class="label label-danger">
+                      <%= Operation::TYPE_OP[operation.type_op]%>
+                    </div>
+                  </td>
+                <%elsif operation.type_op==2%>
+                  <td>
+                    <div class="label label-primary">
+                      <%= Operation::TYPE_OP[operation.type_op]%>
+                    </div>
+                  </td>
+                <%else%>
+                  <td>
+                    <div class="label label-inverse">
+                      <%= Operation::TYPE_OP[operation.type_op]%>
+                    </div>
+                  </td>
+                <%end%>
                 <td><%= operation.sum %></td>
                 <td><%=l operation.date_op %></td>
                 <td><%= operation.user.name %></td>
@@ -43,8 +69,5 @@
     </tbody>
 </table>
 
-<p>
-    <a href="/account_to_semesters" class="btn btn-large btn-primary enabled">Вернутся к списку счетов</a>
-</p>
 
 
