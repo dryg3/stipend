@@ -19,10 +19,26 @@
     Номер<br>
     <%= f.text_field :number %>
   </p>
-    <p>
       Дата<br>
-      <%= date_select :order, :date%>
-    </p>
+    <div class="row">
+        <div class='col-sm-2'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <%= f.text_field :date, class: "form-control" %>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    pickTime: false,
+                    language: 'ru'
+                });
+            });
+        </script>
+    </div>
     <p>
       Тип<br>
       <%= select("order", "type_order", Order::TYPE_ORDER.map{|k, v| [v, k]}, { include_blank: true })%>

@@ -15,4 +15,10 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require turbolinks
+
+//= require moment
+//= require moment/ru
+//= require bootstrap-datetimepicker
+//= require locales/bootstrap-datetimepicker.ru.js
+
 //= require_tree .

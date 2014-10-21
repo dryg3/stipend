@@ -59,3 +59,7 @@ gem 'rails-i18n'#, github: 'svenfuchs/rails-i18n'
 
 # For CAS client support
 gem 'rubycas-client-msiu'
+
+gem 'bootstrap-datepicker-rails'
+gem 'momentjs-rails', '~> 2.5.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0.1'

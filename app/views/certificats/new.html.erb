@@ -24,10 +24,26 @@
     Кем выдан<br>
     <%= f.text_field :who %>
   </p>
-   <p>
     Дата выдачи<br>
-    <%= date_select :certificat, :when %>
-  </p>
+    <div class="row">
+        <div class='col-sm-2'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <%= f.text_field :when, class: "form-control" %>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    pickTime: false,
+                    language: 'ru'
+                });
+            });
+        </script>
+    </div>
 <p>
   Начало выплат<br>
   <%= f.text_field :month_start %>
@@ -40,12 +56,26 @@
   <%=f.text_field :year_finish %>
 </p>
 
-<p>
-Дата окончания <br>
-  <%= date_select :certificat, :date_finish %>
-
-
-</p> 
+  Дата окончания<br>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker1'>
+            <%= f.text_field :date_finish, class: "form-control" %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker1').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
  
        <div class="form-actions">
     <button type="submit" class="btn btn-success">Сохранить</button>

@@ -1,9 +1,9 @@
 <h1>Приказы</h1>
-
-<p>
-  <a href="/orders/new" class="btn btn-large btn-success enabled">Новый приказ</a>
-</p>
-
+<% if can? :manager, :all %>
+    <p>
+      <a href="/orders/new" class="btn btn-large btn-success enabled">Новый приказ</a>
+    </p>
+<% end %>
 <table class="table table-hover">
     <tr>
         <th>Номер</th>
@@ -32,6 +32,9 @@
                 <%= link_to 'Изменить', edit_order_path(order) , class: "btn btn-primary disabled"%>
             <% end %>
             <%= link_to 'Печать', order_path( order,:format => :pdf) , class: "btn btn-success"%>
+            <%if [0,3].include?(order.type_order)%>
+                <%= link_to 'Excel', order_path( order,:format => :xls) , class: "btn "%>
+            <% end %>
           </td>
         </tr>
       <% end %>

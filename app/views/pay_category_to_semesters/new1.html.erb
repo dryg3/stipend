@@ -16,14 +16,46 @@
       <%= f.hidden_field :faculty_id,:value =>  params[:faculty_id].nil? ? params[:pay_category_to_semester][:faculty_id] : params[:faculty_id]%>
 
     </p>
-    <p>
       Дата начала<br>
-      <%= date_select :pay_category_to_semester, :date_start %>
-    </p>
-    <p>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker1'>
+            <%= f.text_field :date_start, class: "form-control" %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker1').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
       Дата окончания<br>
-      <%= date_select :pay_category_to_semester, :date_finish %>
-    </p>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker2'>
+            <%= f.text_field :date_finish, class: "form-control" %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker2').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
 
     <%=  f.hidden_field :study,:value =>  params[:study].nil? ? params[:pay_category_to_semester][:study] : params[:study]%>
     <%=  f.hidden_field :public,:value =>  params[:public].nil? ? params[:pay_category_to_semester][:public] : params[:public]%>
