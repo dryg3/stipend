@@ -49,8 +49,9 @@ class PayCategoryToSemestersController < ApplicationController
     @socfour=[@s_g_all.find_all{|x| x.type_stipend == 1 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size]
     @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
     @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
-    @socfive[1]=0 if (@socfive[1]=6307-params[:social].to_i-params[:five].to_i)<0
-    @socfour[1]=0 if (@socfour[1]=6307-params[:social].to_i-params[:four].to_i)<0
+    norm=Norm.find(1).number
+    @socfive[1]=0 if (@socfive[1]=norm-params[:social].to_i-params[:five].to_i)<0
+    @socfour[1]=0 if (@socfour[1]=norm-params[:social].to_i-params[:four].to_i)<0
     @sum[3]=0
     @sum[3]+=@category.social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
     @sum[3]+=@category.five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?

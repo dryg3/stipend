@@ -14,7 +14,9 @@ begin
 # scholarship.students_list(group_id)
 # output format: [[student_id, surname, name, pathname, type_learn, category],оценка]
 #["263347", "Дудкин", "Константин", "Евгеньевич", "коммерческий", "обучается"], "другой"]
-date="10.10.2014"
+# date=Date.today.strftime("%d.%m.%Y").to_s
+  date="23.10.2014"
+  faculty=7
     result = client.call("scholarship.groups_list", '2014/2015', '1')
     result2 = client.call("scholarship.groups_list", '2013/2014', '2')
     group=[]
@@ -23,12 +25,12 @@ date="10.10.2014"
     p "\n=================group=================\n"
     for i in 0...result.size
       r=result[i]
-      if Faculty.find_by(old_id:r[4]).id==7
+      if Faculty.find_by(old_id:r[4]).id==faculty
         g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
         if (old=Group.find_by(old_id:r[0])).nil?
           p "new"
           p g
-          #g.save!
+          g.save!
         else
           old.name=g.name
           old.semester=g.semester
@@ -36,14 +38,14 @@ date="10.10.2014"
           old.faculty_id=g.faculty_id
           old.year=g.year
           p old
-          #old.save!
+          old.save!
         end
       end
     end
 
     for i in 0...result.size
       r=result[i]
-      if Faculty.find_by(old_id:r[4]).id==7
+      if Faculty.find_by(old_id:r[4]).id==faculty
         group<<[r[0],r[1]] #[id,name]
       end
     end
@@ -68,7 +70,7 @@ date="10.10.2014"
             old.surname=s.surname
             old.firstname=s.firstname
             old.secondname=s.secondname
-            #old.save!
+            old.save!
             p old
           end
         end
@@ -107,13 +109,13 @@ date="10.10.2014"
             sg.student_id=s.id
             p sg
             if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
-              #sg.save!
+              sg.save!
               p "new1"
 
               p sg
             else
               old.commerce=sg.commerce
-              #old.save!
+              old.save!
               p "stold===1"
               p old
             end
@@ -122,7 +124,7 @@ date="10.10.2014"
               old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
               p "del1"
               p old
-              #old.delete unless old.nil?
+              old.delete unless old.nil?
             end
 
           end
@@ -141,7 +143,7 @@ date="10.10.2014"
             sg.student_id=s.id
             p sg
             if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
-              #sg.save!
+              sg.save!
               p "new2"
 
               p sg
@@ -154,7 +156,7 @@ date="10.10.2014"
               elsif old.type_stipend<sg.type_stipend
                 p ">>>>"
               end
-              #old.save!
+              old.save!
               p "stold===2"
 
             end
@@ -163,7 +165,7 @@ date="10.10.2014"
               old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
               p "del2"
               p old
-              #old.delete unless old.nil?
+              old.delete unless old.nil?
             end
 
           end
@@ -185,13 +187,13 @@ date="10.10.2014"
               sg.student_id=s.id
               p sg
               if (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
-                #sg.save!
+                sg.save!
                 p "new3"
 
                 p sg
               else
                 old.commerce=sg.commerce
-                #old.save!
+                old.save!
                 p "stold===3"
                 p old
               end
@@ -200,7 +202,7 @@ date="10.10.2014"
                 old=StudentGroup.find_by(group_id: Group.find_by(old_id: id_old).id, student_id: s.id)
                 p "del3"
                 p old
-                #old.delete unless old.nil?
+                old.delete unless old.nil?
               end
 
             end

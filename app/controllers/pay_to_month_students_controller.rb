@@ -52,7 +52,8 @@ class PayToMonthStudentsController < ApplicationController
 
           pay.sum=pay.public+pay.scientific+pay.cultural+pay.sports+pay.study
 
-          pay.surcharge+=6307-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (6307-pay.academic-pay.social-pay.sum>0)
+          norm=Norm.find(1).number
+          pay.surcharge+=norm-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (norm-pay.academic-pay.social-pay.sum>0)
 
           if (old=s.student.pay_to_month_students.find{|x| x.month==pay.month and x.year==pay.year}).nil?
             p pay
@@ -68,6 +69,7 @@ class PayToMonthStudentsController < ApplicationController
             old.cultural=pay.cultural
             old.sports=pay.sports
             old.surcharge=pay.surcharge
+            old.sum=pay.sum
             p "=========================="
             p pay.sum+pay.academic+pay.social
             #old.delete if (pay.sum+pay.academic+pay.social==0)
