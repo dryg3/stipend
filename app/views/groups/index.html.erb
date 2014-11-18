@@ -32,7 +32,7 @@
     <th></th>
   </tr>
  
-  <% @groups.sort_by{|word| word.kurs }.each do |group| %>
+  <% @groups.sort_by{|group| [group.faculty,group.year,group.kurs,group.semester,group.name] }.each do |group| %>
     <tr>
 		<td><%= group.name %></td>
 		<td><%= group.kurs %></td>

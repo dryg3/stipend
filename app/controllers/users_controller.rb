@@ -56,6 +56,6 @@ class UsersController < ApplicationController
   end
 
   def correct_faculty
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end

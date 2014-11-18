@@ -113,10 +113,10 @@ private
 
   def correct_faculty
     @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @pay_category_to_semester.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @pay_category_to_semester.faculty_id == current_user.faculty_id
   end
 
   def correct_new
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end

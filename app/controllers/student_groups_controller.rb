@@ -26,15 +26,16 @@ class StudentGroupsController < ApplicationController
     #download(current_user.faculty.id) unless params[:download].nil? or params[:download].empty?
     @s_g_all=StudentGroup.includes(:group,:student,:student=>[:certificats,:pay_to_month_students])
     @student_groups=[]
-    unless params[:surname].nil?
+    unless params[:gname].nil?
       @student_groups=@s_g_all
-      unless  params[:surname].empty? and params[:firstname].empty? and params[:secondname].empty? and params[:text].empty?
-        @student_groups &= @s_g_all.find_all{|x| x.student.surname.include? params[:surname]} unless params[:surname].nil? or  params[:surname].empty?
-        @student_groups &= @s_g_all.find_all{|x| x.student.firstname.include? params[:firstname]} unless params[:firstname].nil? or  params[:firstname].empty?
-        @student_groups &= @s_g_all.find_all{|x| x.student.secondname.include? params[:secondname]} unless params[:secondname].nil? or  params[:secondname].empty?
-        @student_groups &= @s_g_all.find_all{|x| x.student.text.include? params[:text]} unless params[:text].nil? or  params[:text].empty?
+      unless params[:surname].nil?
+        unless  params[:surname].empty? and params[:firstname].empty? and params[:secondname].empty? and params[:text].empty?
+          @student_groups &= @s_g_all.find_all{|x| x.student.surname.include? params[:surname]} unless params[:surname].nil? or  params[:surname].empty?
+          @student_groups &= @s_g_all.find_all{|x| x.student.firstname.include? params[:firstname]} unless params[:firstname].nil? or  params[:firstname].empty?
+          @student_groups &= @s_g_all.find_all{|x| x.student.secondname.include? params[:secondname]} unless params[:secondname].nil? or  params[:secondname].empty?
+          @student_groups &= @s_g_all.find_all{|x| x.student.text.include? params[:text]} unless params[:text].nil? or  params[:text].empty?
+        end
       end
-
 
       if current_user.faculty.name=="all"
         params[:faculty].empty? ?  group=@s_g_all : group=@s_g_all.find_all{|x| x.group.faculty_id == params[:faculty].to_i}
@@ -80,10 +81,10 @@ private
 
   def correct_faculty
     @student_group = StudentGroup.includes(:group,:student).find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @student_group.group.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @student_group.group.faculty_id == current_user.faculty_id
   end
 
   def correct_new
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end
