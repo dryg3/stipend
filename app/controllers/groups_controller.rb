@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
     elsif  params[:faculty].empty?
         @groups=Group.all
     else
-        @groups=faculty(Group.includes(:faculty))
+        @groups=Group.includes(:faculty).where(faculty_id:params[:faculty])
     end
   end
   
@@ -58,11 +58,11 @@ private
   end
 
   def correct_faculty
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 
   def correct_show
     @group = Group.includes(:student_groups=>:student).find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @group.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @group.faculty_id == current_user.faculty_id
   end
 end

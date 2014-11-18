@@ -191,10 +191,16 @@
                             <%certificat=student_group.student.certificats.sort_by{|x| x.date_finish}.last %>
                             <% unless certificat.nil? %>
                                 <td>
+                                  <% if certificat.date_finish<Date.today and student_group.social  %>
+                                      <div class="label label-danger">
+                                  <% end %>
                                   <% if  can? :read,Certificat  %>
                                     <%=  link_to "#{certificat.date_finish.strftime("%d.%m.%Y")}", {controller: "students", action: "certificat", id: student_group.student_id} , :target => "_blank"%>
                                   <% else %>
                                     <%= certificat.date_finish.strftime("%d.%m.%Y") %>
+                                  <% end %>
+                                  <% if certificat.date_finish<Date.today and student_group.social   %>
+                                      </div>
                                   <% end %>
                                 </td>
                             <% else%>
@@ -259,11 +265,11 @@
 
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true)}%>
                 <% if t==1 %>
-                    <%=t%> социальщик.
+                    <%=t%> социальщик.<br>
                 <% elsif t<5 %>
-                    <%=t%> социальщика.
+                    <%=t%> социальщика.<br>
                 <% else%>
-                    <%=t%> социальщиков.
+                    <%=t%> социальщиков.<br>
                 <% end %>
 
 
@@ -298,14 +304,21 @@
 
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true and q.commerce==false)}%>
                 <% if t==1 %>
-                    <%=t%> социальщик.
+                    <%=t%> социальщик.<br>
                 <% elsif t<5 %>
-                    <%=t%> социальщика.
+                    <%=t%> социальщика.<br>
                 <% else%>
-                    <%=t%> социальщиков.
+                    <%=t%> социальщиков.<br>
                 <% end %>
-
-
+              </th>
+            </tr>
+            <tr>
+              <th colspan="0" style="text-align: left"  class="group">
+Повышеная социальная стипендия: учебная - <%=@student_groups.find_all{|x| x.study}.size%>,
+                                общественная - <%= @student_groups.find_all{|x| x.public}.size%>,
+                                НИД - <%= @student_groups.find_all{|x| x.scientific}.size%>,
+                                культурная - <%= @student_groups.find_all{|x| x.cultural}.size%>
+                                спортивная - <%= @student_groups.find_all{|x| x.sports}.size%>
               </th>
             </tr>
         </table>
