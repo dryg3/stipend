@@ -194,13 +194,16 @@
                                   <% if certificat.date_finish<Date.today and student_group.social  %>
                                       <div class="label label-danger">
                                   <% end %>
+                                  <% if certificat.date_finish>Date.today and !student_group.social  %>
+                                      <div class="label label-info">
+                                  <% end %>
                                   <% if  can? :read,Certificat  %>
                                     <%=  link_to "#{certificat.date_finish.strftime("%d.%m.%Y")}", {controller: "students", action: "certificat", id: student_group.student_id} , :target => "_blank"%>
                                   <% else %>
                                     <%= certificat.date_finish.strftime("%d.%m.%Y") %>
                                   <% end %>
-                                  <% if certificat.date_finish<Date.today and student_group.social   %>
-                                      </div>
+                                  <% if (certificat.date_finish>Date.today and !student_group.social)  and (certificat.date_finish<Date.today and student_group.social)%>
+                                      <div class="label label-danger">
                                   <% end %>
                                 </td>
                             <% else%>

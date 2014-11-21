@@ -41,7 +41,7 @@
       <tr align=center >
         <% end %>
       <td><%=n%></td>
-            <td><nobr><%=  link_to "#{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", controller: "students", action: "certificat", student_id: certificat.student_id %></nobr></td>
+            <td><nobr><%=  link_to "#{certificat.student.surname} #{certificat.student.firstname[0]}. #{certificat.student.secondname[0]}.", controller: "students", action: "certificat", id: certificat.student_id %></nobr></td>
             <td><%= link_to " #{certificat.number}", edit_certificat_path(certificat) %></td>
             <td><%= certificat.who %></td>
             <td><%= certificat.when.strftime("%d.%m.%Y") %></td>

@@ -10,7 +10,7 @@
         <th>Тип</th>
         <th></th>
     </tr>
-      <% @orders.sort_by { |x| [ x.faculty_id, !x.status, x.date, x.number]}.reverse.each do |order| %>
+      <% @orders.sort_by { |x| [ x.faculty_id, !x.status, x.date, x.number.to_i]}.reverse.each do |order| %>
         <tr>
           <td><%= link_to "#{order.number} от #{l order.date, format: :default}", order%></td>
           <!--<td><% order.number %> от <% l order.date, format: :default%></td>-->

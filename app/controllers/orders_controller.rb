@@ -51,11 +51,11 @@ class OrdersController < ApplicationController
         for i in 0...params[:order][:list].size
           if i >= Order::LIST.size
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\t"<<params[:order][:list][i.to_s]["name2"]<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
             end
           else
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s<<"\t"<<Order::LIST[i][1].to_s<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s+"\t"+Order::LIST[i][1].to_s+"\n"
             end
           end
         end
@@ -65,11 +65,11 @@ class OrdersController < ApplicationController
         for i in 0...params[:order][:list].size
           if i >= Order::LIST2[@order.faculty.id].size
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"
             end
           else
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s+"\n"
             end
           end
         end
