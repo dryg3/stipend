@@ -41,12 +41,23 @@
         <td><%= pay_category_to_semester.cultural %></td>
         <td><%= pay_category_to_semester.sports %></td>
         <td><%= pay_category_to_semester.soc_five%>/<%= pay_category_to_semester.soc_four%></td>
-        <td>
-          <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary"   %>
-        </td>
-        <td>
-          <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success"  %>
-        </td>
+
+        <% if pay_category_to_semester.date_finish>Date.today%>
+            <td>
+              <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary"   %>
+            </td>
+            <td>
+              <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success"  %>
+            </td>
+        <%else%>
+            <td>
+              <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary disabled"   %>
+            </td>
+            <td>
+              <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success disabled"  %>
+            </td>
+        <% end %>
+
         <td>
           <% if  can? :manager, :all  %>
               <%= link_to 'Show', pay_category_to_semester %>
