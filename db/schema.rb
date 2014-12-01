@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006125254) do
+ActiveRecord::Schema.define(version: 20141201094737) do
 
   create_table "account_to_semesters", force: true do |t|
     t.integer  "sum"
@@ -112,13 +112,12 @@ ActiveRecord::Schema.define(version: 20141006125254) do
     t.integer  "cultural"
     t.integer  "sports"
     t.integer  "social1"
-    t.integer  "five1"
-    t.integer  "four1"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "faculty_id"
     t.string   "year"
     t.integer  "semester"
+    t.integer  "first"
   end
 
   add_index "pay_category_to_semesters", ["faculty_id"], name: "index_pay_category_to_semesters_on_faculty_id"
