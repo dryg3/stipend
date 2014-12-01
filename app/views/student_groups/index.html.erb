@@ -138,9 +138,15 @@
                                   <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
                                 </div>
                               </td>
-                            <%elsif student_group.type_stipend==2%>
+                          <%elsif student_group.type_stipend==2%>
                               <td>
                                 <div class="label label-danger">
+                                  <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
+                                </div>
+                              </td>
+                          <%elsif student_group.type_stipend==3%>
+                              <td>
+                                <div class="label label-success">
                                   <%=StudentGroup::TYPE_STIPEND_SHORT[student_group.type_stipend]%>
                                 </div>
                               </td>
