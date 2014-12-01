@@ -34,11 +34,9 @@ class PayToMonthStudentsController < ApplicationController
           pay.social+=@pays.social1 if s.social && kurs==1 && sem==1
           pay.social+=@pays.social if s.social && !(kurs==1 && sem==1)
 
-          pay.academic+=@pays.five1 if s.type_stipend==2 && kurs==1 && sem==1
-          pay.academic+=@pays.five if s.type_stipend==2 && !(kurs==1 && sem==1)
-
-          pay.academic+=@pays.four1 if s.type_stipend==1 && kurs==1 && sem==1
-          pay.academic+=@pays.four if s.type_stipend==1 && !(kurs==1 && sem==1)
+          pay.academic+=@pays.first if s.type_stipend==3
+          pay.academic+=@pays.five if s.type_stipend==2
+          pay.academic+=@pays.four if s.type_stipend==1
 
           pay.study+=@pays.study if s.study
 
@@ -52,8 +50,8 @@ class PayToMonthStudentsController < ApplicationController
 
           pay.sum=pay.public+pay.scientific+pay.cultural+pay.sports+pay.study
 
-          norm=Norm.find(1).number
-          pay.surcharge+=norm-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (norm-pay.academic-pay.social-pay.sum>0)
+          pay.surcharge+=@pays.soc_four if s.type_stipend==1 && s.social && ((kurs==1 && sem!=1)|| kurs==2)
+          pay.surcharge+=@pays.soc_five if s.type_stipend==2 && s.social && ((kurs==1 && sem!=1)|| kurs==2)
 
           if (old=s.student.pay_to_month_students.find{|x| x.month==pay.month and x.year==pay.year}).nil?
             p pay

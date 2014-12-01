@@ -4,7 +4,7 @@ class PayCategoryToSemestersController < ApplicationController
   before_action :correct_new, only: [:new]
 
   def kalkul
-    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where("commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?",false,sem_today, params[:faculty_id], year_today,1).references(:group)
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?',false,sem_today, params[:faculty_id], year_today,1).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.study=@s_g_all.find_all{|x| x.study}.size
@@ -47,7 +47,6 @@ class PayCategoryToSemestersController < ApplicationController
     @category.soc_four=@s_g_all.find_all{|x| x.type_stipend == 1 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size
     @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
     @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
-    norm=Norm.find(1).number
     @sum[3]=0
     @sum[3]+=@category.social * params[:social].to_i unless params[:social].nil? or params[:social].empty?
     @sum[3]+=@category.five * params[:five].to_i unless params[:five].nil? or params[:five].empty?
