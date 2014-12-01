@@ -5,7 +5,7 @@ class PayCategoryToSemester < ActiveRecord::Base
 	validates_presence_of  :date_start,:date_finish,
 	:social,:five,:four,
 	:study,:public,:scientific,:cultural,:sports,
-	:social1,:five1,:four1,
+	:social1,:first,:soc_five,:soc_four,
 	:faculty_id,
 	message: " поле должнобыть заполнено" 
 	

@@ -64,8 +64,10 @@
     <%=  f.hidden_field :sports,:value =>  params[:sports].nil? ? params[:pay_category_to_semester][:sports] : params[:sports]%>
 
     <%=  f.hidden_field :social1, :value => params[:social1].nil? ? params[:pay_category_to_semester][:social1] : params[:social1] %>
-    <%=  f.hidden_field :four1, :value => params[:four1].nil? ? params[:pay_category_to_semester][:four1] : params[:four1]%>
-    <%=  f.hidden_field :five1, :value => params[:five1].nil? ? params[:pay_category_to_semester][:five1] : params[:five1] %>
+    <%=  f.hidden_field :first, :value => params[:first].nil? ? params[:pay_category_to_semester][:first] : params[:first] %>
+
+    <%=  f.hidden_field :soc_four, :value => params[:soc_four].nil? ? params[:pay_category_to_semester][:soc_four] : params[:soc_four]%>
+    <%=  f.hidden_field :soc_five, :value => params[:soc_five].nil? ? params[:pay_category_to_semester][:soc_five] : params[:soc_five] %>
 
     <%=  f.hidden_field :social, :value => params[:social].nil? ? params[:pay_category_to_semester][:social] : params[:social] %>
     <%=  f.hidden_field :four, :value => params[:four].nil? ? params[:pay_category_to_semester][:four] : params[:four]%>
@@ -105,25 +107,41 @@
 
 <table  width="250">
   <tr>
-    <th></th>
-    <th></th>
-    <th>1 курс</th>
-    <th></th>
+    <th><br></th>
   </tr>
   <tr>
     <td><strong>Социальная:</strong></td>
     <td><%=params[:social]%></td>
-    <td><%=params[:social1]%></td>
   </tr>
   <tr>
     <td><strong>Хорошист:</strong></td>
     <td><%=params[:four]%></td>
-    <td><%=params[:four1]%></td>
   </tr>
   <tr>
     <td><strong>Отличник:</strong></td>
     <td><%=params[:five]%></td>
-    <td><%=params[:five1]%></td>
+  </tr>
+  <tr>
+    <th><br></th>
+  </tr>
+  <tr>
+    <td><strong>Первый курс:</strong></td>
+    <td><%=params[:first]%></td>
+  </tr>
+  <tr>
+    <td><strong>Социальная:</strong></td>
+    <td><%=params[:social1]%></td>
+  </tr>
+  <tr>
+    <th><br>Доплата:</th>
+  </tr>
+  <tr>
+    <td>Хорошист:</td>
+    <td><%=params[:soc_four]%></td>
+  </tr>
+  <tr>
+    <td>Отличник:</td>
+    <td><%=params[:soc_five]%></td>
   </tr>
 </table>
 

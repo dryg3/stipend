@@ -6,6 +6,7 @@
  <th>Соц. </th>
  <th>Хор </th> 
  <th>Отл </th>
+ <th>1курс </th>
  <th>уч. д-ть</th>
  <th>общ. д-ть</th>
  <th>нид</th>
@@ -21,8 +22,9 @@
     <td><%= @pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %></td>
 
     <td><%= @pay_category_to_semester.social1 %>/<%= @pay_category_to_semester.social %></td>
-	<td><%= @pay_category_to_semester.four1%>/<%= @pay_category_to_semester.four%></td> 
-    <td><%= @pay_category_to_semester.five1 %>/<%= @pay_category_to_semester.five %></td>
+	<td><%= @pay_category_to_semester.four%></td>
+    <td><%= @pay_category_to_semester.five %></td>
+    <td><%= @pay_category_to_semester.first %></td>
     <td><%= @pay_category_to_semester.study %></td>
     <td><%= @pay_category_to_semester.public %></td>
     <td><%= @pay_category_to_semester.scientific %></td>

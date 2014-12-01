@@ -24,11 +24,11 @@
             + </td>
             <td><%= @category.five %> <%= text_field_tag(:five, params[:five].nil? ? @sum[2] : params[:five],  :style => "width:80px") %>
             + </td>
-            <td><%= @socfour[0] %> <%= text_field_tag(:socfour, @socfour[1], disabled: true,  :style => "width:80px")%>
+            <td><%= @category.soc_four %> <%= text_field_tag(:soc_four, params[:soc_four].nil? ? @sum[2] : params[:soc_four],   :style => "width:80px")%>
             + </td>
-            <td><%= @socfive[0] %> <%= text_field_tag(:socfive, @socfour[1], disabled: true,  :style => "width:80px") %>
+            <td><%= @category.soc_five %> <%= text_field_tag(:soc_five, params[:soc_five].nil? ? @sum[2] : params[:soc_five],   :style => "width:80px") %>
             =</td>
-            <td><%=  text_field_tag(:summa, @sum[3],  :style => "width:80px") %></td>
+            <td><%=@sum[3]%></td>
         </tr>
     </table>
 
@@ -40,12 +40,11 @@
         <%=  hidden_field_tag(:sports, params[:sports]) %>
 
     <%=  hidden_field_tag(:social1, params[:social1]) %>
-    <%=  hidden_field_tag(:four1, params[:four1])%>
-    <%=  hidden_field_tag(:five1, params[:five1]) %>
+    <%=  hidden_field_tag(:first, params[:first]) %>
 
         <div class="form-actions">
         <button class="btn btn-large btn-info" type="submit" > Посчитать</button>
-        <%=  link_to "Далее >>>", { controller: "pay_category_to_semesters", action: "new1", faculty_id: params[:faculty_id], sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],five: params[:five],social: params[:social],four: params[:four],five1: params[:five1],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
+        <%=  link_to "Далее >>>", { controller: "pay_category_to_semesters", action: "new1", faculty_id: params[:faculty_id], sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],five: params[:five],social: params[:social],four: params[:four],first: params[:first],social1: params[:social1],soc_four: params[:soc_four],soc_five: params[:soc_five]},  :class => "btn btn-primary"  %>
     </div>
 <%end%>
 
@@ -76,24 +75,40 @@
 
 <table  width="250">
   <tr>
-    <th></th>
-    <th></th>
-    <th>1 курс</th>
-    <th></th>
+    <th><br></th>
   </tr>
   <tr>
     <td><strong>Социальная:</strong></td>
     <td><%=params[:social]%></td>
-    <td><%=params[:social1]%></td>
   </tr>
   <tr>
     <td><strong>Хорошист:</strong></td>
     <td><%=params[:four]%></td>
-    <td><%=params[:four1]%></td>
   </tr>
   <tr>
     <td><strong>Отличник:</strong></td>
     <td><%=params[:five]%></td>
-    <td><%=params[:five1]%></td>
+  </tr>
+  <tr>
+    <th><br></th>
+  </tr>
+  <tr>
+    <td><strong>Первый курс:</strong></td>
+    <td><%=params[:first]%></td>
+  </tr>
+  <tr>
+    <td><strong>Социальная:</strong></td>
+    <td><%=params[:social1]%></td>
+  </tr>
+  <tr>
+    <th><br>Доплата:</th>
+  </tr>
+  <tr>
+    <td>Хорошист:</td>
+    <td><%=params[:soc_four]%></td>
+  </tr>
+  <tr>
+    <td>Отличник:</td>
+    <td><%=params[:soc_five]%></td>
   </tr>
 </table>
