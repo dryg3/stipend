@@ -12,6 +12,7 @@
  <th>нид</th>
  <th>культ. д-ть</th>
  <th>спорт. д-ть</th>
+ <th>доплата</th>
   
   </tr>
  
@@ -30,14 +31,14 @@
     <td><%= @pay_category_to_semester.scientific %></td>
     <td><%= @pay_category_to_semester.cultural %></td>
     <td><%= @pay_category_to_semester.sports %></td>
-
+    <td><%= @pay_category_to_semester.soc_five%>/<%= @pay_category_to_semester.soc_four%></td>
     </tr>
 
 </table>
 
   <p>
-<%= link_to 'Изменить счет факультета на семестр', edit_pay_category_to_semester_path(@pay_category_to_semester) %> |
-<%= link_to 'Вернутся к списку',pay_category_to_semesters_path %>
+<%= link_to 'Изменить счет', edit_pay_category_to_semester_path(@pay_category_to_semester), class: "btn btn-primary" %>
+<%= link_to 'Вернутся к списку',pay_category_to_semesters_path, class: "btn btn-success" %>
   </p>
 
 

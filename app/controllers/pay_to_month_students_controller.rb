@@ -101,6 +101,7 @@ class PayToMonthStudentsController < ApplicationController
       end
     else
       pay_metod
+      flash.now[:success] = 'Расчет распределен'
       @pay_to_month_students = @pays.faculty.groups.find_all{|x| x.semester==@pays.semester and x.year==@pays.year}.map{|x| x.student_groups}.flatten.find_all{|x| !x.commerce}.map{|x| x.student.pay_to_month_students}.flatten.find_all{|x| Date.new(x.year,x.month,1)>=Date.new(@pays.date_start.year,@pays.date_start.month,1) and Date.new(x.year,x.month,1)<=Date.new(@pays.date_finish.year,@pays.date_finish.month,1)}
     end
   end
