@@ -82,7 +82,6 @@
                 <th>Справки студента</th>
                 <th>Выплаты студенту</th>
             </tr>
-            <%size=0 %>
             <% @student_groups.map{|x| x.group}.uniq.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
                 <tr>
                     <th  colspan="0" class="group"  >
@@ -96,7 +95,7 @@
                 <%n=0 %>
                 <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
                     <% if s.name ==student_group.group.name%>
-                        <%size+=1 %><%n+=1 %>
+                        <%n+=1 %>
                         <tr>
                             <td>
                                 <% if  can? :read,StudentGroup  %>
@@ -257,16 +256,17 @@
             <% end %>
             <tr>
               <th colspan="0" style="text-align: left"  class="group">
-                <% if size!=1 and size<5 %>
-                    Всего: <%=size%> человека,
+                <%t=@student_groups.size%>
+                <% if t!=1 and t<5 and t!=0%>
+                    Всего: <%=t%> человека,
                 <% else%>
-                    Всего: <%=size%> человек,
+                    Всего: <%=t%> человек,
                 <% end %>
 
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1)}%>
                 <% if t==1 %>
                     <%=t%> хорошист,
-                <% elsif t<5 %>
+                <% elsif t<5 and t!=0  %>
                     <%=t%> хорошиста,
                 <% else%>
                     <%=t%> хорошистов,
@@ -275,7 +275,7 @@
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2)}%>
                 <% if t==1 %>
                     <%=t%> отличник,
-                <% elsif t<5 %>
+                <% elsif t<5 and t!=0  %>
                     <%=t%> отличника,
                 <% else%>
                     <%=t%> отличников,
@@ -284,7 +284,7 @@
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true)}%>
                 <% if t==1 %>
                     <%=t%> социальщик.<br>
-                <% elsif t<5 %>
+                <% elsif t<5 and t!=0  %>
                     <%=t%> социальщика.<br>
                 <% else%>
                     <%=t%> социальщиков.<br>
@@ -296,7 +296,7 @@
             <tr>
               <th colspan="0" style="text-align: left"  class="group">
                 <% t=0%><%@student_groups.each{|q| t+=1 if ( q.commerce==false)}%>
-                <% if t!=1 and t<5 %>
+                <% if t!=1 and t<5 and t!=0%>
                     Из них бюджетных: <%=t%> человека,
                 <% else%>
                     Из них бюджетных: <%=t%> человек,
@@ -305,7 +305,7 @@
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==1 and q.commerce==false)}%>
                 <% if t==1 %>
                     <%=t%> хорошист,
-                <% elsif t<5 %>
+                <% elsif t<5 and t!=0 %>
                     <%=t%> хорошиста,
                 <% else%>
                     <%=t%> хорошистов,
@@ -314,7 +314,7 @@
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==2 and q.commerce==false)}%>
                 <% if t==1 %>
                     <%=t%> отличник,
-                <% elsif t<5 %>
+                <% elsif t<5 and t!=0 %>
                     <%=t%> отличника,
                 <% else%>
                     <%=t%> отличников,
@@ -322,11 +322,20 @@
 
                 <% t=0%><%@student_groups.each{|q| t+=1 if (q.social==true and q.commerce==false)}%>
                 <% if t==1 %>
-                    <%=t%> социальщик.<br>
-                <% elsif t<5 %>
-                    <%=t%> социальщика.<br>
+                    <%=t%> социальщик,
+                <% elsif t<5 and t!=0 %>
+                    <%=t%> социальщика,
                 <% else%>
-                    <%=t%> социальщиков.<br>
+                    <%=t%> социальщиков,
+                <% end %>
+
+                <% t=0%><%@student_groups.each{|q| t+=1 if (q.type_stipend==3 and q.commerce==false)}%>
+                <% if t==1 %>
+                    <%=t%> студент первого курса.<br>
+                <% elsif t<5 and t!=0 %>
+                    <%=t%> студента первого курса.<br>
+                <% else%>
+                    <%=t%> студентов первого курса.<br>
                 <% end %>
               </th>
             </tr>
