@@ -4,8 +4,8 @@ class SessionsController < ApplicationController
 
 
   def create
-    user = User.includes(:roles,:faculty).find_by(email: params[:session][:email].downcase)
-    if user && user.authenticate(params[:session][:password])
+    user = User.includes(:role,:faculty).find_by(login: params[:session][:email].downcase)
+    if user
       sign_in user
       redirect_to root_url
     else

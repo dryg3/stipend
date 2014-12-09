@@ -1,10 +1,15 @@
 <% provide(:title, 'Пользователи') %>
 <h1>Пользователи</h1>
 
+<p>
+<%= link_to 'Новый пользователь', signup_path, class: 'btn btn-large btn-success enabled' %>
+</p>
 
 <table class="table table-hover">
   <tr>
-    <th>Фамилия И.О.</th>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
     <th>Логин</th>
     <th>Телефон</th>
     <th>Факультет</th>
@@ -12,10 +17,13 @@
   </tr>
   <% @users.each do |user| %>
       <tr>
-        <td><%=user.name%></td>
-        <td><%=user.email%></td>
+        <td><%=user.surname%></td>
+        <td><%=user.firstname%></td>
+        <td><%=user.secondname%></td>
+        <td><%=user.login%></td>
         <td><%=user.tel%></td>
         <td><%=user.faculty.short_name%></td>
+        <td><%=user.role.name%></td>
         <% if can? :manager, :all %>
             <td><%= link_to 'Show', user %></td>
             <td><%= link_to 'Edit', edit_user_path(user) %></td>

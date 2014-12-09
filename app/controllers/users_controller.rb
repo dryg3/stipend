@@ -13,8 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
+      flash[:success] = 'Пользователь создан'
       redirect_to @user
     else
       render 'new'
@@ -28,7 +27,7 @@ class UsersController < ApplicationController
   def update
     #@user = User.find(params[:id])
     if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
+      flash[:success] = 'Пользователь изменен'
       redirect_to @user
     else
       render 'edit'
@@ -37,22 +36,21 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    flash[:success] = "User deleted."
+    flash[:success] = 'Пользователь удален'
     redirect_to users_url
   end
 
   def index
-    @users = User.includes(:faculty)
+    @users = User.includes(:faculty,:role)
   end
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :tel, :password, :password_confirmation)
+    params.require(:user).permit(:surname, :firstname, :secondname, :login, :tel, :faculty_id, :role_id)
   end
 
   def correct_user
-    @user = User.includes(:roles,:faculty).find(params[:id])
-    redirect_to(users_url) unless current_user?(@user) || current_user.faculty.name == "all"
+    @user = User.includes(:role,:faculty).find(params[:id])
   end
 
   def correct_faculty

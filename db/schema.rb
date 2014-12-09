@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201102912) do
+ActiveRecord::Schema.define(version: 20141209094958) do
 
   create_table "account_to_semesters", force: true do |t|
     t.integer  "sum"
@@ -183,18 +183,21 @@ ActiveRecord::Schema.define(version: 20141201102912) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "email"
+    t.string   "surname"
+    t.string   "login"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_digest"
     t.string   "remember_token"
     t.integer  "faculty_id"
     t.string   "tel"
+    t.integer  "role_id"
+    t.string   "firstname"
+    t.string   "secondname"
   end
 
   add_index "users", ["faculty_id"], name: "index_users_on_faculty_id"
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["role_id"], name: "index_users_on_role_id"
 
   create_table "users_roles", force: true do |t|
     t.integer  "user_id"

@@ -1,26 +1,47 @@
 
 <h1>Регистрация нового пользователя</h1>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@user) do |f| %>
-<%= render 'shared/error_messages' %>
-        IP-Телефон<br>
-        <%= f.telephone_field :tel %><br>
 
-        Фамилия И.О.<br>
-        <%= f.text_field :name %><br>
+<%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages' %>
 
-        Логин или эл. почта<br>
-        <%= f.text_field :email %><br>
+    <p>
+      Фамилия<br>
+      <%= f.text_field :surname %><br>
+    </p>
 
-        Пороль<br>
-        <%= f.password_field :password %><br>
+    <p>
+      Имя<br>
+      <%= f.text_field :firstname %><br>
+    </p>
 
-        <%= f.label :password_confirmation, "Повторите пороль" %><br>
-        <%= f.password_field :password_confirmation %><br>
+    <p>
+      Отчество<br>
+      <%= f.text_field :secondname %><br>
+    </p>
 
-        <%= f.submit "Создать", class: "btn btn-large btn-primary" %>
-    <% end %>
-  </div>
-</div>
+    <p>
+      Логин<br>
+      <%= f.text_field :login %><br>
+    </p>
+
+    <p>
+      IP-Телефон<br>
+      <%= f.telephone_field :tel %><br>
+    </p>
+
+    <p>
+      Институт<br>
+      <%= select("user", "faculty_id", Faculty.all.collect {|p| [ p.short_name, p.id ] }, { include_blank: true})%><br>
+    </p>
+
+    <p>
+      Роль<br>
+      <%= select("user", "role_id", Role.all.collect {|p| [ p.name, p.id ] }, { include_blank: true})%><br>
+    </p>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="reset" class="btn">Отменить</button>
+    </div>
+<% end %>

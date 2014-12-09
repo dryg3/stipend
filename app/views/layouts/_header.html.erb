@@ -19,14 +19,13 @@
         <ul class="nav pull-right">
           <% if signed_in? %>
               <li class="divider-vertical"></li>
-              <%current_user.roles.each{|w| @t=1 if w.name=="admin"}%>
-              <% if @t==1%>
+              <% if current_user.role_id==2%>
                 <li class="divider-vertical"></li>
                 <li><a href="/users">Пользователи</a></li>
               <%end%>
               <li id="fat-menu" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Институт: <%=current_user.faculty.short_name%>, <%=current_user.name%> <b class="caret"></b>
+                  Институт: <%=current_user.faculty.short_name%>, <%=current_user.surname%> <%=current_user.firstname[0]%>.<%=current_user.secondname[0]%>.<b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                   <!--<li><%= link_to "Личный кабинет", current_user %></li>-->

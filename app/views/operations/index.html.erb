@@ -48,7 +48,7 @@
                 <%end%>
                 <td><%= operation.sum %></td>
                 <td><%=l operation.date_op %></td>
-                <td><%= operation.user.name %></td>
+                <td><%= operation.user.surname%> <%= operation.user.firstname[0]%>.<%= operation.user.secondname[0]%>.</td>
                 <td><%= operation.text %></td>
                 <%if can? :manager, Operation%>
                     <td><%= link_to 'Show', operation %></td>

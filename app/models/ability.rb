@@ -5,8 +5,7 @@ class Ability
     if user.nil?
       role="guest"
     else
-      user ||= User.new # guest user (not logged in)
-      role=UsersRole.includes(:role).find_by_user_id(user.id).role.name
+      role=user.role.name
     end
     if role=="admin"
       can :manage, :all
