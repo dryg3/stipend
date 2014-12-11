@@ -36,11 +36,9 @@ module NewBasesHelper
       tmp=@tmp.find{|q| q.student_id==x.to_i}
       unless tmp.nil?
         old=Student.find(x.to_i)
-        old.name=tmp.name
-        old.year=tmp.year
-        old.faculty_id=tmp.faculty_id
-        old.kurs=tmp.kurs
-        old.semester=tmp.semester
+        old.surname=tmp.surname
+        old.firstname=tmp.firstname
+        old.secondname=tmp.secondname
         old.save!
       end
     end
@@ -51,12 +49,10 @@ module NewBasesHelper
       tmp=@tmp.find{|q| q.id==x.to_i}
       unless tmp.nil?
         old=Student.new
-        old.name=tmp.name
-        old.year=tmp.year
-        old.faculty_id=tmp.faculty_id
+        old.surname=tmp.surname
+        old.firstname=tmp.firstname
+        old.secondname=tmp.secondname
         old.old_id=tmp.old_id
-        old.kurs=tmp.kurs
-        old.semester=tmp.semester
         old.save!
       end
     end

@@ -46,7 +46,6 @@ class NewBasesController < ApplicationController
         end
       end
     end
-    @groups=TmpGroup.all
   end
 
   def student
@@ -57,7 +56,7 @@ class NewBasesController < ApplicationController
     unless params[:new_base].nil?
       new_student
     end
-    g=TmpGroup.all
+    g=TmpStudent.all
     g.delete_all(['user_id = ?', current_user.id])
 
     student_all=Student.all
@@ -83,21 +82,21 @@ class NewBasesController < ApplicationController
         p result
         for i in 0...result.size
           r=result[i]
-          s=Student.new(old_id:r[0], surname:r[1], firstname:r[2], secondname:r[3])
           # p s
           if r[5]=="обучается"
             if (old=student_all.find{|x| x.old_id==r[0].to_i}).nil?
-              # s.save!
-              p "new"
-              p s
+              s=TmpStudent.new(old_id:r[0], surname:r[1], firstname:r[2], secondname:r[3], status: 0, user_id: current_user.id)
+              s.save!
               @student<<[0,s]
             else
+              s=TmpStudent.new(old_id:r[0], surname:r[1], firstname:r[2], secondname:r[3], status: 1, user_id: current_user.id, student_id:old.id)
               new_old=old.dup
               old.surname=s.surname
               old.firstname=s.firstname
               old.secondname=s.secondname
               #old.save!
               p old
+              s.save! unless old.surname==new_old.surname and old.firstname==new_old.firstname and old.secondname==new_old.secondname
               @student<<[1,new_old,old] unless old.surname==new_old.surname and old.firstname==new_old.firstname and old.secondname==new_old.secondname
             end
           end
