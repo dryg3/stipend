@@ -1,12 +1,44 @@
 <%= form_for :new_bases do |f| %>
+    <h1>Новые группы</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Название</th>
+                <th>Курс</th>
+                <th>Семестр    </th>
+                <th>Учебный год</th>
+                <th>Факультет</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%i=0%>
+            <% @group.each do |group| %>
+                <%if group[0]==0%>
+                    <%i+=1%>
+                    <%group=group[1]%>
+                    <tr>
+                        <td><%=i%></td>
+                        <td><%= check_box_tag 'new_base[]', group.id %></td>
+                        <td><%= group.name %></td>
+                        <td><%= group.kurs %></td>
+                        <td><%= group.semester %></td>
+                        <td><%= group.year %></td>
+                        <td><%= group.faculty.short_name %></td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </tbody>
+    </table>
+
     <h1>Изменение по группам</h1>
 
     <table  class="table table-hover">
         <thead>
             <tr>
-                <th rowspan="2"></th>
-                <th rowspan="2">Группа</th>
-                <th colspan="3">Изменения</th>
+                <th rowspan="2" colspan="3">Группа</th>
+                <th colspan="0">Изменения</th>
             </tr>
             <tr>
                 <th></th>
@@ -22,7 +54,8 @@
                 <%group1=groups[1]%>
                 <%group2=groups[2]%>
                 <tr>
-                    <td rowspan="0"><%= check_box_tag 'edit_base[]', group2 %></td>
+                    <td rowspan="0"><%=i%></td>
+                    <td rowspan="0"><%= check_box_tag 'edit_base[]', group2.id %></td>
                     <td rowspan="0"><%= group2.name %></td>
                 </tr>
 
@@ -69,43 +102,15 @@
         <%end%>
     </table>
 
-
-    <h1>Новые группы</h1>
-    <table class="table table-hover">
-        <tr>
-            <th></th>
-            <th>Название</th>
-            <th>Курс</th>
-            <th>Семестр    </th>
-            <th>Учебный год</th>
-            <th>Факультет</th>
-        </tr>
-        <%i=0%>
-        <% @group.each do |group| %>
-            <%i+=1%>
-            <%if group[0]==0%>
-                <%group=group[1]%>
-                <tr>
-                    <td><%= check_box("new_base", "#{i}", {}, group, nil) %></td>
-                    <td><%= group.name %></td>
-                    <td><%= group.name %></td>
-                    <td><%= group.kurs %></td>
-                    <td><%= group.semester %></td>
-                    <td><%= group.year %></td>
-                    <td><%= group.faculty.short_name %></td>
-                </tr>
-            <% end %>
-        <% end %>
-    </table>
-
     <div class="form-actions">
-      <button class="btn btn-large btn-info" type="submit" > Сохранить</button>
+      <button class="btn btn-large btn-success" type="submit" > Сохранить</button>
       <button class="btn btn-large btn" type="reset" > Отменить</button>
-      <%=  link_to '>>>', { controller: 'new_bases', action: 'new'},  :class => 'btn btn-primary' %>
+      <%=  link_to '>>>', { controller: 'new_bases', action: 'student'},  :class => 'btn btn-info' %>
     </div>
 <% end %>
 
 <% if  can? :manager, :all  %>
     <%=@group%>
+    <strong><%=@groups.inspect%></strong>
 <%end%>
 <%=params%>

@@ -1,10 +1,19 @@
 class NewBasesController < ApplicationController
   require "xmlrpc/client"
+
+  include NewBasesHelper
+
   def group
+    @tmp=TmpGroup.all
     unless params[:edit_base].nil?
-      params[:edit_base].each{|x| @group[x].save! }
+      edit_group
     end
-    #raise params.inspect
+    unless params[:new_base].nil?
+      new_group
+    end
+    g=TmpGroup.all
+    g.delete_all(['user_id = ?', current_user.id])
+
     faculty=Faculty.includes(:groups=>:faculty)
     groups=faculty.map{|x| x.groups}.flatten
 
@@ -17,30 +26,40 @@ class NewBasesController < ApplicationController
       for i in 0...result.size
         r=result[i]
         if faculty.find{|x| x.old_id==r[4].to_i}.id==faculty_id
-          g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
+          #g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
           #@group<<[groups.find{|x| x.old_id==r[0].to_i}]
           if (old=groups.find{|x| x.old_id==r[0].to_i}).nil?
-            p "new"
-            p g
-            #g.save!
+            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015", status: 0, user_id: current_user.id)
+            g.save!
             @group<<[0,g]
           else
+            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015", status: 1, user_id: current_user.id, group_id:old.id)
             new_old=old.dup
             old.name=g.name
             old.semester=g.semester
             old.kurs=g.kurs
             old.faculty_id=g.faculty_id
             old.year=g.year
-            p old
-            #old.save!
+            g.save! unless old.name==new_old.name and old.semester==new_old.semester and old.kurs==new_old.kurs and old.faculty_id==new_old.faculty_id and old.year==new_old.year
             @group<<[1,new_old,old] unless old.name==new_old.name and old.semester==new_old.semester and old.kurs==new_old.kurs and old.faculty_id==new_old.faculty_id and old.year==new_old.year
           end
         end
       end
     end
+    @groups=TmpGroup.all
   end
 
   def student
+    @tmp=TmpStudent.all
+    unless params[:edit_base].nil?
+      edit_student
+    end
+    unless params[:new_base].nil?
+      new_student
+    end
+    g=TmpGroup.all
+    g.delete_all(['user_id = ?', current_user.id])
+
     student_all=Student.all
     faculty_all=Faculty.all
     faculty_id=7
