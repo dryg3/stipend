@@ -1,0 +1,111 @@
+<%= form_for :new_bases do |f| %>
+    <h1>Изменение по группам</h1>
+
+    <table  class="table table-hover">
+        <thead>
+            <tr>
+                <th rowspan="2"></th>
+                <th rowspan="2">Группа</th>
+                <th colspan="3">Изменения</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Старые значения</th>
+                <th>Новые значения</th>
+            </tr>
+        </thead>
+        <%i=0%>
+        <% @group.each do |groups|%>
+          <%i+=1%>
+          <%if groups[0]==1%>
+            <tbody>
+                <%group1=groups[1]%>
+                <%group2=groups[2]%>
+                <tr>
+                    <td rowspan="0"><%= check_box_tag 'edit_base[]', group2 %></td>
+                    <td rowspan="0"><%= group2.name %></td>
+                </tr>
+
+                <%unless group1.name==group2.name%>
+                    <tr>
+                        <td>Название:</td>
+                        <td><%= group1.name %></td>
+                        <td><%= group2.name%></td>
+                    </tr>
+                <%end%>
+
+                <% unless group1.kurs==group2.kurs%>
+                    <tr>
+                        <td>Курс:</td>
+                        <td><%= group1.kurs%></td>
+                        <td><%= group2.kurs%></td>
+                    </tr>
+                <%end%>
+
+                <% unless group1.semester==group2.semester%>
+                    <tr>
+                        <td>Семестр:</td>
+                        <td><%= group1.semester%></td>
+                        <td><%= group2.semester%></td>
+                    </tr>
+                <%end%>
+
+                <% unless group1.year==group2.year%>
+                    <tr>
+                        <td>Учебный год:</td>
+                        <td><%= group1.year%></td>
+                        <td><%= group2.year%></td>
+                    </tr>
+                <%end%>
+                <%unless group1.faculty==group2.faculty%>
+                    <tr>
+                        <td>Факультет:</td>
+                        <td><%= group1.faculty.short_name%></td>
+                        <td><%= group2.faculty.short_name%></td>
+                    </tr>
+                <%end%>
+            </tbody>
+          <%end%>
+        <%end%>
+    </table>
+
+
+    <h1>Новые группы</h1>
+    <table class="table table-hover">
+        <tr>
+            <th></th>
+            <th>Название</th>
+            <th>Курс</th>
+            <th>Семестр    </th>
+            <th>Учебный год</th>
+            <th>Факультет</th>
+        </tr>
+        <%i=0%>
+        <% @group.each do |group| %>
+            <%i+=1%>
+            <%if group[0]==0%>
+                <%group=group[1]%>
+                <tr>
+                    <td><%= check_box("new_base", "#{i}", {}, group, nil) %></td>
+                    <td><%= group.name %></td>
+                    <td><%= group.name %></td>
+                    <td><%= group.kurs %></td>
+                    <td><%= group.semester %></td>
+                    <td><%= group.year %></td>
+                    <td><%= group.faculty.short_name %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+
+    <div class="form-actions">
+      <button class="btn btn-large btn-info" type="submit" > Сохранить</button>
+      <button class="btn btn-large btn" type="reset" > Отменить</button>
+      <%=  link_to '>>>', { controller: 'new_bases', action: 'new'},  :class => 'btn btn-primary' %>
+    </div>
+<% end %>
+
+<% if  can? :manager, :all  %>
+    <%=@group%>
+<%end%>
+<%=params%>

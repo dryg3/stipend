@@ -1,0 +1,196 @@
+
+<h1>Изменение по списочному составу группы</h1>
+<table  class="table table-hover">
+    <thead>
+        <tr>
+            <th rowspan="2">ФИО cтудента </th>
+            <th rowspan="2">Группа </th>
+            <th rowspan="2"></th>
+            <th colspan="3">Изменения</th>
+        </tr>
+        <tr>
+            <th>Старые значения</th>
+            <th>Новые значения</th>
+        </tr>
+    </thead>
+    <% @student_group.each do |students|%>
+      <%if students[0]==1%>
+        <tbody>
+            <%student1=students[1]%>
+            <%student2=students[2]%>
+            <tr>
+
+                <td><%= student1.student.surname%>  <%=student1.student.firstname[0]%>. <%=student1.student.secondname[0]%>.</td>
+                <td><%= student1.group.name%></td>
+                <td>
+                  <% if student1.commerce %>
+                          <div class="label label-important">
+                           Ком.
+                          </div>
+                  <% end %>
+                </td>
+                <%unless student1.commerce==student2.commerce%>
+                    <td>
+                      <% if student1.commerce %>
+                          <div class="label label-important">
+                           Коммерческое
+                          </div>
+                      <%else%>
+                          <div class="label label">
+                           Бюджетное
+                          </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if student2.commerce %>
+                          <div class="label label-important">
+                           Коммерческое
+                          </div>
+                      <%else%>
+                          <div class="label label">
+                           Бюджетное
+                          </div>
+                      <% end %>
+                    </td>
+                <%end%>
+                <%unless student1.type_stipend==student2.type_stipend%>
+                    <td>
+                      <%if student1.type_stipend==0%>
+                          <%=StudentGroup::TYPE_STIPEND[student1.type_stipend]%>
+                      <%elsif student1.type_stipend==1%>
+                          <div class="label label-primary">
+                            <%=StudentGroup::TYPE_STIPEND[student1.type_stipend]%>
+                          </div>
+                      <%elsif student1.type_stipend==2%>
+                          <div class="label label-danger">
+                            <%=StudentGroup::TYPE_STIPEND[student1.type_stipend]%>
+                          </div>
+                      <%else%>
+                          <div class="label label-inverse">
+                            <%=student1.type_stipend%>
+                          </div>
+                      <%end%>
+                    </td>
+                    <td>
+                      <%if student2.type_stipend==0%>
+                          <%=StudentGroup::TYPE_STIPEND[student2.type_stipend]%>
+                      <%elsif student2.type_stipend==1%>
+                          <div class="label label-primary">
+                            <%=StudentGroup::TYPE_STIPEND[student2.type_stipend]%>
+                          </div>
+                      <%elsif student2.type_stipend==2%>
+                          <div class="label label-danger">
+                            <%=StudentGroup::TYPE_STIPEND[student2.type_stipend]%>
+                          </div>
+                      <%else%>
+                          <div class="label label-inverse">
+                            <%=student2.type_stipend%>
+                          </div>
+                      <%end%>
+                    </td>
+                <%end%>
+            </tr>
+        </tbody>
+      <%end%>
+    <%end%>
+</table>
+
+<h1>Новые студенты в группе (зачисление, перевод)</h1>
+<table class="table table-hover ">
+    <tr>
+        <th>ФИО cтудента </th>
+        <th>Группа </th>
+        <th>Основание обучения</th>
+        <th>Академическая стипендия</th>
+    </tr>
+    <% @student_group.each do |students| %>
+        <%if students[0]==0%>
+            <%student_group=students[1]%>
+            <tr>
+                <td><%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%></td>
+                <td><%= student_group.group.name%></td>
+
+                <td>
+                    <% if student_group.commerce %>
+                      <div class="label label-important">
+                       Коммерческое
+                      </div>
+                    <%else%>
+                      <div class="label label">
+                       Бюджетное
+                      </div>
+                    <% end %>
+                </td>
+                <td>
+                    <%if student_group.type_stipend==0%>
+                        <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                    <%elsif student_group.type_stipend==1%>
+                        <div class="label label-primary">
+                          <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                        </div>
+                    <%elsif student_group.type_stipend==2%>
+                        <div class="label label-danger">
+                          <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                        </div>
+                    <%else%>
+                        <div class="label label-inverse">
+                          <%=student_group.type_stipend%>
+                        </div>
+                    <%end%>
+                </td>
+            </tr>
+        <% end %>
+    <% end %>
+</table>
+
+<h1>Удаленные студенты в группе (отчисление, перевод)</h1>
+<table class="table table-hover ">
+    <tr>
+        <th>ФИО cтудента </th>
+        <th>Группа </th>
+        <th>Основание обучения</th>
+        <th>Академическая стипендия</th>
+    </tr>
+    <% @student_group.each do |students| %>
+        <%if students[0]==2%>
+            <%student_group=students[1]%>
+            <tr>
+                <td><%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%></td>
+                <td><%= student_group.group.name%></td>
+
+                <td>
+                    <% if student_group.commerce %>
+                      <div class="label label-important">
+                       Коммерческое
+                      </div>
+                    <%else%>
+                      <div class="label label">
+                       Бюджетное
+                      </div>
+                    <% end %>
+                </td>
+                <td>
+                    <%if student_group.type_stipend==0%>
+                        <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                    <%elsif student_group.type_stipend==1%>
+                        <div class="label label-primary">
+                          <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                        </div>
+                    <%elsif student_group.type_stipend==2%>
+                        <div class="label label-danger">
+                          <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                        </div>
+                    <%else%>
+                        <div class="label label-inverse">
+                          <%=student_group.type_stipend%>
+                        </div>
+                    <%end%>
+                </td>
+            </tr>
+        <% end %>
+    <% end %>
+</table>
+
+
+
+<%=@student_group%>

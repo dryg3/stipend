@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 require "xmlrpc/client"
 task :b => :environment do
 begin
@@ -14,7 +13,9 @@ begin
 # scholarship.students_list(group_id)
 # output format: [[student_id, surname, name, pathname, type_learn, category],оценка]
 #["263347", "Дудкин", "Константин", "Евгеньевич", "коммерческий", "обучается"], "другой"]
-date="10.10.2014"
+# date=Date.today.strftime("%d.%m.%Y").to_s
+    date="18.11.2014"
+    faculty=10
     result = client.call("scholarship.groups_list", '2014/2015', '1')
     result2 = client.call("scholarship.groups_list", '2013/2014', '2')
     group=[]
@@ -23,7 +24,7 @@ date="10.10.2014"
     p "\n=================group=================\n"
     for i in 0...result.size
       r=result[i]
-      if Faculty.find_by(old_id:r[4]).id==7
+      if Faculty.find_by(old_id:r[4]).id==faculty
         g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
         if (old=Group.find_by(old_id:r[0])).nil?
           p "new"
@@ -43,7 +44,7 @@ date="10.10.2014"
 
     for i in 0...result.size
       r=result[i]
-      if Faculty.find_by(old_id:r[4]).id==7
+      if Faculty.find_by(old_id:r[4]).id==faculty
         group<<[r[0],r[1]] #[id,name]
       end
     end
@@ -61,7 +62,7 @@ date="10.10.2014"
         # p s
         if r[5]=="обучается"
           if (old=Student.find_by(old_id:r[0])).nil?
-             s.save!
+            # s.save!
             p "new"
             p s
           else
