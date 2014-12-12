@@ -58,4 +58,36 @@ module NewBasesHelper
     end
   end
 
+  def edit_student_group
+    params[:edit_base].each do |x|
+      tmp=@tmp.find{|q| q.student_group_id==x.to_i}
+      unless tmp.nil?
+        old=StudentGroup.find(x.to_i)
+        old.type_stipend=tmp.type_stipend
+        old.commerce=tmp.commerce
+        old.save!
+      end
+    end
+  end
+
+  def new_student_group
+    params[:new_base].each do |x|
+      tmp=@tmp.find{|q| q.id==x.to_i}
+      unless tmp.nil?
+        old=StudentGroup.new
+        old.type_stipend=tmp.type_stipend
+        old.commerce=tmp.commerce
+        old.student_id=tmp.student_id
+        old.group_id=tmp.group_id
+        old.save!
+      end
+    end
+  end
+
+  def del_student_group
+    params[:del_base].each do |x|
+      old=StudentGroup.find(x.to_i)
+      old.delete unless old.nil?
+    end
+  end
 end

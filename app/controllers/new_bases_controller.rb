@@ -5,12 +5,9 @@ class NewBasesController < ApplicationController
 
   def group
     @tmp=TmpGroup.all
-    unless params[:edit_base].nil?
-      edit_group
-    end
-    unless params[:new_base].nil?
-      new_group
-    end
+    edit_group unless params[:edit_base].nil?
+    new_group unless params[:new_base].nil?
+
     g=TmpGroup.all
     g.delete_all(['user_id = ?', current_user.id])
 
@@ -50,12 +47,9 @@ class NewBasesController < ApplicationController
 
   def student
     @tmp=TmpStudent.all
-    unless params[:edit_base].nil?
-      edit_student
-    end
-    unless params[:new_base].nil?
-      new_student
-    end
+    edit_student unless params[:edit_base].nil?
+    new_student unless params[:new_base].nil?
+
     g=TmpStudent.all
     g.delete_all(['user_id = ?', current_user.id])
 
@@ -106,6 +100,14 @@ class NewBasesController < ApplicationController
   end
 
   def student_group
+    @tmp=TmpStudentGroup.all
+    edit_student_group unless params[:edit_base].nil?
+    new_student_group unless params[:new_base].nil?
+    del_student_group unless params[:del_base].nil?
+
+    g=TmpStudentGroup.all
+    g.delete_all(['user_id = ?', current_user.id])
+
     new=[]
     date=Date.today.strftime("%d.%m.%Y").to_s#"06.11.2020"
     faculty_id=7
@@ -113,7 +115,7 @@ class NewBasesController < ApplicationController
     @student_group=[]
 
     student_group_all=StudentGroup.includes({:group=>:faculty},:student)
-    student_all=student_group_all.map{|x| x.student}
+    student_all=Student.all
     group_all=student_group_all.map{|x| x.group}
     faculty_all=Faculty.all
     begin
@@ -145,46 +147,41 @@ class NewBasesController < ApplicationController
           r=result[i]
           if r[5]=="обучается"
             unless (s=student_all.find{|x| x.old_id==r[0].to_i}).nil? or (g=group_all.find{|x| x.old_id== id_old.to_i}).nil?
-              sg=StudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0)
-              sg.student_id=s.id
-              if (old=student_group_all.find{|x| x.group_id==sg.group_id and x.student_id==sg.student_id}).nil?
-                p "new1"
+              if (old=student_group_all.find{|x| x.group_id==g.id and x.student_id==s.id}).nil?
+                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0, status: 0, user_id: current_user.id)
+                sg.type_stipend=3 if g.kurs==1 and g.semester==1 and !sg.commerce
+                sg.student_id=s.id
+                sg.save!
                 @student_group<<[0,sg]
               else
+                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0, status: 1, user_id: current_user.id, student_group_id:old.id)
+                sg.student_id=s.id
                 new_old=old.dup
-                old.commerce=sg.commerce
-                p "stold===1"
-                @student_group<<[1,new_old,old] unless old.commerce==new_old.commerce
+                new_old.commerce=sg.commerce
+                sg.save! unless old.commerce==new_old.commerce
+                @student_group<<[1,old,new_old] unless old.commerce==new_old.commerce
               end
             end
           else
             unless (s=student_all.find{|x| x.old_id==r[0].to_i}).nil? or (g=group_all.find{|x| x.old_id== id_old.to_i}).nil?
               old=student_group_all.find{|x| x.group_id== g.id and x.student_id== s.id}
-              p "del1"
               @student_group<<[2,old] unless old.nil?
             end
           end
         end
 
         unless result2.empty?
-          p "========="
           for i in 0...result2.size
             r=result2[i][0]
             r1=result2[i][1]
             unless (s=student_all.find{|x| x.old_id==r[0].to_i}).nil? or (g=group_all.find{|x| x.old_id== id_old.to_i}).nil?
-              sg=StudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend:(r1=="другой")? 0 :( (r1=="хорошист") ? 1 : 2))
-              sg.student_id=s.id
-              unless (old=StudentGroup.find_by(group_id: sg.group_id, student_id: sg.student_id)).nil?
+              unless (old=student_group_all.find{|x| x.group_id==g.id and x.student_id==s.id}).nil?
+                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend:(r1=="другой")? 0 :( (r1=="хорошист") ? 1 : 2), status: 1, user_id: current_user.id, student_group_id:old.id)
+                sg.student_id=s.id
                 new_old=old.dup
-                if old.type_stipend>sg.type_stipend
-                  p "<<<<"
-                  old.type_stipend=sg.type_stipend
-                elsif old.type_stipend<sg.type_stipend
-                  p ">>>>"
-                  old.type_stipend=sg.type_stipend
-                end
-                p "stold===2"
-                @student_group<<[1,new_old,old] unless old.type_stipend==new_old.type_stipend
+                new_old.type_stipend=sg.type_stipend
+                sg.save! unless old.type_stipend==new_old.type_stipend
+                @student_group<<[1,old,new_old] unless old.type_stipend==new_old.type_stipend
               end
             end
           end
@@ -193,8 +190,4 @@ class NewBasesController < ApplicationController
     end
   end
 
-
-  def new
-    raise params.inspect
-  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211142741) do
+ActiveRecord::Schema.define(version: 20141212082909) do
 
   create_table "account_to_semesters", force: true do |t|
     t.integer  "sum"
@@ -192,6 +192,16 @@ ActiveRecord::Schema.define(version: 20141211142741) do
     t.integer "group_id"
     t.integer "status"
     t.integer "user_id"
+  end
+
+  create_table "tmp_student_groups", force: true do |t|
+    t.boolean "commerce"
+    t.integer "student_id"
+    t.integer "group_id"
+    t.integer "type_stipend"
+    t.integer "status"
+    t.integer "user_id"
+    t.integer "student_group_id"
   end
 
   create_table "tmp_students", force: true do |t|
