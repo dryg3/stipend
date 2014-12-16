@@ -68,4 +68,7 @@ Blog::Application.routes.draw do
   post "new_bases/student_group"
   get "new_bases/student_group"
   get "new_bases/new"
+  post "new_bases/create_student_group"
+  post "new_bases/create_student"
+  post "new_bases/create_group"
 end

@@ -1,4 +1,4 @@
-<%= form_for :new_bases do |f| %>
+<%= form_for :new_bases, url: {action: 'create_student'} do |f| %>
     <h1>Новые студенты</h1>
     <table class="table table-hover">
       <thead>
@@ -84,11 +84,10 @@
     </table>
 
     <div class="form-actions">
+      <%=  link_to '<<<', { controller: 'new_bases', action: 'group'},  :class => 'btn btn-info' %>
       <button class="btn btn-large btn-success" type="submit" > Сохранить</button>
       <button class="btn btn-large btn" type="reset" > Отменить</button>
       <%=  link_to '>>>', { controller: 'new_bases', action: 'student_group'},  :class => 'btn btn-info' %>
     </div>
 <% end %>
 
-
-<%=@student%>

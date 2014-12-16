@@ -1,4 +1,4 @@
-<%= form_for :new_bases do |f| %>
+<%= form_for :new_bases, url: {action: 'create_group'} do |f| %>
     <h1>Новые группы</h1>
     <table class="table table-hover">
         <thead>
@@ -109,7 +109,3 @@
     </div>
 <% end %>
 
-<% if  can? :manager, :all  %>
-    <%=@group%>
-<%end%>
-<%=params%>

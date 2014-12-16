@@ -1,36 +1,25 @@
 class NewBasesController < ApplicationController
-  require "xmlrpc/client"
+  require 'xmlrpc/client'
 
   include NewBasesHelper
 
   def group
-    @tmp=TmpGroup.all
-    edit_group unless params[:edit_base].nil?
-    new_group unless params[:new_base].nil?
-
-    g=TmpGroup.all
-    g.delete_all(['user_id = ?', current_user.id])
-
-    faculty=Faculty.includes(:groups=>:faculty)
-    groups=faculty.map{|x| x.groups}.flatten
-
+    groups=Group.all
     @group=[]
     begin
-      faculty_id=7
-      client = XMLRPC::Client.new("portal.msiu.ru", "/RPC2", 8070)
+      faculty_id=current_user.faculty
+      client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call("scholarship.groups_list", '2014/2015', '1')
+      result = client.call('scholarship.groups_list', '2014/2015', '1')
       for i in 0...result.size
         r=result[i]
-        if faculty.find{|x| x.old_id==r[4].to_i}.id==faculty_id
-          #g=Group.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015")
-          #@group<<[groups.find{|x| x.old_id==r[0].to_i}]
+        if r[4].to_i==faculty_id.old_id
           if (old=groups.find{|x| x.old_id==r[0].to_i}).nil?
-            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015", status: 0, user_id: current_user.id)
+            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: faculty_id.id, year: year_today, status: 0, user_id: current_user.id)
             g.save!
             @group<<[0,g]
           else
-            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: Faculty.find_by(old_id:r[4]).id, year:"2014/2015", status: 1, user_id: current_user.id, group_id:old.id)
+            g=TmpGroup.new(old_id:r[0], name:r[1], semester:r[2], kurs:r[3],faculty_id: faculty_id.id, year: year_today, status: 1, user_id: current_user.id, group_id:old.id)
             new_old=old.dup
             old.name=g.name
             old.semester=g.semester
@@ -46,38 +35,28 @@ class NewBasesController < ApplicationController
   end
 
   def student
-    @tmp=TmpStudent.all
-    edit_student unless params[:edit_base].nil?
-    new_student unless params[:new_base].nil?
-
-    g=TmpStudent.all
-    g.delete_all(['user_id = ?', current_user.id])
-
     student_all=Student.all
-    faculty_all=Faculty.all
-    faculty_id=7
+    faculty_id=current_user.faculty.old_id
     group=[]
     @student=[]
     begin
-      client = XMLRPC::Client.new("portal.msiu.ru", "/RPC2", 8070)
+      client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call("scholarship.groups_list", '2014/2015', '1')
+      result = client.call('scholarship.groups_list', '2014/2015', '1')
 
       for i in 0...result.size
         r=result[i]
-        if faculty_all.find{|x| x.old_id==r[4].to_i}.id==faculty_id
+        if r[4].to_i==faculty_id
           group<<[r[0],r[1]] #[id,name]
         end
       end
       group.uniq!
 
-      group.each do |id,name|
-        result = client.call("scholarship.students_list_without_marks", "#{id}")
-        p result
+      group.each do |id,_|
+        result = client.call('scholarship.students_list_without_marks', "#{id}")
         for i in 0...result.size
           r=result[i]
-          # p s
-          if r[5]=="обучается"
+          if r[5]=='обучается'
             if (old=student_all.find{|x| x.old_id==r[0].to_i}).nil?
               s=TmpStudent.new(old_id:r[0], surname:r[1], firstname:r[2], secondname:r[3], status: 0, user_id: current_user.id)
               s.save!
@@ -88,8 +67,6 @@ class NewBasesController < ApplicationController
               old.surname=s.surname
               old.firstname=s.firstname
               old.secondname=s.secondname
-              #old.save!
-              p old
               s.save! unless old.surname==new_old.surname and old.firstname==new_old.firstname and old.secondname==new_old.secondname
               @student<<[1,new_old,old] unless old.surname==new_old.surname and old.firstname==new_old.firstname and old.secondname==new_old.secondname
             end
@@ -100,33 +77,25 @@ class NewBasesController < ApplicationController
   end
 
   def student_group
-    @tmp=TmpStudentGroup.all
-    edit_student_group unless params[:edit_base].nil?
-    new_student_group unless params[:new_base].nil?
-    del_student_group unless params[:del_base].nil?
-
-    g=TmpStudentGroup.all
-    g.delete_all(['user_id = ?', current_user.id])
-
     new=[]
-    date=Date.today.strftime("%d.%m.%Y").to_s#"06.11.2020"
-    faculty_id=7
+    date=Date.today.strftime('%d.%m.%Y').to_s#"06.11.2020"
+    faculty_id=current_user.faculty.old_id
     group=[]
     @student_group=[]
 
-    student_group_all=StudentGroup.includes({:group=>:faculty},:student)
+    student_group_all=StudentGroup.includes(:group,:student)
     student_all=Student.all
     group_all=student_group_all.map{|x| x.group}
-    faculty_all=Faculty.all
+
     begin
-      client = XMLRPC::Client.new("portal.msiu.ru", "/RPC2", 8070)
+      client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call("scholarship.groups_list", '2014/2015', '1')
-      result2 = client.call("scholarship.groups_list", '2013/2014', '2')
+      result = client.call('scholarship.groups_list', '2014/2015', '1')
+      result2 = client.call('scholarship.groups_list', '2013/2014', '2')
 
       for i in 0...result.size
         r=result[i]
-        if faculty_all.find{|x| x.old_id==r[4].to_i}.id==faculty_id
+        if r[4].to_i==faculty_id
           group<<[r[0],r[1]] #[id,name]
         end
       end
@@ -141,20 +110,20 @@ class NewBasesController < ApplicationController
       end
 
       new.each do |group_id,id_old|
-        result = client.call("scholarship.students_list_without_marks", "#{id_old}")
-        result2 = client.call("scholarship.students_list", "#{group_id}",date)
+        result = client.call('scholarship.students_list_without_marks', "#{id_old}")
+        result2 = client.call('scholarship.students_list', "#{group_id}",date)
         for i in 0...result.size
           r=result[i]
-          if r[5]=="обучается"
+          if r[5]=='обучается'
             unless (s=student_all.find{|x| x.old_id==r[0].to_i}).nil? or (g=group_all.find{|x| x.old_id== id_old.to_i}).nil?
               if (old=student_group_all.find{|x| x.group_id==g.id and x.student_id==s.id}).nil?
-                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0, status: 0, user_id: current_user.id)
+                sg=TmpStudentGroup.includes(:student).new(group_id: g.id, commerce: (r[4]=='бюджетный') ? 0 : 1, type_stipend: 0, status: 0, user_id: current_user.id)
                 sg.type_stipend=3 if g.kurs==1 and g.semester==1 and !sg.commerce
                 sg.student_id=s.id
                 sg.save!
                 @student_group<<[0,sg]
               else
-                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend: 0, status: 1, user_id: current_user.id, student_group_id:old.id)
+                sg=TmpStudentGroup.includes(:student).new(group_id: g.id, commerce: (r[4]=='бюджетный') ? 0 : 1, type_stipend: 0, status: 1, user_id: current_user.id, student_group_id:old.id)
                 sg.student_id=s.id
                 new_old=old.dup
                 new_old.commerce=sg.commerce
@@ -176,7 +145,7 @@ class NewBasesController < ApplicationController
             r1=result2[i][1]
             unless (s=student_all.find{|x| x.old_id==r[0].to_i}).nil? or (g=group_all.find{|x| x.old_id== id_old.to_i}).nil?
               unless (old=student_group_all.find{|x| x.group_id==g.id and x.student_id==s.id}).nil?
-                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=="бюджетный") ? 0 : 1, type_stipend:(r1=="другой")? 0 :( (r1=="хорошист") ? 1 : 2), status: 1, user_id: current_user.id, student_group_id:old.id)
+                sg=TmpStudentGroup.new(group_id: g.id, commerce: (r[4]=='бюджетный') ? 0 : 1, type_stipend:(r1=='другой')? 0 :( (r1=='хорошист') ? 1 : 2), status: 1, user_id: current_user.id, student_group_id:old.id)
                 sg.student_id=s.id
                 new_old=old.dup
                 new_old.type_stipend=sg.type_stipend
@@ -188,6 +157,43 @@ class NewBasesController < ApplicationController
         end
       end
     end
+  end
+
+  def create_student_group
+    @flash_s = ''
+    @flash_e = ''
+    @tmp=TmpStudentGroup.all
+    edit_student_group unless params[:edit_base].nil?
+    new_student_group unless params[:new_base].nil?
+    del_student_group unless params[:del_base].nil?
+    flash[:success] = @flash_s.html_safe unless @flash_s.empty?
+    flash[:error] = @flash_e.html_safe unless @flash_e.empty?
+    @tmp.delete_all(['user_id = ?', current_user.id])
+    redirect_to action: 'student_group'
+  end
+
+  def create_student
+    @flash_s = ''
+    @flash_e = ''
+    @tmp=TmpStudent.all
+    edit_student unless params[:edit_base].nil?
+    new_student unless params[:new_base].nil?
+    flash[:success] = @flash_s.html_safe unless @flash_s.empty?
+    flash[:error] = @flash_e.html_safe unless @flash_e.empty?
+    @tmp.delete_all(['user_id = ?', current_user.id])
+    redirect_to action: 'student'
+  end
+
+  def create_group
+    @flash_s = ''
+    @flash_e = ''
+    @tmp=TmpGroup.all
+    edit_group unless params[:edit_base].nil?
+    new_group unless params[:new_base].nil?
+    flash[:success] = @flash_s.html_safe unless @flash_s.empty?
+    flash[:error] = @flash_e.html_safe unless @flash_e.empty?
+    @tmp.delete_all(['user_id = ?', current_user.id])
+    redirect_to action: 'group'
   end
 
 end
