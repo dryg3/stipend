@@ -64,6 +64,6 @@ private
 
   def correct_faculty
     @certificat  = Certificat.includes(:student=>{:student_groups=>:group}).find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @certificat.student.student_groups.map{|x| x.group}.map{|x| x.faculty_id}.include?(current_user.faculty_id)
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @certificat.student.student_groups.map{|x| x.group}.map{|x| x.faculty_id}.include?(current_user.faculty_id)
   end
 end

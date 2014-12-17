@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
     @order.bottom=""
     @order.signature=""
     if @order.save
-      redirect_to @order
+      render action: 'edit'
     else
       render 'new'
     end
@@ -51,11 +51,11 @@ class OrdersController < ApplicationController
         for i in 0...params[:order][:list].size
           if i >= Order::LIST.size
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\t"<<params[:order][:list][i.to_s]["name2"]<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
             end
           else
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s<<"\t"<<Order::LIST[i][1].to_s<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s+"\t"+Order::LIST[i][1].to_s+"\n"
             end
           end
         end
@@ -65,11 +65,11 @@ class OrdersController < ApplicationController
         for i in 0...params[:order][:list].size
           if i >= Order::LIST2[@order.faculty.id].size
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"]<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"
             end
           else
             unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s<<"\n"
+              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s+"\n"
             end
           end
         end
@@ -103,6 +103,6 @@ private
 
   def correct_faculty
     @order = Order.includes(:pay_category_to_semester).find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @order.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @order.faculty_id == current_user.faculty_id
   end
 end

@@ -77,7 +77,7 @@
       <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
           <% if s.id ==student_group.group_id%>
               <%n+=1 %>
-              <%pay_to_month_student=student_group.student.pay_to_month_students[0]%>
+              <%pay_to_month_student=student_group.student.pay_to_month_students.find_all{|x| x.month == @order.pay_category_to_semester.date_start.month and x.year==@order.pay_category_to_semester.date_start.year }[0]%>
             \begin{footnotesize}<%=n%>\end{footnotesize}
                 <%if student_group.student.surname.size<12%>
                   &\begin{footnotesize}
@@ -149,9 +149,7 @@
 
   \end{longtable}
   }
-<%=lesc @order.bottom%>{\raggedright
-
-}
+<%= @order.bottom%>
 
 
 \vspace{1.5cm plus 1mm minus 1mm}
@@ -189,6 +187,6 @@
   Исп. <%=lesc current_user.name%>\\
   Тел. <%=lesc current_user.tel%>\\
 
-  Рассылка: ОООП <%=lesc @order.faculty.short_name%>, ПФО, стипендиальный отдел
+  Рассылка: ОООП <%=lesc @order.faculty.short_name%>, УЭР, ПФО, стипендиальный отдел
   \end{table}
   \linespread{1.5}

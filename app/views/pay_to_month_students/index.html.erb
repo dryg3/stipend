@@ -1,6 +1,7 @@
 <h1>Расчет на семестр</h1>
-<%= link_to 'Новый расчет на семестр', new_pay_to_month_student_path %> 
-
+<p>
+<%= link_to 'Вернутся к расчету', pay_category_to_semesters_path, class: "btn btn-success"  %>
+</p>
 
 
 <table class="table table-striped">
@@ -45,7 +46,3 @@
     </tr>
   <% end %>
 </table>
-
-  <p>
-<a href = "/">На первую страницу</a>
-  </p>

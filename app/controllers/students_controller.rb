@@ -64,10 +64,10 @@ private
 
   def correct_faculty
     @student = Student.includes(:certificats,:groups,{:student_groups=>{:group=>:faculty}},:pay_to_month_students).find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"  || @student.student_groups.map{|x| x.group}.map{|x| x.faculty_id}.include?(10)
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @student.student_groups.map{|x| x.group}.map{|x| x.faculty_id}.include?(current_user.faculty_id)
   end
 
   def no_admin
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end

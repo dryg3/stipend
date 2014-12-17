@@ -4,7 +4,7 @@ class PayCategoryToSemestersController < ApplicationController
   before_action :correct_new, only: [:new]
 
   def kalkul
-    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where("commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?",false,sem_today, params[:faculty_id], year_today,1).references(:group)
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?',false,sem_today, params[:faculty_id], year_today,1).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.study=@s_g_all.find_all{|x| x.study}.size
@@ -28,14 +28,12 @@ class PayCategoryToSemestersController < ApplicationController
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.social=@s_g_all.find_all{|x| x.social}.size
-    @category.five=@s_g_all.find_all{|x| x.type_stipend == 2}.size
-    @category.four=@s_g_all.find_all{|x| x.type_stipend == 1}.size
-    @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
+    @category.first=@s_g_all.find_all{|x| x.type_stipend == 3}.size
+    @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 3}.size
     @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
     @sum[3]=0
     @sum[3]+=@category.social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
-    @sum[3]+=@category.five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
-    @sum[3]+=@category.four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
+    @sum[3]+=@category.first* params[:first].to_i unless params[:first].nil? or params[:first].empty?
   end
 
   def stip2
@@ -45,18 +43,16 @@ class PayCategoryToSemestersController < ApplicationController
     @category.social=@s_g_all.find_all{|x| x.social}.size
     @category.five=@s_g_all.find_all{|x| x.type_stipend == 2}.size
     @category.four=@s_g_all.find_all{|x| x.type_stipend == 1}.size
-    @socfive=[@s_g_all.find_all{|x| x.type_stipend == 2 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size]
-    @socfour=[@s_g_all.find_all{|x| x.type_stipend == 1 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size]
+    @category.soc_five=@s_g_all.find_all{|x| x.type_stipend == 2 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size
+    @category.soc_four=@s_g_all.find_all{|x| x.type_stipend == 1 and x.social and (x.group.kurs == 1 or x.group.kurs == 2)}.size
     @sum[1]=@s_g_all.find_all{|x| x.social or x.type_stipend == 2 or x.type_stipend == 1}.size
     @sum[1]!=0 ? @sum[2]=@sum[0]/@sum[1] : 0
-    @socfive[1]=0 if (@socfive[1]=6307-params[:social].to_i-params[:five].to_i)<0
-    @socfour[1]=0 if (@socfour[1]=6307-params[:social].to_i-params[:four].to_i)<0
     @sum[3]=0
-    @sum[3]+=@category.social* params[:social1].to_i unless params[:social1].nil? or params[:social1].empty?
-    @sum[3]+=@category.five* params[:five1].to_i unless params[:five1].nil? or params[:five1].empty?
-    @sum[3]+=@category.four* params[:four1].to_i unless params[:four1].nil? or params[:four1].empty?
-    @sum[3]+=@socfive[0]*@socfive[1]
-    @sum[3]+=@socfour[0]*@socfour[1]
+    @sum[3]+=@category.social * params[:social].to_i unless params[:social].nil? or params[:social].empty?
+    @sum[3]+=@category.five * params[:five].to_i unless params[:five].nil? or params[:five].empty?
+    @sum[3]+=@category.four * params[:four].to_i unless params[:four].nil? or params[:four].empty?
+    @sum[3]+=@category.soc_five * params[:soc_five].to_i unless params[:soc_five].nil? or params[:soc_five].empty?
+    @sum[3]+=@category.soc_four * params[:soc_four].to_i unless params[:soc_four].nil? or params[:soc_four].empty?
   end
 
   def new1
@@ -107,15 +103,15 @@ class PayCategoryToSemestersController < ApplicationController
 
 private
   def pay_category_to_semester_params
-    params.require(:pay_category_to_semester).permit( :date_start,:date_finish,:social,:five,:four,:study,:public,:scientific,:cultural,:sports,:social1,:five1,:four1,:faculty_id)
+    params.require(:pay_category_to_semester).permit( :date_start,:date_finish,:social,:five,:four,:study,:public,:scientific,:cultural,:sports,:social1,:first,:soc_five,:soc_four,:faculty_id)
   end
 
   def correct_faculty
     @pay_category_to_semester = PayCategoryToSemester.find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @pay_category_to_semester.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @pay_category_to_semester.faculty_id == current_user.faculty_id
   end
 
   def correct_new
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end

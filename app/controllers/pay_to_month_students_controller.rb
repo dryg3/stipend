@@ -34,11 +34,9 @@ class PayToMonthStudentsController < ApplicationController
           pay.social+=@pays.social1 if s.social && kurs==1 && sem==1
           pay.social+=@pays.social if s.social && !(kurs==1 && sem==1)
 
-          pay.academic+=@pays.five1 if s.type_stipend==2 && kurs==1 && sem==1
-          pay.academic+=@pays.five if s.type_stipend==2 && !(kurs==1 && sem==1)
-
-          pay.academic+=@pays.four1 if s.type_stipend==1 && kurs==1 && sem==1
-          pay.academic+=@pays.four if s.type_stipend==1 && !(kurs==1 && sem==1)
+          pay.academic+=@pays.first if s.type_stipend==3
+          pay.academic+=@pays.five if s.type_stipend==2
+          pay.academic+=@pays.four if s.type_stipend==1
 
           pay.study+=@pays.study if s.study
 
@@ -52,7 +50,8 @@ class PayToMonthStudentsController < ApplicationController
 
           pay.sum=pay.public+pay.scientific+pay.cultural+pay.sports+pay.study
 
-          pay.surcharge+=6307-pay.academic-pay.social-pay.sum if s.type_stipend!=0 && s.social && ((kurs==1 && sem!=1)|| kurs==2) && (6307-pay.academic-pay.social-pay.sum>0)
+          pay.surcharge+=@pays.soc_four if s.type_stipend==1 && s.social && ((kurs==1 && sem!=1)|| kurs==2)
+          pay.surcharge+=@pays.soc_five if s.type_stipend==2 && s.social && ((kurs==1 && sem!=1)|| kurs==2)
 
           if (old=s.student.pay_to_month_students.find{|x| x.month==pay.month and x.year==pay.year}).nil?
             p pay
@@ -68,6 +67,7 @@ class PayToMonthStudentsController < ApplicationController
             old.cultural=pay.cultural
             old.sports=pay.sports
             old.surcharge=pay.surcharge
+            old.sum=pay.sum
             p "=========================="
             p pay.sum+pay.academic+pay.social
             #old.delete if (pay.sum+pay.academic+pay.social==0)
@@ -101,6 +101,7 @@ class PayToMonthStudentsController < ApplicationController
       end
     else
       pay_metod
+      flash.now[:success] = 'Расчет распределен'
       @pay_to_month_students = @pays.faculty.groups.find_all{|x| x.semester==@pays.semester and x.year==@pays.year}.map{|x| x.student_groups}.flatten.find_all{|x| !x.commerce}.map{|x| x.student.pay_to_month_students}.flatten.find_all{|x| Date.new(x.year,x.month,1)>=Date.new(@pays.date_start.year,@pays.date_start.month,1) and Date.new(x.year,x.month,1)<=Date.new(@pays.date_finish.year,@pays.date_finish.month,1)}
     end
   end
@@ -132,6 +133,6 @@ private
   end
 
   def correct_faculty
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all"
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all'
   end
 end

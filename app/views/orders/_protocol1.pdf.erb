@@ -85,7 +85,7 @@
 
       <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
           <% if s.id ==student_group.group_id%>
-              <%pay_to_month_student=student_group.student.pay_to_month_students[0]%>
+              <%pay_to_month_student=student_group.student.pay_to_month_students.find_all{|x| x.month == @order.pay_category_to_semester.date_start.month and x.year==@order.pay_category_to_semester.date_start.year }[0]%>
               <% unless pay_to_month_student.academic.zero?%>
                   <%n+=1 %>
                   \begin{footnotesize}<%=n%>\end{footnotesize}
@@ -111,9 +111,7 @@
   \end{longtable}
   }
 
-<%=lesc @order.bottom%>{\raggedright
-
-}
+<%= @order.bottom%>
 
 
 

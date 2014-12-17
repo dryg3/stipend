@@ -26,10 +26,26 @@
     Кем выдан<br>
     <%= f.text_field :who %>
   </p>
-   <p>
     Дата выдачи<br>
-    <%= date_select :certificat, :when %>
-  </p>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker1'>
+            <%= f.text_field :when, class: "form-control",value: @certificat.when.strftime("%d.%m.%Y") %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker1').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
     <p>
         Начало выплат:<br>
         <%#= f.text_field :month_start %>
@@ -46,12 +62,26 @@
         <%= select_year(Date.today.next_year, field_name: 'year_finish', :prefix => 'certificat')%>
     </p>
 
-<p>
-Дата окончания <br>
-  <%= date_select :certificat, :date_finish %>
-
-
-</p> 
+    Дата окончания<br>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker2'>
+            <%= f.text_field :date_finish, class: "form-control",value: @certificat.date_finish.strftime("%d.%m.%Y") %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker2').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
  
        <div class="form-actions">
     <button type="submit" class="btn btn-success">Сохранить</button>

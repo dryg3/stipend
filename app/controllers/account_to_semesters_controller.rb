@@ -57,11 +57,11 @@ private
 
   def correct_faculty
     @account_to_semester = AccountToSemester.find(params[:id])
-    redirect_to help_url, notice: "Доступ заприщен" unless current_user.faculty.name == "all" || @account_to_semester.faculty_id == current_user.faculty_id
+    redirect_to help_url, notice: 'Доступ запрещен' unless current_user.faculty.name == 'all' || @account_to_semester.faculty_id == current_user.faculty_id
   end
 
   def operation
     @account_to_semester = AccountToSemester.find(params[:id])
-    redirect_to controller: "operations", action: "new", account_to_semester_id: @account_to_semester.id unless current_user.faculty.name == "all"
+    redirect_to controller: 'operations', action: 'new', account_to_semester_id: @account_to_semester.id unless current_user.faculty.name == "all"
   end
 end
