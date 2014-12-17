@@ -1,5 +1,4 @@
 <h2>Студенты </h2>
-<%=@qq %>
 <div class="well  well-small">
     <%= form_tag("/student_groups", method: "get") do |f| %>
         <div class="row">
@@ -54,7 +53,7 @@
         <%= link_to 'Новый студент группы', new_student_group_path,class: "btn btn-large btn-success enabled" %>
         <%= link_to 'Новый студент (этих кнопок не будет)', new_student_path ,class: "btn btn-large btn-success enabled" %>
     <%end%>
-    <%= link_to 'Загрузить новые данные', {controller: "student_groups",download: 1},class: "btn btn-large btn-success enabled" %>
+    <%= link_to 'Загрузить новые данные', {controller: 'new_bases', action: 'group'},class: 'btn btn-large btn-success enabled', :target => "_blank" %>
 </p>
 
 <% unless @student_groups==[]%>

@@ -1,10 +1,21 @@
 module SessionsHelper
   def year_today
-  @year_today="2014/2015"
+  @year_today='2014/2015'
   end
+
   def sem_today
     @sem_today=1
   end
+
+  def year_previous(y)
+    [3,8].each{|x| y[x]=(y[x].to_i-1).to_s}
+    y
+  end
+
+  def sem_previous(s)
+    (s+2)%2+1
+  end
+
   def sign_in(user)
     remember_token = User.new_remember_token
     cookies.permanent[:remember_token] = remember_token

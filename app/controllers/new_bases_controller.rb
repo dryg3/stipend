@@ -10,7 +10,7 @@ class NewBasesController < ApplicationController
       faculty_id=current_user.faculty
       client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call('scholarship.groups_list', '2014/2015', '1')
+      result = client.call('scholarship.groups_list', "#{year_today}", "#{sem_today}")
       for i in 0...result.size
         r=result[i]
         if r[4].to_i==faculty_id.old_id
@@ -42,7 +42,7 @@ class NewBasesController < ApplicationController
     begin
       client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call('scholarship.groups_list', '2014/2015', '1')
+      result = client.call('scholarship.groups_list', "#{year_today}", "#{sem_today}")
 
       for i in 0...result.size
         r=result[i]
@@ -90,8 +90,8 @@ class NewBasesController < ApplicationController
     begin
       client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
-      result = client.call('scholarship.groups_list', '2014/2015', '1')
-      result2 = client.call('scholarship.groups_list', '2013/2014', '2')
+      result = client.call('scholarship.groups_list', "#{year_today}", "#{sem_today}")
+      result2 = client.call('scholarship.groups_list', "#{year_previous(year_today)}", "#{sem_previous(sem_today)}")
 
       for i in 0...result.size
         r=result[i]

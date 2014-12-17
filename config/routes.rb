@@ -61,13 +61,9 @@ Blog::Application.routes.draw do
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
 
-  post "new_bases/group"
   get "new_bases/group"
-  post "new_bases/student"
   get "new_bases/student"
-  post "new_bases/student_group"
   get "new_bases/student_group"
-  get "new_bases/new"
   post "new_bases/create_student_group"
   post "new_bases/create_student"
   post "new_bases/create_group"

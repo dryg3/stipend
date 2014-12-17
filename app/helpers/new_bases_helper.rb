@@ -11,9 +11,13 @@ module NewBasesHelper
         old.kurs=tmp.kurs
         old.semester=tmp.semester
         if old.save
-          @flash_s << "Данные группы #{old.name} изменены<br>"
+          @flash_s << "Данные группы <strong>#{old.name}</strong> изменены<br>"
         else
-          @flash_e << "Ошибка (#{old.id})"
+          old.errors.messages.each do |_,msg|
+            msg.each do |x|
+              @flash_e << "Группа <strong>#{old.name}</strong> - ошибка  при записи (#{x})<br>"
+            end
+          end
         end
       end
     end
@@ -35,7 +39,7 @@ module NewBasesHelper
         else
           old.errors.messages.each do |_,msg|
             msg.each do |x|
-              @flash_e << "Группа #{old.name} - ошибка  при записи (#{x})<br>"
+              @flash_e << "Группа <strong>#{old.name}</strong> - ошибка  при записи (#{x})<br>"
             end
           end
         end
@@ -52,9 +56,13 @@ module NewBasesHelper
         old.firstname=tmp.firstname
         old.secondname=tmp.secondname
         if old.save
-          @flash_s << "Данные студента #{old.surname} #{old.firstname} #{old.secondname} изменены<br>"
+          @flash_s << "Данные студента <strong>#{old.surname} #{old.firstname} #{old.secondname}</strong> изменены<br>"
         else
-          @flash_e << "Ошибка (#{old.id})"
+          old.errors.messages.each do |_,msg|
+            msg.each do |x|
+              @flash_e << "Студента <strong>#{old.surname} #{old.firstname} #{old.secondname}</strong> - ошибка  при записи (#{x})<br>"
+            end
+          end
         end
       end
     end
@@ -70,9 +78,13 @@ module NewBasesHelper
         old.secondname=tmp.secondname
         old.old_id=tmp.old_id
         if old.save
-          @flash_s << "Данные студента #{old.surname} #{old.firstname} #{old.secondname} добавлены<br>"
+          @flash_s << "Данные студента <strong>#{old.surname} #{old.firstname} #{old.secondname}</strong> добавлены<br>"
         else
-          @flash_e << "Ошибка (#{old.id})"
+          old.errors.messages.each do |_,msg|
+            msg.each do |x|
+              @flash_e << "Студента <strong>#{old.surname} #{old.firstname} #{old.secondname}</strong> - ошибка  при записи (#{x})<br>"
+            end
+          end
         end
       end
     end
@@ -86,9 +98,13 @@ module NewBasesHelper
         old.type_stipend=tmp.type_stipend
         old.commerce=tmp.commerce
         if old.save
-          @flash_s << "Данные студента #{old.student.surname} #{old.student.firstname} #{old.student.secondname} изменены<br>"
+          @flash_s << "Данные студента <strong>#{old.student.surname} #{old.student.firstname} #{old.student.secondname}</strong> изменены<br>"
         else
-          @flash_e << "Ошибка (#{old.id})"
+          old.errors.messages.each do |_,msg|
+            msg.each do |x|
+              @flash_e << "Студента <strong>#{old.student.surname} #{old.student.firstname} #{old.student.secondname}</strong> - ошибка  при записи (#{x})<br>"
+            end
+          end
         end
       end
     end
@@ -104,9 +120,13 @@ module NewBasesHelper
         old.student_id=tmp.student_id
         old.group_id=tmp.group_id
         if old.save
-          @flash_s << "Данные студента #{old.student.surname} #{old.student.firstname} #{old.student.secondname} добавлены<br>"
+          @flash_s << "Данные студента <strong>#{old.student.surname} #{old.student.firstname} #{old.student.secondname}</strong> добавлены<br>"
         else
-          @flash_e << "Ошибка (#{old.id})"
+          old.errors.messages.each do |_,msg|
+            msg.each do |x|
+              @flash_e << "Студента <strong>#{old.student.surname} #{old.student.firstname} #{old.student.secondname}</strong> - ошибка  при записи (#{x})<br>"
+            end
+          end
         end
       end
     end
@@ -116,7 +136,7 @@ module NewBasesHelper
     params[:del_base].each do |x|
       old=StudentGroup.includes(:student).find(x.to_i)
       unless old.nil?
-        @flash_s << "Данные студента #{old.student.surname} #{old.student.firstname} #{old.student.secondname} удалены<br>"
+        @flash_s << "Данные студента <strong>#{old.student.surname} #{old.student.firstname} #{old.student.secondname}</strong> удалены<br>"
         old.delete
       end
     end
