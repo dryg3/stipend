@@ -178,7 +178,12 @@
                     <Data ss:Type="Number"><%=n %></Data>
                   </Cell>
                   <Cell>
-                    <Data ss:Type="String"><%= student_group.student.surname%> <%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.</Data>
+                    <%if params[:var].to_i==1%>
+                        <Data ss:Type="String"><%= student_group.student.surname%> <%= student_group.student.firstname%> <%= student_group.student.secondname%> </Data>
+                    <%end%>
+                    <%if params[:var].to_i==2%>
+                        <Data ss:Type="String"><%= student_group.student.surname%> <%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.</Data>
+                    <%end%>
                   </Cell>
                   <%unless pay_to_month_student.social.zero?%>
                       <Cell ss:Index="3" ss:StyleID="ce1">

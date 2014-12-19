@@ -44,6 +44,10 @@
                           <div class="label label-danger">
                             <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
                           </div>
+                      <%elsif student_group.type_stipend==3%>
+                          <div class="label label-success">
+                            <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                          </div>
                       <%else%>
                           <div class="label label-inverse">
                             <%=student_group.type_stipend%>
@@ -127,6 +131,10 @@
                               <div class="label label-danger">
                                 <%=StudentGroup::TYPE_STIPEND[student1.type_stipend]%>
                               </div>
+                          <%elsif student_group.type_stipend==3%>
+                              <div class="label label-success">
+                                <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                              </div>
                           <%else%>
                               <div class="label label-inverse">
                                 <%=student1.type_stipend%>
@@ -143,6 +151,10 @@
                           <%elsif student2.type_stipend==2%>
                               <div class="label label-danger">
                                 <%=StudentGroup::TYPE_STIPEND[student2.type_stipend]%>
+                              </div>
+                          <%elsif student_group.type_stipend==3%>
+                              <div class="label label-success">
+                                <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
                               </div>
                           <%else%>
                               <div class="label label-inverse">
@@ -201,6 +213,10 @@
                             </div>
                         <%elsif student_group.type_stipend==2%>
                             <div class="label label-danger">
+                              <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
+                            </div>
+                        <%elsif student_group.type_stipend==3%>
+                            <div class="label label-success">
                               <%=StudentGroup::TYPE_STIPEND[student_group.type_stipend]%>
                             </div>
                         <%else%>
