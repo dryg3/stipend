@@ -7,7 +7,7 @@
   <strong>Кол-во людей на факультете, получающих стипендию:</strong>
   <%= @sum[1] %>
 </p>
-<%= form_tag({:action => 'stip1',:faculty_id => "#{params[:faculty_id]}"}) do  %>
+<%= form_tag(:action => 'stip1') do  %>
     <table  width="320">
         <tr>
             <th>Социальная </th>
@@ -32,7 +32,7 @@
 
     <div class="form-actions">
         <button class="btn btn-large btn-info" type="submit" > Посчитать</button>
-        <%=  link_to 'Далее >>>', { controller: 'pay_category_to_semesters', action: 'stip2', faculty_id: current_user.faculty_id, sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],first: params[:first],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
+        <%=  link_to 'Далее >>>', { controller: 'pay_category_to_semesters', action: 'stip2', sports: params[:sports], cultural: params[:cultural],scientific: params[:scientific], public: params[:public], study: params[:study],first: params[:first],social1: params[:social1],four1: params[:four1]},  :class => "btn btn-primary"  %>
     </div>
 <%end%>
 

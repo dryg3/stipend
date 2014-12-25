@@ -118,6 +118,7 @@
             <%if @order.type_order==2 or @order.type_order==5%>
 
             <%end%>
+            <%string<<"#{n}. Главному бухгалтеру Третьяковой С.А. произвести выплату стипендий студентам, указанным в п. 1#{-(n-1) if n!=2} настоящего приказа, за счет средств субсидий на иные цели.\r\n\r\n"%>
             <%= f.text_area :bottom,value:"#{string}", style: "width: 670px; height: 150px;" %>
         <%else%>
             <%= f.text_area :bottom, style: "width: 670px; height: 150px;" %>

@@ -18,7 +18,7 @@
  
  
     <tr>
-   <td><%=@pay_category_to_semester.faculty.name %></td>
+    <td><%=@pay_category_to_semester.faculty.short_name %></td>
 	<td><%= @pay_category_to_semester.date_start.strftime("%d.%m.%Y") %></td>
     <td><%= @pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %></td>
 
@@ -37,7 +37,7 @@
 </table>
 
   <p>
-<%= link_to 'Изменить счет', edit_pay_category_to_semester_path(@pay_category_to_semester), class: "btn btn-primary" %>
+<%= link_to 'Изменить расчет', edit_pay_category_to_semester_path(@pay_category_to_semester), class: "btn btn-primary" %>
 <%= link_to 'Вернутся к списку',pay_category_to_semesters_path, class: "btn btn-success" %>
   </p>
 

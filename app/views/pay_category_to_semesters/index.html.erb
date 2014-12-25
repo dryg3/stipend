@@ -1,7 +1,7 @@
 <h1>Расчет на семестр</h1>
 <p>
   <a href="/account_to_semesters" class="btn btn-primary">Изменить счет на семестр</a>
-  <%= link_to 'Новый расчет на семестр', {controller: "pay_category_to_semesters", action: "kalkul", faculty_id: current_user.faculty_id}, class: "btn btn-success"  %>
+  <%= link_to 'Новый расчет на семестр', {controller: "pay_category_to_semesters", action: "kalkul"}, class: "btn btn-success"  %>
 </p>
 
 
@@ -43,7 +43,7 @@
         <td><%= pay_category_to_semester.sports %></td>
         <td><%= pay_category_to_semester.soc_five%>/<%= pay_category_to_semester.soc_four%></td>
 
-        <% if pay_category_to_semester.date_finish>Date.today%>
+        <% if pay_category_to_semester.date_finish>Date.today or can? :manager, :all%>
             <td>
               <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary"   %>
             </td>

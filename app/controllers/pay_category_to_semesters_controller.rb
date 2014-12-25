@@ -4,7 +4,7 @@ class PayCategoryToSemestersController < ApplicationController
   before_action :correct_new, only: [:new]
 
   def kalkul
-    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?',false,sem_today, params[:faculty_id], year_today,1).references(:group)
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?',false,sem_today, current_user.faculty_id, year_today,1).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.study=@s_g_all.find_all{|x| x.study}.size
@@ -24,7 +24,7 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def stip1
-    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs = ? AND groups.semester = ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, params[:faculty_id], year_today,0).references(:group)
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs = ? AND groups.semester = ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, current_user.faculty_id, year_today,0).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.social=@s_g_all.find_all{|x| x.social}.size
@@ -37,7 +37,7 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def stip2
-    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs != ? OR groups.semester != ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, params[:faculty_id], year_today,2).references(:group)
+    @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs != ? OR groups.semester != ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, current_user.faculty_id, year_today,2).references(:group)
     @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.social=@s_g_all.find_all{|x| x.social}.size
@@ -65,6 +65,7 @@ class PayCategoryToSemestersController < ApplicationController
 
   def create
     @pay_category_to_semester = PayCategoryToSemester.new(pay_category_to_semester_params)
+    @pay_category_to_semester.faculty_id=current_user.faculty_id
     @pay_category_to_semester.year=year_today
     @pay_category_to_semester.semester=sem_today
     if @pay_category_to_semester.save
