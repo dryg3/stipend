@@ -36,7 +36,8 @@
             <% end %>
             <%= link_to 'Печать', order_path( order,:format => :pdf) , class: "btn btn-success"%>
             <%if [0,3].include?(order.type_order)%>
-                <%= link_to 'Excel', order_path( order,:format => :xls) , class: "btn "%>
+                <%= link_to 'Excel', order_path( order,:format => :xls, var: 2 ), class: "btn "%>
+                <%= link_to 'Excel (ФИО полностью)', order_path( order,:format => :xls, var: 1 ), class: "btn "%>
             <% end %>
           </td>
         </tr>
