@@ -3,7 +3,9 @@ class OrdersController < ApplicationController
   before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
 
   def index
-      @orders = faculty(Order.includes(:faculty))
+
+    @orders = faculty(Order.includes(:faculty)).sort_by{ |x| [x.status, x.faculty_id, Date.new-x.date, -x.number.to_i]}
+    @orders = @orders[0..17] if current_user.faculty.name != "all"
   end
 
   def show

@@ -27,7 +27,7 @@
 
   <% @student.pay_to_month_students.sort_by {|x| [x.year, x.month]}.reverse.each do |pay_to_month_student| %>
       <tr>
-        <td><%= pay_to_month_student.month %>.<%= pay_to_month_student.year %></td>
+        <td><% if pay_to_month_student.month<10%>0<%end%><%= pay_to_month_student.month %>.<%= pay_to_month_student.year %></td>
         <td><%= pay_to_month_student.social %></td>
         <td><%= pay_to_month_student.academic %></td>
         <td><%= pay_to_month_student.study %></td>

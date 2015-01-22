@@ -1,77 +1,119 @@
 <h2>Изменение параметров расчета на семестр</h2>
- 
+
 <%= form_for :pay_category_to_semester, url: pay_category_to_semester_path(@pay_category_to_semester), method: :patch do |f| %>
-  <% if @pay_category_to_semester.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@pay_category_to_semester.errors.count, "error") %> prohibited
-        this pay_category_to_semester from being saved:</h2>
-    <ul>
-    <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+    <% if @pay_category_to_semester.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@pay_category_to_semester.errors.count, "error") %> prohibited
+            this pay_category_to_semester from being saved:</h2>
+            <ul>
+                <% @pay_category_to_semester.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
     <% end %>
-    </ul>
-  </div>
-   <% end %>
-   <p>
-    Дата выдачи<br>
-    <%= date_select :pay_category_to_semester, :date_start %>
-  </p>
-     <p>
-    Дата выдачи<br>
-    <%= date_select :pay_category_to_semester, :date_finish %>
-  </p>
-<p>
-	социальная стипендия <br>
-	<%= f.text_field :social1 %> <%= f.text_field :social %>
-</p>
- 
-<p>
-	Хор<br>
-	<%= f.text_field :four%>
-</p>
-<p>
-	Отл<br>
-	<%= f.text_field :five%>
-</p>
-<p>
-	1 курс<br>
-	<%= f.text_field :first%>
-</p>
+    <% if can? :manager, :all %>
+        <p>
+            Учебный год:<br>
+            <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
+        </p>
+        <p>
+            Семестр:
+            <%= select_tag(:semester, options_for_select((1..2).collect {|p| p }, params[:semester].nil? ? sem_today : params[:semester]), {include_blank: true, :style => "width:50px"})%>
+        </p>
+    <%end%>
+    Дата начала<br>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker1'>
+            <%= f.text_field :date_start, class: "form-control",value: @pay_category_to_semester.date_start.strftime("%d.%m.%Y") %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker1').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
+    Дата окончания<br>
+    <div class="row">
+      <div class='col-sm-2'>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker2'>
+            <%= f.text_field :date_finish, class: "form-control",value: @pay_category_to_semester.date_finish.strftime("%d.%m.%Y") %>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker2').datetimepicker({
+                  pickTime: false,
+                  language: 'ru'
+              });
+          });
+      </script>
+    </div>
+    <p>
+        Социальная стипендия: <br>
+        <%= f.text_field :social %>
+    </p>
+    <p>
+        Хорошист:<br>
+        <%= f.text_field :four%>
+    </p>
+    <p>
+        Отличник:<br>
+        <%= f.text_field :five%>
+    </p>
+    <p>
+        </strong>Первый курс:<br></strong>
+        Академическая:
+        <%= f.text_field :first%>
+    </p>
+    <p>
+        Социальная:
+        <%= f.text_field :social1 %>
+    </p>
+    <p>
+        <strong>Доплата:<br></strong>
+        Отличник:<%= f.text_field :soc_five%><br>
+        Хорошист:<%= f.text_field :soc_four%>
+    </p>
+    <strong>Категория повышенной стипендии:</strong>
 
-<p>
-	Доплата<br>
-	<%= f.text_field :soc_five%> <%= f.text_field :soc_four%>
-</p>
-<strong>Категория повышенной стипендии:</strong>
-
-	<p>
-	 учебная дечтельность<br>
-	<%= f.text_field :study %>
-	 
-	</p>
-	<p>
-	  общественая дечтельность<br>
-	 <%= f.text_field :public %>
-	  
-	</p>
-	<p>
-	  науч-ис. дечтельность<br>
-	<%= f.text_field  :scientific %>
-	  
-	</p>
-	<p>
-	 культурная дечтельность <br>
-	<%= f.text_field  :cultural %>
-	  
-	</p>
-	<p>
-	спортивная дечтельность <br>
-	<%= f.text_field  :sports %>
-	</p>
+    <p>
+        учебная дечтельность<br>
+        <%= f.text_field :study %>
+    </p>
+    <p>
+        общественая дечтельность<br>
+        <%= f.text_field :public %>
+    </p>
+    <p>
+        науч-ис. дечтельность<br>
+        <%= f.text_field  :scientific %>
+    </p>
+    <p>
+        культурная дечтельность <br>
+        <%= f.text_field  :cultural %>
+    </p>
+    <p>
+        спортивная дечтельность <br>
+        <%= f.text_field  :sports %>
+    </p>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-success">Сохранить</button>
-      <button type="reset" class="btn">Отменить</button>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="reset" class="btn">Отменить</button>
     </div>
 <% end %>
 

@@ -1,10 +1,10 @@
 module SessionsHelper
   def year_today
-  @year_today='2014/2015'
+    @year_today='2014/2015'
   end
 
   def sem_today
-    @sem_today=1
+    @sem_today=2
   end
 
   def year_previous(y)

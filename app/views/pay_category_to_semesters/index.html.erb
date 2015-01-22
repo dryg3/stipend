@@ -1,4 +1,19 @@
 <h1>Расчет на семестр</h1>
+<div class="well  well-small">
+  <%= form_tag("/pay_category_to_semesters", method: "get") do  %>
+      <div class="row">
+        <div class="col-md-3">
+          <p>
+            Учебный год:<br>
+            <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years] ), { include_blank: true })%>
+          </p>
+        </div>
+        <div class="col-md-1 col-md-offset-7" >
+          <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+        </div>
+      </div>
+  <% end %>
+</div>
 <p>
   <a href="/account_to_semesters" class="btn btn-primary">Изменить счет на семестр</a>
   <%= link_to 'Новый расчет на семестр', {controller: "pay_category_to_semesters", action: "kalkul"}, class: "btn btn-success"  %>
@@ -27,7 +42,7 @@
     <th></th>
   </tr>
 
-  <% @pay_category_to_semesters.sort_by { |q| [q.faculty_id, q.date_finish]}.reverse.each do |pay_category_to_semester| %>
+  <% @pay_category_to_semesters.sort_by { |q| [-q.faculty_id, q.date_finish]}.reverse.each do |pay_category_to_semester| %>
       <tr>
         <% if  can? :manager, :all  %><td><%=pay_category_to_semester.faculty.short_name %></td><%end%>
         <td><%=link_to "#{pay_category_to_semester.date_start.strftime("%d.%m.%Y")}-#{pay_category_to_semester.date_finish.strftime("%d.%m.%Y")}", edit_pay_category_to_semester_path(pay_category_to_semester)%></td>

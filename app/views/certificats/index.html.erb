@@ -7,11 +7,15 @@
           Фамилия:<br>
           <%= text_field_tag(:surname,  params[:surname])%><br>
         </div>
-        <div class="col-md-3 col-md-offset-1">
+        <div class="col-md-3 col-md-offset-0">
           Номер справки:<br>
-            <%= text_field_tag(:number, params[:number]) %>
+          <%= text_field_tag(:number, params[:number]) %>
         </div>
-        <div class="col-md-1 col-md-offset-3" >
+        <div class="col-md-3 col-md-offset-1">
+          <br>
+          <%= check_box_tag(:old, params[:old]) %>Показать "старые" справки
+        </div>
+        <div class="col-md-1 col-md-offset-0" >
           <button class="btn btn-large btn-info" type="submit" >Поиск</button>
         </div>
       </div>

@@ -34,6 +34,11 @@ class CertificatsController < ApplicationController
       end
       @certificats = @certificats.find_all{|x| x.student.surname.include?  params[:surname]} unless params[:surname].empty?
       @certificats = @certificats.find_all{|x| x.number.include?  params[:number]} unless params[:number].empty?
+      unless params[:old].nil?
+        @certificats = @certificats.find_all { |x| x.date_finish<Date.today }
+      else
+        @certificats = @certificats.find_all { |x| x.date_finish>=Date.today-365 }
+      end
     end
   end
   
