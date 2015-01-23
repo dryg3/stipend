@@ -3,9 +3,17 @@ class OrdersController < ApplicationController
   before_action :correct_faculty, only: [:show, :edit, :update, :destroy]
 
   def index
-
     @orders = faculty(Order.includes(:faculty)).sort_by{ |x| [x.status, x.faculty_id, Date.new-x.date, -x.number.to_i]}
-    @orders = @orders[0..17] if current_user.faculty.name != "all"
+    if params[:number].nil?
+      @orders = @orders[0..17]
+    else
+      @orders = @orders.find_all{|x| x.year==params[:year]} unless params[:year].empty?
+      @orders = @orders.find_all{|x| x.faculty_id==params[:faculty].to_i} unless params[:faculty].nil? or params[:faculty].empty?
+      @orders = @orders.find_all{|x| x.number.include? params[:number]} unless params[:number].empty?
+      @orders = @orders.find_all{|x| x.date==Date.strptime(params[:date], '%d.%m.%Y')} unless params[:date].empty?
+      @orders = @orders.find_all{|x| x.type_order == params[:type_order].to_i} unless params[:type_order].empty?
+      @orders = @orders.find_all{|x| x.status == 0} unless params[:status].nil?
+    end
   end
 
   def show
