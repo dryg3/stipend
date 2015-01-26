@@ -14,15 +14,15 @@
     <% end %>
     <% if can? :manager, :all %>
         <p>
-            Учебный год:<br>
-            <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
+            |---> Учебный год:<br>
+            |---> <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
         </p>
         <p>
-            Семестр:
+            |---> Семестр:
             <%= select_tag(:semester, options_for_select((1..2).collect {|p| p }, params[:semester].nil? ? sem_today : params[:semester]), {include_blank: true, :style => "width:50px"})%>
         </p>
     <%end%>
-    Дата начала<br>
+    Дата начала:<br>
     <div class="row">
       <div class='col-sm-2'>
         <div class="form-group">
@@ -42,7 +42,7 @@
           });
       </script>
     </div>
-    Дата окончания<br>
+    Дата окончания:<br>
     <div class="row">
       <div class='col-sm-2'>
         <div class="form-group">
@@ -75,18 +75,16 @@
         <%= f.text_field :five%>
     </p>
     <p>
-        </strong>Первый курс:<br></strong>
+        <strong>Первый курс:<br></strong>
         Академическая:
-        <%= f.text_field :first%>
-    </p>
-    <p>
+        <%= f.text_field :first%><br>
         Социальная:
         <%= f.text_field :social1 %>
     </p>
     <p>
         <strong>Доплата:<br></strong>
-        Отличник:<%= f.text_field :soc_five%><br>
-        Хорошист:<%= f.text_field :soc_four%>
+        Отличник: <%= f.text_field :soc_five%><br>
+        Хорошист: <%= f.text_field :soc_four%>
     </p>
     <strong>Категория повышенной стипендии:</strong>
 

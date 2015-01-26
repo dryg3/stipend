@@ -49,7 +49,7 @@
 
 <% if can? :manager, :all %>
     <p>
-      <a href="/orders/new" class="btn btn-large btn-success enabled">Новый приказ</a>
+      <a href="/orders/new" class="btn btn-large btn-danger enabled">Новый приказ</a>
     </p>
 <% end %>
 <p>
@@ -67,10 +67,16 @@
           <!--<td><% order.number %> от <% l order.date, format: :default%></td>-->
           <td><%=Order::TYPE_ORDER[ order.type_order] %></td>
           <% if can? :manager, :all %>
-              <td><%= order.faculty.short_name %></td>
-              <td><%= link_to 'S', order %></td>
-              <td><%= link_to 'E', edit_order_path(order) %></td>
-              <td><%= link_to 'D', order_path(order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td>
+                <%= order.faculty.short_name %>
+              </td>
+          <% end %>
+          <% if can? :manager, :all %>
+              <td  bgcolor="#c9302c">
+                <%= link_to 'S', order %>
+                <%= link_to 'E', edit_order_path(order) %>
+                <%= link_to 'D', order_path(order), method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
           <% end %>
           <td>
             <%if order.status==0%>

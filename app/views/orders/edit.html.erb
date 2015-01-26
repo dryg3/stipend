@@ -43,11 +43,11 @@
     </p>
     <% if can? :manager, :all %>
         <p>
-          Учебный год:<br>
-          <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
+          |---> Учебный год:<br>
+          |---> <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
         </p>
         <p>
-          Семестр:
+          |---> Семестр:
           <%= select_tag(:semester, options_for_select((1..2).collect {|p| p }, params[:semester].nil? ? sem_today : params[:semester]), {include_blank: true, :style => "width:50px"})%>
         </p>
     <%end%>

@@ -2,54 +2,61 @@
 <div class="well  well-small">
     <%= form_tag("/groups", method: "get") do |f| %>
         <div class="row">
-            <div class="col-md-4">
-              <p>
-                  Институт:<br>
-                 <%=select_tag(:faculty, options_for_select(Faculty.all.collect {|p| [ p.short_name, p.id ] },params[:faculty]), { include_blank: true })%>
-
-                </p>
-
-           </div>
-           <div class="col-md-2 col-md-offset-2" >
-              <button class="btn btn-large btn-info" type="submit" >Поиск</button>
-
+            <div class="col-md-3">
+                Институт:<br>
+                <%=select_tag(:faculty, options_for_select(Faculty.all.collect {|p| [ p.short_name, p.id ] },params[:faculty]), { include_blank: true })%>
+            </div>
+            <div class="col-md-3">
+                Учебный год:<br>
+                <%= select_tag(:years, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },params[:years].nil? ? year_today : params[:years]), { include_blank: true })%>
+            </div>
+            <div class="col-md-1">
+                Курс:
+                <%= select_tag(:kurs, options_for_select((1..6).collect {|p| p },params[:kurs] ), { include_blank: true,  :style => "width:50px"})%>
+            </div>
+            <div class="col-md-1">
+                Семестр:
+                <%= select_tag(:semester, options_for_select((1..2).collect {|p| p }, params[:semester].nil? ? sem_today : params[:semester]), {include_blank: true, :style => "width:50px"})%>
+            </div>
+            <div class="col-md-2 col-md-offset-2">
+                <br>
+                <button class="btn btn-large btn-info" type="submit" >Поиск</button>
             </div>
         </div>
     <% end %>
 </div>
-  <p>  
-  <a href="/groups/new" class="btn btn-large btn-success enabled">Новая группа</a>
-  </p>
+<p>
+    <a href="/groups/new" class="btn btn-large btn-success enabled">Новая группа</a>
+</p>
 
 <table class="table table-striped">
-  <tr>
-      <th>Название</th>
-      <th>Курс</th>
-      <th>Семестр    </th>
-<th>Учебный год</th>
-<th>Факультет</th>
-    <th>old_id</th>
-    <th></th>
-  </tr>
- 
-  <% @groups.sort_by{|group| [group.faculty,group.year,group.kurs,group.semester,group.name] }.each do |group| %>
     <tr>
-		<td><%= group.name %></td>
-		<td><%= group.kurs %></td>
-		<td><%= group.semester %></td>
-		<td><%= group.year %></td>
-		<td><%= group.faculty.short_name %></td>
-      <td><%= group.old_id %></td>
-
-     
-      <td><%= link_to 'Show', group %>
-	  <%= link_to 'Edit', edit_group_path(group) %>
-	      <%= link_to 'Destroy', group_path(group),
-                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Название</th>
+        <th>Курс</th>
+        <th>Семестр    </th>
+        <th>Учебный год</th>
+        <th>Факультет</th>
+        <th>old_id</th>
+        <th></th>
     </tr>
-  <% end %>
+
+    <% @groups.sort_by{|group| [group.faculty,group.year,group.kurs,group.semester,group.name] }.each do |group| %>
+        <tr>
+            <td><%= group.name %></td>
+            <td><%= group.kurs %></td>
+            <td><%= group.semester %></td>
+            <td><%= group.year %></td>
+            <td><%= group.faculty.short_name %></td>
+            <td><%= group.old_id %></td>
+            <td>
+                <%= link_to 'Show', group %>
+                <%= link_to 'Edit', edit_group_path(group) %>
+                <%= link_to 'Destroy', group_path(group),method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+        </tr>
+    <% end %>
 </table>
 
-  <p>  
-  <a href="/" class="btn btn-large btn-primary enabled">На первую страницу</a>
-  </p>
+<p>
+    <a href="/" class="btn btn-large btn-primary enabled">На первую страницу</a>
+</p>

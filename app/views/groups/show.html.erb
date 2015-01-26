@@ -1,41 +1,39 @@
 <p>
-  <strong>Группа №:</strong>
-  <%= @group.name %>
+    <strong>Группа №:</strong>
+    <%= @group.name %><br>
+    <%= @group.kurs%> курс,
+    <%= @group.semester%> семестр,
+    <%= @group.year%> учебный год.
 </p>
-      <td>Курс <%= @group.kurs %></td>
-      <td><%= @group.semester %></td>
-      <td><%= @group.year %></td>
-<table class="table table-striped">
-  <tr>
-    <th></th>
-     <th>Фамилия</th>
-      <th>Имя</th>
-     <th>Отчество</th>
-     <th></th>
-<th></th>
-     
-  </tr>
- <%n=0%>
-  <% @group.students.sort_by { |s| s.surname}.each do |student| %>
-    <tr>
-      <%n+=1%>
-      <td><%=n%></td>
-		<td><%= student.surname %></td>
-		<td><%= student.firstname %></td>
-		<td><%= student.secondname %></td>
-		<td><%= student.text %></td>
 
-     
-      <td><%= link_to 'Show', student %>
-        <%= link_to 'Edit', edit_student_path(student) %>
-        <%= link_to 'Destroy', student_path(student),  method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th></th>
+        <th></th>
     </tr>
-  <% end %>
+    <%n=0%>
+    <% @group.students.sort_by { |s| s.surname}.each do |student| %>
+        <tr>
+            <%n+=1%>
+            <td><%=n%></td>
+            <td><%= student.surname %></td>
+            <td><%= student.firstname %></td>
+            <td><%= student.secondname %></td>
+            <td><%= student.text %></td>
+            <% if can? :manager, :all %>
+                <td bgcolor="#c9302c">
+                  <%= link_to 'Show', student %>
+                  <%= link_to 'Edit', edit_student_path(student) %>
+                  <%= link_to 'Destroy', student_path(student),  method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+            <% end %>
+        </tr>
+    <% end %>
 </table>
 
-  <p>
-<%= link_to 'Изменить группу', edit_group_path(@group) %> |
-<%= link_to 'Вернутся к списку', groups_path %>
-  </p>
 
 
