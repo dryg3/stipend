@@ -80,7 +80,11 @@ class PayCategoryToSemestersController < ApplicationController
   end
 
   def index
-    @pay_category_to_semesters = faculty(PayCategoryToSemester.includes(:faculty))
+    if params[:years].nil? or params[:years].empty?
+      @pay_category_to_semesters = faculty(PayCategoryToSemester.includes(:faculty).where(year: year_today))
+    else
+      @pay_category_to_semesters = faculty(PayCategoryToSemester.includes(:faculty).where(year: params[:years].to_s))
+    end
   end
 
   def update

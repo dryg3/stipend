@@ -41,24 +41,37 @@
         Статус<br>
         <%= select("order", "status", Order::STATUS.map{|k, v| [v, k]}, { include_blank: true })%>
     </p>
-
+    <% if can? :manager, :all %>
+        <p>
+          |---> Тип:<br>
+          |---> <%= f.select(:type_order, options_for_select(Order::TYPE_ORDER.map{|k, v| [v, k]},@order.type_order), { include_blank: true })%>
+        </p>
+        <p>
+          |---> Учебный год:<br>
+          |---> <%= f.select(:year, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" },@order.year), { include_blank: true })%>
+        </p>
+        <p>
+          |---> Семестр:
+          <%= f.select(:semester, options_for_select((1..2).collect {|p| p }, @order.semester), {include_blank: true, :style => "width:50px"})%>
+        </p>
+    <%end%>
     <%if @order.up.nil? or @order.up.empty?%>
         <%if @order.type_order==0 or @order.type_order==3%>
             <p>
                 Шаблон<br>
-                <%= f.text_area :up, value: "\\vspace{0.5cm plus 1mm minus 1mm} \r\n На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от 28.08.2014 (протокол № 1), решение центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n) и решений стипендиальной комиссии #{@order.faculty.name} от dd.mm.yyyy (протоколы № n и № n)\r\n\r\n\\vspace{0.5cm plus 1mm minus 1mm}\r\n  ПРИКАЗЫВАЮ:\r\n\r\nНазначить государственную стипендию следующим студентам #{@order.faculty.short_name} на период с  #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} #{'ежемесячно' if @order.pay_category_to_semester.date_finish-@order.pay_category_to_semester.date_start>31}\r\n", style: "width: 670px; height: 150px;" %>
+                <%= f.text_area :up, value: "\\vspace{0.5cm plus 1mm minus 1mm} \r\n На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n), решение центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n) и решений стипендиальной комиссии #{@order.faculty.name} от dd.mm.yyyy (протоколы № n и № n)\r\n\r\n\\vspace{0.5cm plus 1mm minus 1mm}\r\n  ПРИКАЗЫВАЮ:\r\n\r\n1. Назначить государственную стипендию следующим студентам #{@order.faculty.short_name} на период с  #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} #{'ежемесячно' if @order.pay_category_to_semester.date_finish-@order.pay_category_to_semester.date_start>31}\r\n", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
         <%if @order.type_order==1 or @order.type_order==4%>
             <p>
                 Шаблон<br>
-                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной академической стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную академическую стипендию следующим студентам #{@order.faculty.short_name} на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} #{'ежемесячно' if @order.pay_category_to_semester.date_finish-@order.pay_category_to_semester.date_start>31}", style: "width: 670px; height: 150px;" %>
+                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной академической стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n); решений Центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n).\r\n \r\nНазначить государственную академическую стипендию следующим студентам #{@order.faculty.short_name} на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} #{'ежемесячно' if @order.pay_category_to_semester.date_finish-@order.pay_category_to_semester.date_start>31}", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
         <%if @order.type_order==2 or @order.type_order==5%>
             <p>
               Шаблон<br>
-                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ» утв. приказом ректора от 19.11.2012 № 356.\r\n \r\nНазначить государственную социальную стипендию следующим студентам #{@order.faculty.short_name}", style: "width: 670px; height: 150px;" %>
+                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n); решений Центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n).\r\n \r\nНазначить государственную социальную стипендию следующим студентам #{@order.faculty.short_name}", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
     <%else%>
@@ -118,7 +131,9 @@
             <%if @order.type_order==2 or @order.type_order==5%>
 
             <%end%>
-            
+            <%if @order.type_order==0 or @order.type_order==3%>
+                <%string<<"#{n}. Главному бухгалтеру Третьяковой С.А. произвести выплату стипендий студентам, указанным в п. 1#{-(n-1) if n!=2} настоящего приказа, за счет средств субсидий на иные цели.\r\n\r\n"%>
+            <%end%>
             <%= f.text_area :bottom,value:"#{string}", style: "width: 670px; height: 150px;" %>
         <%else%>
             <%= f.text_area :bottom, style: "width: 670px; height: 150px;" %>
@@ -132,65 +147,46 @@
         <table>
             <%i=0%>
             <%if @order.type_order==0 or @order.type_order==3%>
-                <%Order::LIST.map do |k, v|%>
+                <%@signature.each do |x|%>
                     <%= f.fields_for :list, index: i  do |b| %>
                         <tr>
-                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                            <td><%=v[0] %> </td>
-                            <td><%=v[1] %> </td>
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? x.number : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%=b.text_field :name1, value:x.position %> </td>
+                            <td><%=b.text_field :name2, value:"#{x.firstname[0]}.#{x.secondname[0]}. #{x.surname}"%>  </td>
                         </tr>
                     <% end %>
                     <% i+=1%>
                 <%end%>
-                <tr>
-                    <%= f.fields_for :list, index: i  do |b| %>
-                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list].nil? ? i : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                        <td><%=b.text_field :name1, value:"Директор #{@order.faculty.short_name}"%></td>
-                        <td><%=b.text_field :name2, value:"#{Order::FACULTY[@order.faculty.id]}"%></td>
-                    <% end %>
-                </tr>
-                <tr>
-                    <% i+=1%>
-                    <%= f.fields_for :list, index: i  do |b| %>
-                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                        <td><%= b.text_field :name1 %></td>
-                        <td><%= b.text_field :name2 %></td>
-                    <% end %>
-                </tr>
-                <tr>
-                    <% i+=1%>
-                    <%= f.fields_for :list, index: i  do |b| %>
-                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                        <td><%= b.text_field :name1 %></td>
-                        <td><%= b.text_field :name2 %></td>
-                    <% end %>
-                </tr>
+                <%(0..1).each do%>
+                    <tr>
+                        <% i+=1%>
+                        <%= f.fields_for :list, index: i  do |b| %>
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%= b.text_field :name1 %></td>
+                            <td><%= b.text_field :name2 %></td>
+                        <% end %>
+                    </tr>
+                <%end%>
             <%end%>
 
             <%if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5%>
-                <%Order::LIST2[@order.faculty.id].map do |k, v|%>
+                <%@signature.each do |x|%>
                     <%= f.fields_for :list, index: i  do |b| %>
                         <tr>
-                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? k : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                            <td><%=v %> </td>
-
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p }, params[:list].nil? ? x.number : params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%=b.text_field :name1, value:"#{x.firstname[0]}.#{x.secondname[0]}. #{x.surname}"%>  </td>
                         </tr>
                     <% end %>
                     <% i+=1%>
                 <%end%>
-                <tr>
-                    <%= f.fields_for :list, index: i  do |b| %>
-                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                        <td><%= b.text_field :name1 %></td>
-                    <% end %>
-                </tr>
-                <tr>
-                    <% i+=1%>
-                    <%= f.fields_for :list, index: i  do |b| %>
-                        <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
-                        <td><%= b.text_field :name1 %></td>
-                    <% end %>
-                </tr>
+                <%(0..1).each do%>
+                    <tr>
+                        <%= f.fields_for :list, index: i  do |b| %>
+                            <td><%= b.select(:id, options_for_select((0..10).collect {|p| p },  params[:list]), { include_blank: true},  :style => "width:50px")%></td>
+                            <td><%= b.text_field :name1 %></td>
+                        <% end %>
+                    </tr>
+                <% end %>
             <%end%>
         </table>
     <%else%>

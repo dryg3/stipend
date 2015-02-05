@@ -85,13 +85,13 @@ class NewBasesController < ApplicationController
 
     student_group_all=StudentGroup.includes(:group,:student)
     student_all=Student.all
-    group_all=student_group_all.map{|x| x.group}
+    group_all=Group.all
 
     begin
       client = XMLRPC::Client.new('portal.msiu.ru', '/RPC2', 8070)
       client.timeout = 600
       result = client.call('scholarship.groups_list', "#{year_today}", "#{sem_today}")
-      result2 = client.call('scholarship.groups_list', "#{year_previous(year_today)}", "#{sem_previous(sem_today)}")
+      result2 = client.call('scholarship.groups_list', "#{sem_today==2 ? year_today : year_previous(year_today)}", "#{sem_previous(sem_today)}")
 
       for i in 0...result.size
         r=result[i]

@@ -20,7 +20,9 @@
 
 <table class="table table-hover">
   <tr>
-    <% if can? :manager, AccountToSemester %><th>Факультет</th><% end %>
+    <% if can? :manager, :AccountToSemester %>
+        <th>Факультет</th>
+    <% end %>
     <th>Учебный год</th>
     <th>Семестр</th>
     <th>Тип</th>
@@ -28,31 +30,30 @@
     <th></th>
   </tr>
 
-
-    <tbody>
-    <% @account_to_semesters.sort_by {|s| [s.faculty_id, s.year, s.semester]}.reverse.each do |account_to_semester| %>
+  <% @account_to_semesters.sort_by {|s| [s.faculty_id, s.year, s.semester]}.reverse.each do |account_to_semester| %>
       <tr>
+        <% if can? :manager, AccountToSemester %>
+            <td><%= account_to_semester.faculty.short_name %></td>
+        <% end %>
 
-        <% if can? :manager, AccountToSemester %><td><%= account_to_semester.faculty.short_name %></td><% end %>
         <td><%= account_to_semester.year %></td>
         <td><%= account_to_semester.semester %></td>
         <td><%=AccountToSemester::TYPE_ACСOUNT[account_to_semester.type_account]%></td>
         <td><%= link_to "#{account_to_semester.sum}", account_to_semester %></td>
 
-        <% if can? :manager, AccountToSemester %>
-            <td><%= link_to 'Show', account_to_semester %>
+        <% if can? :manager, :all %>
+            <td bgcolor="#c9302c">
+              <%= link_to 'Show', account_to_semester %>
               <%= link_to 'Edit', edit_account_to_semester_path(account_to_semester) %>
-              <%= link_to 'Destroy', account_to_semester_path(account_to_semester),
-                          method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Destroy', account_to_semester_path(account_to_semester), method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
         <% end %>
 
-        <%if account_to_semester.year==year_today and account_to_semester.semester==sem_today %>
+        <%if (account_to_semester.year==year_today and account_to_semester.semester==sem_today) or can? :manager, :all %>
             <td><%= link_to 'Изменить', { controller: "operations", action: "new", account_to_semester_id:account_to_semester.id },  :class => "btn btn-primary"  %></td>
         <% else %>
             <td><%= link_to 'Изменить', { controller: "operations", action: "new", account_to_semester_id:account_to_semester.id } , class: "btn btn-primary disabled"%></td>
         <% end %>
       </tr>
-    <% end %>
-  </tbody>
+  <% end %>
 </table>

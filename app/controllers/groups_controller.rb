@@ -24,10 +24,12 @@ class GroupsController < ApplicationController
   def index
     if  params[:faculty].nil?
       @groups=[]
-    elsif  params[:faculty].empty?
-        @groups=Group.all
     else
-        @groups=Group.includes(:faculty).where(faculty_id:params[:faculty])
+      @groups=Group.all
+      @groups=@groups.find_all{|x| x.faculty_id==params[:faculty].to_i} unless params[:faculty].empty?
+      @groups=@groups.find_all{|x| x.year==params[:years]} unless params[:years].empty?
+      @groups=@groups.find_all{|x| x.kurs==params[:kurs].to_i} unless params[:kurs].empty?
+      @groups=@groups.find_all{|x| x.semester==params[:semester].to_i} unless params[:semester].empty?
     end
   end
   

@@ -1,50 +1,43 @@
-<%= link_to "<<< Вернуться", :back, class: "btn btn-large btn-primary enabled"%>
-
 <h2>Изменение параметров студента</h2>
 
 <%= form_for :student, url: student_path(@student), method: :patch do |f| %>
-  <% if @student.errors.any? %>
-  <div id="error_explanation" class="error_explanation">
-   <h2>Сообщение: сохранение не удалось из-за <%= @student.errors.count %> ошибки:</h2>
-
-    <ul>
-    <% @student.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+    <% if @student.errors.any? %>
+        <div id="error_explanation" class="error_explanation">
+            <h2>Сообщение: сохранение не удалось из-за <%= @student.errors.count %> ошибки:</h2>
+            <ul>
+                <% @student.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
     <% end %>
-    </ul>
-  </div>
+    <p>
+        Фамилия:<br>
+        <%= f.text_field :surname %>
+    </p>
+    <p>
+        Имя:<br>
+        <%= f.text_field :firstname %>
+    </p>
+    <p>
+        Отчество:<br>
+        <%= f.text_field :secondname %>
+    </p>
+    <p>
+        Коментарии:<br>
+        <%= f.text_area :text %>
+    </p>
+    <p>
+        Фамилия в родительном падеже:<br>
+        <%= f.text_field :surname_rp, placeholder: 'Кого?' %>
+    </p>
+    <p>
+        Фамилия в дательном падеже:<br>
+        <%= f.text_field :surname_dp, placeholder: 'Кому?' %>
+    </p>
 
-  <% end %>
-   <p>
-    Фамилия:<br>
-    <%= f.text_field :surname %>
-  </p>
-  <p>
-    Имя:<br>
-    <%= f.text_field :firstname %>
-  </p>
- <p>
-  Отчество:<br>
-  <%= f.text_field :secondname %>
-</p>
-  <p>
-    Коментарии:<br>
-    <%= f.text_area :text %>
-  </p>
-  <p>
-    Фамилия в родительном падеже:<br>
-    Поставить <%= f.text_field :surname_rp %>
-  </p>
-   <p>
-    Фамилия в дательном падеже:<br>
-    Назначить <%= f.text_field :surname_dp %>
-  </p>
-
-       <div class="form-actions">
-    <button type="submit" class="btn btn-success">Сохранить</button>
-    <button type="reset" class="btn">Отменить</button>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="reset" class="btn">Отменить</button>
     </div>
 <% end %>
-
-
-

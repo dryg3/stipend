@@ -29,8 +29,8 @@
         <td><% if certificat.month_finish<10%>0<%end%><%= certificat.month_finish %>.<%= certificat.year_finish %></td>
         <td><%=l certificat.date_finish %></td>
 
-        <% if can? :manager,Certificat %>
-            <td>
+        <% if can? :manager, :all %>
+            <td bgcolor="#c9302c">
                 <%= link_to 'Show', certificat %>
                 <%= link_to 'Edit', edit_certificat_path(certificat) %>
                 <%= link_to 'Destroy', certificat_path(certificat), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
@@ -62,8 +62,8 @@
             <td><%= group.year %></td>
             <td><%= group.faculty.short_name %></td>
 
-            <% if can? :manager,Group %>
-                <td>
+            <% if can? :manager, :all%>
+                <td bgcolor="#c9302c">
                     <%= link_to 'Show', group %>
                     <%= link_to 'Edit', edit_group_path(group) %>
                     <%= link_to 'Destroy', group_path(group), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
@@ -105,13 +105,13 @@
             <td><%= pay_to_month_student.surcharge %></td>
             <td><%=pay_to_month_student.social.to_i+pay_to_month_student.academic.to_i+pay_to_month_student.study.to_i+pay_to_month_student.public.to_i+pay_to_month_student.scientific.to_i+pay_to_month_student.cultural.to_i+pay_to_month_student.sports.to_i+pay_to_month_student.surcharge.to_i %></td>
 
-            <% if can? :manager,PayToMonthStudent %>
-                <td>
+            <% if can? :manager, :all%>
+                <td bgcolor="#c9302c">
                   <%= link_to 'Show', pay_to_month_student %>
                   <%= link_to 'Edit', edit_pay_to_month_student_path(pay_to_month_student) %>
                   <%= link_to 'Destroy', pay_to_month_student_path(pay_to_month_student), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить?' } %>
                 </td>
-             <% end %>
+            <% end %>
         </tr>
     <% end %>
 </table>

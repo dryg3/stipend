@@ -1,7 +1,55 @@
 <h1>Приказы</h1>
+<div class="well  well-small">
+    <%= form_tag("/orders", method: "get") do |f| %>
+        <div class="row">
+            <div class="col-md-3">
+                Учебный год:<br>
+                <%= select_tag(:year, options_for_select((2013..2023).collect {|p|  "#{p}/#{p+1}" }, params[:year]), { include_blank: true })%>
+                <% if  can? :manager, :all  %>
+                    Институт:<br>
+                    <%=select_tag(:faculty, options_for_select(Faculty.all.collect {|p| [ p.short_name, p.id ] },params[:faculty]), { include_blank: true })%>
+                <%end%>
+            </div>
+            <div class="col-md-3 col-md-offset-0">
+                Номер:<br>
+                <%= text_field_tag(:number,  params[:number])%><br>
+                Дата:<br>
+                <div class="row">
+                    <div class='col-sm-2'>
+                      <div class="form-group">
+                        <div class='input-group date' id='datetimepicker1'>
+                          <%= text_field_tag(:date, params[:date])%>
+                          <span class="input-group-addon">
+                        </span>
+                        </div>
+                      </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker1').datetimepicker({
+                                pickTime: false,
+                                language: 'ru'
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-md-3 col-md-offset-1">
+                Тип:<br>
+                <%=select_tag(:type_order, options_for_select(Order::TYPE_ORDER.map{|k, v| [v, k]},params[:type_order]), { include_blank: true })%>
+                <br>
+                <%= check_box_tag(:status, params[:status], params[:status]=='on' ? true : false  ) %> Показать только не подписанные приказы
+            </div>
+            <div class="col-md-1 col-md-offset-0" >
+                <button class="btn btn-large btn-info" type="submit" >Поиск</button>
+            </div>
+        </div>
+    <% end %>
+</div>
+
 <% if can? :manager, :all %>
     <p>
-      <a href="/orders/new" class="btn btn-large btn-success enabled">Новый приказ</a>
+      <a href="/orders/new" class="btn btn-large btn-danger enabled">Новый приказ</a>
     </p>
 <% end %>
 <p>
@@ -13,20 +61,22 @@
         <th>Тип</th>
         <th></th>
     </tr>
-      <% @orders.sort_by { |x| [ x.faculty_id, !x.status, x.date, x.number.to_i]}.reverse.each do |order| %>
+      <% @orders.each do |order| %>
         <tr>
           <td><%= link_to "#{order.number} от #{l order.date, format: :default}", order%></td>
           <!--<td><% order.number %> от <% l order.date, format: :default%></td>-->
           <td><%=Order::TYPE_ORDER[ order.type_order] %></td>
-
-
-
           <% if can? :manager, :all %>
-              <td><%= order.faculty.short_name %></td>
-              <td><%= link_to 'Show', order %></td>
-          <td><%= link_to 'Edit', edit_order_path(order) %></td>
-              <td><%= link_to 'Destroy', order_path(order),
-                        method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td>
+                <%= order.faculty.short_name %>
+              </td>
+          <% end %>
+          <% if can? :manager, :all %>
+              <td  bgcolor="#c9302c">
+                <%= link_to 'S', order %>
+                <%= link_to 'E', edit_order_path(order) %>
+                <%= link_to 'D', order_path(order), method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
           <% end %>
           <td>
             <%if order.status==0%>

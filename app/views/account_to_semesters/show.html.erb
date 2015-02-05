@@ -2,7 +2,7 @@
   <%= link_to 'Вернутся к списку', account_to_semesters_path,  :class => "btn btn-success"  %>
 </p>
 
-<%if can? :manager, :all%>
+<%if can? :manager, :AccountToSemester%>
     <p>
       <strong>Факультет: </strong>
       <%= @account_to_semester.faculty.name %>
@@ -19,7 +19,7 @@
 
 <%if can? :manager, :all%>
     <p>
-      <%=  link_to "Изменить счёт", { controller: "operations", action: "new", account_to_semester_id:@account_to_semester.id },  :class => "btn btn-success"  %>
+      <%=  link_to 'Изменить счёт', { controller: 'operations', action: 'new', account_to_semester_id:@account_to_semester.id },  :class => 'btn btn-danger' %>
     </p>
 <% end %>
 

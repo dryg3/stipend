@@ -50,10 +50,12 @@
                 <td><%=l operation.date_op %></td>
                 <td><%= operation.user.name %></td>
                 <td><%= operation.text %></td>
-                <%if can? :manager, Operation%>
-                    <td><%= link_to 'Show', operation %></td>
-                    <td><%= link_to 'Edit', edit_operation_path(operation) %></td>
-                    <td><%= link_to 'Destroy', operation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%if can? :manager, :all%>
+                    <td bgcolor="#c9302c">
+                      <%= link_to 'Show', operation %>
+                      <%= link_to 'Edit', edit_operation_path(operation) %>
+                      <%= link_to 'Destroy', operation, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    </td>
                 <%end%>
             </tr>
         <% end %>

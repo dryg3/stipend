@@ -3,7 +3,7 @@ class Group < ActiveRecord::Base
 	has_many :students, through: :student_groups
 	belongs_to  :faculty
 	
-	validates_uniqueness_of :name, :scope => [:year],
+	validates_uniqueness_of :name, :scope => [:semester,:year],
 		message: "Название группы должно быть уникально" 
 	validates_presence_of :name,:year,
 		message: "Название группы должно быть заполнино"
