@@ -32,6 +32,8 @@ class OrdersController < ApplicationController
 
   def edit
     #@order = Order.find(params[:id])
+    @signature=Signature.where(type_sign: 1).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==0 or @order.type_order==3
+    @signature=Signature.where(type_sign: 2).sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5
   end
 
   def create
@@ -59,31 +61,18 @@ class OrdersController < ApplicationController
 
       if @order.type_order==0 or @order.type_order==3
         for i in 0...params[:order][:list].size
-          if i >= Order::LIST.size
-            unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
-            end
-          else
-            unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST[i][0].to_s+"\t"+Order::LIST[i][1].to_s+"\n"
-            end
+          unless params[:order][:list][i.to_s]["id"]==""
+            arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
           end
         end
       end
 
       if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order== 5
         for i in 0...params[:order][:list].size
-          if i >= Order::LIST2[@order.faculty.id].size
-            unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"
-            end
-          else
-            unless params[:order][:list][i.to_s]["id"]==""
-              arr[params[:order][:list][i.to_s]["id"].to_i]=Order::LIST2[@order.faculty.id][i].to_s+"\n"
-            end
+          unless params[:order][:list][i.to_s]["id"]==""
+            arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"
           end
         end
-        # raise arr.inspect
       end
 
       for i in 0...arr.size
@@ -108,7 +97,7 @@ class OrdersController < ApplicationController
 
 private
   def order_params
-    params.require(:order).permit(:number,:status, :type_order,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
+    params.require(:order).permit(:number,:status, :type_order,:year,:semester,:date,:up,:signature,:bottom,:pay_category_to_semester_id)
   end
 
   def correct_faculty

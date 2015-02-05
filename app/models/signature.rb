@@ -1,0 +1,16 @@
+class Signature < ActiveRecord::Base
+  # Signature.new(surname: 'Боровин', firstname: 'Юрий', secondname: 'Михайлович', position: 'И.о. ректора', type_sign: 1, number: 0)
+  # Signature.new(surname: 'Третьякова', firstname: 'Светлана', secondname: 'Алексеевна', position: 'Главный бухгалтер', type_sign: 1, number: 1)
+  # Signature.new(surname: 'Пастухова', firstname: 'Лариса', secondname: 'Сергеевна', position: 'Проректор по проектной деятельности', type_sign: 1, number: 2)
+  # Signature.new(surname: 'Тимар', firstname: 'Мария', secondname: 'Михайловна', position: 'Начальник Управления экономического развития', type_sign: 1, number: 3)
+  # Signature.new(surname: 'Мартынова', firstname: 'Татьяна', secondname: 'Николаевна', position: 'Начальник Юридического отдела', type_sign: 1, number: 4)
+  # Signature.new(surname: 'Бункин', firstname: 'Дмитрий', secondname: 'Алексеевич', position: 'Начальник Управления по воспитательной и социальной работе', type_sign: 1, number: 5)
+  # Signature.new(surname: 'Кошкин', firstname: 'Валерий', secondname: 'Иванович', position: 'Ректор', type_sign: 1, number: nil)
+  # Signature.new(surname: 'Мартыненко', firstname: 'Анатолий', secondname: 'Иванович', position: 'Директор ИИТУ', type_sign: 1, number: 6, faculty_id:7)
+  # Signature.new(surname: 'Марюшин', firstname: 'Леонид', secondname: 'Александрович', position: 'Директор ИЭТС', type_sign: 1, number: 6, faculty_id:10)
+  # Signature.new(surname: 'Марюшин', firstname: 'Леонид', secondname: 'Александрович', type_sign: 2, number: 0, faculty_id:10)
+  # Signature.new(surname: 'Афанасьева', firstname: 'Елена', secondname: 'Викторовна', type_sign: 2, number: 1)
+  # Signature.new(surname: 'Союстова', firstname: 'Светлана', secondname: 'Игоревна', type_sign: 2, number: 2)
+  # Signature.new(surname: 'Горьковой', firstname: 'А', secondname: 'Г', type_sign: 2, number: 3)
+  # Signature.new(surname: 'Литвинцев', firstname: 'И', secondname: 'Р', type_sign: 2, number: 4)
+end
