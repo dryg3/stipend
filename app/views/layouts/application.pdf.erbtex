@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{memoir}
+\documentclass[oneside,a4paper,12pt]{memoir}
 \usepackage{msiu_term_work}
 
 \lstset{language=Ruby,inputencoding=utf8/koi8-r,basicstyle=\small,
@@ -8,7 +8,7 @@ stringstyle=\ttfamily,xleftmargin=1cm}
 \geometry{top=2cm} %поле сверху
 \geometry{bottom=2cm} %поле снизу
 \geometry{left=2cm} %поле справа
-\geometry{right=2cm} %поле слева
+\geometry{right=1cm} %поле слева
 \parindent=1.25cm
 
 \usepackage{indentfirst}

@@ -59,7 +59,7 @@
         <%if @order.type_order==0 or @order.type_order==3%>
             <p>
                 Шаблон<br>
-                <%= f.text_area :up, value: "\\vspace{0.5cm plus 1mm minus 1mm} \r\n На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n), решение центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n) и решений стипендиальной комиссии #{@order.faculty.name} от dd.mm.yyyy (протоколы № n и № n)\r\n\r\n\\vspace{0.5cm plus 1mm minus 1mm}\r\n  ПРИКАЗЫВАЮ:\r\n\r\n1. Назначить государственную стипендию следующим студентам #{@order.faculty.short_name} на период с  #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} #{'ежемесячно' if @order.pay_category_to_semester.date_finish-@order.pay_category_to_semester.date_start>31}\r\n", style: "width: 670px; height: 150px;" %>
+                <%= f.text_area :up, value: "\\vspace{0.5cm plus 1mm minus 1mm} \r\n На основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 15.09.2014 № 294, решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n) и решения стипендиальной комиссии #{@order.faculty.short_name} от dd.mm.yyyy (протокол № n)\r\n\r\nПРИКАЗЫВАЮ:\r\n\r\n1. Назначить государственную стипендию на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} следующим студентам #{@order.faculty.short_name}\r\n", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
         <%if @order.type_order==1 or @order.type_order==4%>
@@ -74,6 +74,12 @@
                 <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\nНазначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\n По вопросу повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 19.11.2012 № 356; решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n); решений Центральной стипендиальной комиссии ФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n).\r\n \r\nНазначить государственную социальную стипендию следующим студентам #{@order.faculty.short_name}", style: "width: 670px; height: 150px;" %>
             </p>
         <%end%>
+        <%if @order.type_order==6%>
+            <p>
+              Шаблон<br>
+                <%= f.text_area :up, value: "\\centerline{\\textbf{ПОВЕСТКА ДНЯ:}}\r\n1. Назначение государственной академической стипендии студентам #{@order.faculty.short_name}.\r\n\r\n2. Назначение государственной социальной стипендии студентам #{@order.faculty.short_name}.\r\n\r\n3. Назначение стипендии нуждающимся студентам 1 и 2 курсов #{@order.faculty.short_name}, обучающихся на «хорошо» и «отлично».\r\n\r\n4. Разное.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{СЛУШАЛИ:}}\r\nПо всем вопросам повестки дня директора #{@order.faculty.short_name} #{Order::FACULTY0[@order.faculty.id]}.\r\n\r\n\\vspace{0.7cm}\r\n\\centerline{\\textbf{РЕШИЛИ:}}\r\nНа основании Положения «О порядке назначения и выплаты стипендий и оказания других форм материальной поддержки обучающихся ФГБОУ ВПО «МГИУ», утверж\\-ден\\-ного приказом ректора от 15.09.2014 № 294, решения Ученого совета \\linebreakФГБОУ ВПО «МГИУ» от dd.mm.yyyy (протокол № n).\r\n\r\n1. Назначить государственную академическую стипендию на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} следующим студентам #{@order.faculty.short_name}:\r\n\r\n", style: "width: 670px; height: 150px;" %>
+            </p>
+        <%end%>
     <%else%>
         <p>
             Шаблон<br>
@@ -85,27 +91,58 @@
         <%if @order.bottom.nil? or @order.bottom.empty?%>
             <%string=""%>
             <%n=2%>
+            <%if @order.type_order==6%>
+              <%n+=1%>
+              <%string<<"#{n}. "%>
+              <%string<<"Назначить стипендию нуждающимся студентам 1 и 2 курсов #{@order.faculty.short_name}, обучающихся обучающихся на «хорошо» и «отлично»:\r\n\r\n"%>
+
+              <%string<<"#{n}. "%>
+              <%string<<"В связи с отсутствием нуждающихся студентов 1 и 2 курсов #{@order.faculty.short_name}, обучающихся на «хорошо» и «отлично», не назначать "%>
+              <%string<<"на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} "%>
+              <%string<<"стипендии нуждающимся студентам.\r\n\r\n"%>
+
+              <%n+=1%><%m=1%>
+              <%pay=StudentGroup.joins([{:student=>:pay_to_month_students},:group]).where("pay_to_month_students.month = ? AND pay_to_month_students.year = ? AND pay_to_month_students.surcharge != ? AND groups.year = ? AND groups.semester = ? AND groups.faculty_id =?",@order.pay_category_to_semester.date_start.month, @order.pay_category_to_semester.date_start.year,0,@order.year, @order.semester,@order.faculty_id)%>
+              <%pay.each do |pay_to_month_student|%>
+                  <%string<<"#{m}) "%>
+                  <%m+=1%>
+                  <%string<<"Назначить стипендию нуждающимся студентам 1 и 2 курсов, обучающимся на хорошо и отлично, "%>
+                  <%string<<"студенту группы #{pay_to_month_student.group.name} "%>
+                  <%if pay_to_month_student.student.surname_dp.nil? or pay_to_month_student.student.surname_dp.empty?%>
+                      <%string<<"#{pay_to_month_student.student.surname}(добавьте дательный падеж) "%>
+                  <%else%>
+                      <%string<<"#{pay_to_month_student.student.surname_dp} "%>
+                  <%end%>
+                  <%string<<"#{pay_to_month_student.student.firstname[0]}. "%>
+                  <%string<<"#{pay_to_month_student.student.secondname[0]}. "%>
+                  <%string<<"на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} "%>
+                  <%string<<"в размере #{pay_to_month_student.student.pay_to_month_students.where("pay_to_month_students.month = ? AND pay_to_month_students.year = ?",@order.pay_category_to_semester.date_start.month, @order.pay_category_to_semester.date_start.year)[0].surcharge} руб. ежемесячно "%>
+                  <%string<<"(в соответствии с Постановлением РФ от 02.07.2012 №679)."%>
+                  <%string<<"\r\n\r\n"%>
+              <%end%>
+              <%string<<"ГОЛОСОВАЛИ:«ЗА» \\underline{\\hspace{0.7cm}} чел., «ПРОТИВ» \\underline{\\hspace{0.7cm}} чел., ВОЗДЕРЖАЛИСЬ \\underline{\\hspace{0.7cm}} чел.\r\n\r\n"%>
+            <%end%>
             <%if @order.type_order==0%>
                 <%pay=StudentGroup.joins([{:student=>:pay_to_month_students},:group]).where("pay_to_month_students.month = ? AND pay_to_month_students.year = ? AND pay_to_month_students.surcharge != ? AND groups.year = ? AND groups.semester = ? AND groups.faculty_id =?",@order.pay_category_to_semester.date_start.month, @order.pay_category_to_semester.date_start.year,0,@order.year, @order.semester,@order.faculty_id)%>
                 <%pay.each do |pay_to_month_student|%>
                     <%string<<"#{n}. "%>
                     <%n+=1%>
-                    <%string<<"Назначить дополнительную академическую стипендию на период "%>
-                    <%string<<"с  #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} "%>
+                    <%string<<"Назначить стипендию нуждающимся студентам 1 и 2 курсов, обучающимся на хорошо и отлично, "%>
                     <%string<<"студенту группы #{pay_to_month_student.group.name} "%>
                     <%if pay_to_month_student.student.surname_dp.nil? or pay_to_month_student.student.surname_dp.empty?%>
-                       <%string<<"#{pay_to_month_student.student.surname}(добавьте дательный падеж) "%>
+                      <%string<<"#{pay_to_month_student.student.surname}(добавьте дательный падеж) "%>
                     <%else%>
                       <%string<<"#{pay_to_month_student.student.surname_dp} "%>
                     <%end%>
                     <%string<<"#{pay_to_month_student.student.firstname[0]}. "%>
                     <%string<<"#{pay_to_month_student.student.secondname[0]}. "%>
+                    <%string<<"на период с #{l @order.pay_category_to_semester.date_start, format: :default} по #{l @order.pay_category_to_semester.date_finish, format: :default} "%>
                     <%string<<"в размере #{pay_to_month_student.student.pay_to_month_students.where("pay_to_month_students.month = ? AND pay_to_month_students.year = ?",@order.pay_category_to_semester.date_start.month, @order.pay_category_to_semester.date_start.year)[0].surcharge} руб. ежемесячно "%>
-                    <%string<<"(доплата до 6307 руб. с учетом социальной стипендии)."%>
+                    <%string<<"(в соответствии с Постановлением РФ от 02.07.2012 №679)."%>
                     <%string<<"\r\n\r\n"%>
                 <%end%>
             <%end%>
-            <%if @order.type_order==0 or @order.type_order==1%>
+            <%if @order.type_order==0 or @order.type_order==1 or @order.type_order==2 or @order.type_order==6%>
                 <%pay=StudentGroup.includes(:group).where(refund: true, groups:{year: @order.year, semester: @order.semester, faculty_id: @order.faculty_id})%>
                 <%pay.each do |pay_to_month_student|%>
                     <%string<<"#{n}. "%>
@@ -169,7 +206,7 @@
                 <%end%>
             <%end%>
 
-            <%if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5%>
+            <%if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5 or @order.type_order==6%>
                 <%@signature.each do |x|%>
                     <%= f.fields_for :list, index: i  do |b| %>
                         <tr>
