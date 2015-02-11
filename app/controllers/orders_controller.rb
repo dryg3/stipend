@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
   def edit
     #@order = Order.find(params[:id])
     @signature=Signature.where(type_sign: 1).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==0 or @order.type_order==3
-    @signature=Signature.where(type_sign: 2).sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5 or @order.type_order==6
+    @signature=Signature.where(type_sign: 2).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5 or @order.type_order==6
   end
 
   def create
