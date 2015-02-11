@@ -1,0 +1,177 @@
+<%@order.signature.delete!("\r")%>
+\linespread{1}
+
+
+\begin{center}
+\textsc{
+министерство образования и науки российской федерации\\
+\textbf{\small{
+федеральное государственное бюджетное образовательное\\
+учреждение высшего профессионального образования\\
+<<Московский государственный индустриальный университет>>\\
+  \vspace{-0.3cm plus 1mm minus 1mm}
+  (ФГБОУ ВПО <<МГИУ>>)
+  }}}
+
+  \large{\textbf{\textsc{<%= @order.faculty.name%>}}}\\
+  \large{\textbf{ПРОТОКОЛ ЗАСЕДАНИЯ СТИПЕНДИАЛЬНОЙ КОМИССИИ <%=@order.faculty.short_name%>}}
+  \end{center}
+
+  \underline{\hspace{4cm}}\hfill№\underline{\hspace{4cm}}
+
+  \textbf{ПРИСУТСТВОВАЛИ:}
+
+  <%=@order.signature.split("\n").size%> человек из <%=@order.signature.split("\n").size%> членов Комиссии:  <%=@order.signature.split("\n")[0]%>, <%=@order.signature.split("\n")[1]%>, <%=@order.signature.split("\n")[2]%>, <%=@order.signature.split("\n")[3]%>, <%=@order.signature.split("\n")[4]%>. Кворум имеется.\\
+
+  <%= @order.up%>
+
+
+
+  \begin{longtable}[hc]{|m{0.8cm}|l|c|c|m{1.8cm}|m{2.8cm}|m{2cm}|m{1.3cm}|}
+  %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+
+  \begin{footnotesize}\textbf{№}\end{footnotesize}
+  &\begin{footnotesize}\textbf{Ф.И.О.}\end{footnotesize}
+  &\begin{footnotesize}\textbf{Группа}\end{footnotesize}
+  &\begin{footnotesize}\textbf{Размер государственной }\end{footnotesize}
+  \\
+  \begin{footnotesize}\textbf{п/п}\end{footnotesize}
+  &\begin{footnotesize}\textbf{студента}\end{footnotesize}
+  &
+  &\begin{footnotesize}\textbf{академической стипендии, руб.}\end{footnotesize}
+  \\
+
+  \hline
+
+  <%n=0 %>
+
+  <% @order.faculty.groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
+
+
+
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+          <% if s.id ==student_group.group_id%>
+              <%pay_to_month_student=student_group.student.pay_to_month_students.find_all{|x| x.month == @order.pay_category_to_semester.date_start.month and x.year==@order.pay_category_to_semester.date_start.year }[0]%>
+              <% unless pay_to_month_student.academic.zero?%>
+                  <%n+=1 %>
+                  \begin{footnotesize}\hfil<%=n%>.\hfil\end{footnotesize}
+                  &\begin{footnotesize}
+                  \hspace{-0.3cm}<%= student_group.student.surname%> <%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.
+                  \end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= s.name%>\hfil\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%= pay_to_month_student.academic %>\hfil\end{footnotesize}
+                  \\ \hline
+              <% end %>
+          <% end %>
+      <% end %>
+
+
+
+
+  <% end %>
+
+
+  \end{longtable}
+
+  ГОЛОСОВАЛИ:<<ЗА>> \underline{\hspace{0.7cm}} чел., <<ПРОТИВ>> \underline{\hspace{0.7cm}} чел., ВОЗДЕРЖАЛИСЬ \underline{\hspace{0.7cm}} чел.
+
+  2. Назначить государственную социальную стипендию следующим студентам <%=@order.faculty.short_name%>:
+
+  {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
+
+  \begin{longtable}[hc]{|c|m{2.8cm}|m{1.5cm}|m{5.5cm}|m{3cm}|m{1.8cm}|}
+
+
+  %<-\begin{tabular}[hc]{|c|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+
+  \begin{tiny}\hfil\textbf{№}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{Ф.И.О. студента}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{Группа}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{Документ-основание,}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{Срок назначения}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{Размер}\hfil\end{tiny}
+  \\
+
+  \begin{tiny}\hfil\textbf{п/п}\hfil\end{tiny}
+  &&
+  &\begin{tiny}\hfil\textbf{для назначеня государственной}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{стипендии}\hfil\end{tiny}
+  &\begin{tiny}\hfil\textbf{стипендии,}\hfil\end{tiny}
+\\
+
+  &&
+  &\begin{tiny}\hfil\textbf{социальной стипендии}\hfil\end{tiny}
+  &
+  &\begin{tiny}\hfil\textbf{ руб}\hfil\end{tiny}
+\\
+  \hline
+
+  <%n=0 %>
+
+  <% @order.faculty.groups.sort_by{ |q| [ q.kurs, q.name] }.each do |s| %>
+
+
+
+      <% @student_groups.sort_by{|q| q.student.surname}.each do |student_group| %>
+          <% if s.id ==student_group.group_id%>
+              <%pay_to_month_student=student_group.student.pay_to_month_students[0]%>
+              <% unless pay_to_month_student.social.zero?%>
+                  <%n+=1 %>
+                  \begin{footnotesize}\hfil<%=n%>.\hfil\end{footnotesize}
+                  &\begin{footnotesize}<%= student_group.student.surname%> <%= student_group.student.firstname[0]%>.<%= student_group.student.secondname[0]%>.\end{footnotesize}
+                  &\begin{footnotesize}\hfil<%=s.name%>\hfil\end{footnotesize}
+                  <%if pay_to_month_student.social!=0%>
+                      <%cer=student_group.student.certificats.sort_by{|x| x.date_finish}.last%>
+                      <%unless cer.nil?%>
+                          &\vspace{-0.3cm}\hspace{-0.2cm}\begin{footnotesize} Справка № <%=cer.number%> <%=cer.who%> \end{footnotesize}
+                          &\begin{footnotesize}  с <%= @order.pay_category_to_semester.date_start.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                          &\begin{footnotesize}\hfil<%= pay_to_month_student.social %>\hfil\end{footnotesize}
+                          \\
+
+                          &&
+                          &\hspace{-0.1cm}\begin{footnotesize} от~<%=cer.when.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                          &\begin{footnotesize} по <%=(cer.date_finish < @order.pay_category_to_semester.date_finish) ?  cer.date_finish.strftime("%d.%m.%Y").to_s  :  @order.pay_category_to_semester.date_finish.strftime("%d.%m.%Y").to_s%>\end{footnotesize}
+                          &\\ \hline
+                      <%end%>
+                  <%end%>
+
+
+              <% end %>
+          <% end %>
+      <% end %>
+
+
+
+
+  <% end %>
+
+
+  \end{longtable}
+  }
+
+  ГОЛОСОВАЛИ:<<ЗА>> \underline{\hspace{0.7cm}} чел., <<ПРОТИВ>> \underline{\hspace{0.7cm}} чел., ВОЗДЕРЖАЛИСЬ \underline{\hspace{0.7cm}} чел.
+
+  <%= @order.bottom%>
+  
+
+
+  \begin{tabular}{l}
+  Председатель\\
+  Члены комиссии\\
+  \\
+  \\
+  \\
+  \end{tabular}
+  \hfill
+  \begin{tabular}{l}
+  <%o=@order.signature.split("\n")%>
+  <%o.each do |signature|%>
+      <%=signature%>\\
+  <%end%>
+
+  \end{tabular}
+
+
+  \linespread{1.5}
