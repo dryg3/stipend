@@ -5,7 +5,8 @@ class PayCategoryToSemestersController < ApplicationController
 
   def kalkul
     @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND groups.semester = ? AND groups.faculty_id = ? AND groups.year = ? AND account_to_semesters.type_account = ?',false,sem_today, current_user.faculty_id, year_today,1).references(:group)
-    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+    @sum=[AccountToSemester.where(type_account: 1, year: year_today, semester: sem_today,faculty_id:current_user.faculty_id)[0].sum]
+    #@sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.study=@s_g_all.find_all{|x| x.study}.size
     @category.public=@s_g_all.find_all{|x| x.public}.size
@@ -25,7 +26,8 @@ class PayCategoryToSemestersController < ApplicationController
 
   def stip1
     @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs = ? AND groups.semester = ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, current_user.faculty_id, year_today,0).references(:group)
-    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+    @sum=[AccountToSemester.where(type_account: 0, year: year_today, semester: sem_today,faculty_id:current_user.faculty_id)[0].sum]
+#@sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.social=@s_g_all.find_all{|x| x.social}.size
     @category.first=@s_g_all.find_all{|x| x.type_stipend == 3}.size
@@ -38,7 +40,8 @@ class PayCategoryToSemestersController < ApplicationController
 
   def stip2
     @s_g_all=StudentGroup.includes(:group,{:group=>{:faculty=>:account_to_semesters}}).where('commerce = ? AND (groups.kurs != ? OR groups.semester != ?) AND groups.semester = ? AND groups.faculty_id= ? AND groups.year=? AND account_to_semesters.type_account = ?',false,1,1,sem_today, current_user.faculty_id, year_today,2).references(:group)
-    @sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
+@sum=[AccountToSemester.where(type_account: 2, year: year_today, semester: sem_today,faculty_id:current_user.faculty_id)[0].sum]    
+#@sum=[@s_g_all.last.group.faculty.account_to_semesters[0].sum]
     @category = PayCategoryToSemester.new
     @category.social=@s_g_all.find_all{|x| x.social}.size
     @category.five=@s_g_all.find_all{|x| x.type_stipend == 2}.size

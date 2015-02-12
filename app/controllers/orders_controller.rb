@@ -61,7 +61,7 @@ class OrdersController < ApplicationController
 
       if @order.type_order==0 or @order.type_order==3
         for i in 0...params[:order][:list].size
-          unless params[:order][:list][i.to_s]["id"]==""
+          unless params[:order][:list][i.to_s].nil? or params[:order][:list][i.to_s]["id"]==""
             arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
           end
         end
@@ -69,7 +69,7 @@ class OrdersController < ApplicationController
 
       if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order== 5 or @order.type_order== 6
         for i in 0...params[:order][:list].size
-          unless params[:order][:list][i.to_s]["id"]==""
+          unless params[:order][:list][i.to_s].nil? or params[:order][:list][i.to_s]["id"]==""
             arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"
           end
         end
