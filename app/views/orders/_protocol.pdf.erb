@@ -23,7 +23,8 @@
 
   <%=@order.signature.split("\n").size%> человек из <%=@order.signature.split("\n").size%> членов Комиссии:  <%=@order.signature.split("\n")[0]%>, <%=@order.signature.split("\n")[1]%>, <%=@order.signature.split("\n")[2]%>, <%=@order.signature.split("\n")[3]%>, <%=@order.signature.split("\n")[4]%>. Кворум имеется.\\
 
-  <%= @order.up%>
+  <%up=@order.up.split("TABLE")%>
+  <%=up[0]%>
 
 
 
@@ -74,9 +75,8 @@
 
   \end{longtable}
 
-  ГОЛОСОВАЛИ:<<ЗА>> \underline{\hspace{0.7cm}} чел., <<ПРОТИВ>> \underline{\hspace{0.7cm}} чел., ВОЗДЕРЖАЛИСЬ \underline{\hspace{0.7cm}} чел.
+  <%=up[1]%>
 
-  2. Назначить государственную социальную стипендию следующим студентам <%=@order.faculty.short_name%>:
 
   {\renewcommand{\arraystretch}{0.6} %<- modify value to suit your needs
 
