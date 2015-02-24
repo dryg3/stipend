@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
   def show
     #@order = Order.includes(:pay_category_to_semester).find(params[:id])
     @order = Order.includes([{:faculty=>{:groups=>{:student_groups=>{:student=>[:pay_to_month_students,:certificats]}}}},:pay_category_to_semester]).where('groups.year = ? AND groups.semester = ? AND pay_to_month_students.year = ? AND pay_to_month_students.month = ?', @order.year, @order.semester, @order.pay_category_to_semester.date_start.year,@order.pay_category_to_semester.date_start.month).references(:faculty).find(params[:id])
-    if  [0,1,2,6].include?(@order.type_order)
+    if  [0,1,2,6,7].include?(@order.type_order)
       @student_groups=@order.faculty.groups.find_all{|x| x.kurs != 1 or x.semester != 1}.map{|x| x.student_groups}.flatten
     elsif [3,4,5].include?(@order.type_order)
       @student_groups=@order.faculty.groups.find_all{|x| x.kurs == 1 and x.semester == 1}.map{|x| x.student_groups}.flatten
@@ -32,8 +32,8 @@ class OrdersController < ApplicationController
 
   def edit
     #@order = Order.find(params[:id])
-    @signature=Signature.where(type_sign: 1).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==0 or @order.type_order==3
-    @signature=Signature.where(type_sign: 2).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order==5 or @order.type_order==6
+    @signature=Signature.where(type_sign: 1).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if [0,3,7].include?(@order.type_order)
+    @signature=Signature.where(type_sign: 2).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if [1,2,4,5,6].include?(@order.type_order)
   end
 
   def create
@@ -46,6 +46,8 @@ class OrdersController < ApplicationController
     @order.bottom=""
     @order.signature=""
     if @order.save
+      @signature=Signature.where(type_sign: 1).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if [0,3,7].include?(@order.type_order)
+      @signature=Signature.where(type_sign: 2).find_all{ |x| x.faculty_id.nil? or x.faculty_id.to_i==current_user.faculty_id.to_i}.sort_by { |x| x.number.nil? ? 100: x.number} if [1,2,4,5,6].include?(@order.type_order)
       render action: 'edit'
     else
       render 'new'
@@ -59,7 +61,7 @@ class OrdersController < ApplicationController
       @order.signature=""
       arr=Array.new(params[:order][:list].size+1)
 
-      if @order.type_order==0 or @order.type_order==3
+      if [0,3,7].include?(@order.type_order)
         for i in 0...params[:order][:list].size
           unless params[:order][:list][i.to_s].nil? or params[:order][:list][i.to_s]["id"]==""
             arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\t"+params[:order][:list][i.to_s]["name2"].to_s+"\n"
@@ -67,7 +69,7 @@ class OrdersController < ApplicationController
         end
       end
 
-      if @order.type_order==1 or @order.type_order==2 or @order.type_order==4 or @order.type_order== 5 or @order.type_order== 6
+      if [1,2,4,5,6].include?(@order.type_order)
         for i in 0...params[:order][:list].size
           unless params[:order][:list][i.to_s].nil? or params[:order][:list][i.to_s]["id"]==""
             arr[params[:order][:list][i.to_s]["id"].to_i]=params[:order][:list][i.to_s]["name1"].to_s+"\n"

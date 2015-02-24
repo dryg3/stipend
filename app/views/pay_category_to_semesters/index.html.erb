@@ -62,17 +62,14 @@
             <td>
               <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary"   %>
             </td>
-            <td>
-              <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success"  %>
-            </td>
         <%else%>
             <td>
               <%= link_to 'Распределить', {controller: "pay_to_month_students", action: "index", pay_category_to_semester: pay_category_to_semester.id}, class: "btn btn-primary disabled"   %>
             </td>
-            <td>
-              <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success disabled"  %>
-            </td>
         <% end %>
+        <td>
+            <%= link_to 'Создать приказ', {controller: "orders", action: "new", pay_category_to_semester_id: pay_category_to_semester.id }, class: "btn btn-success"  %>
+        </td>
 
         <td>
           <% if  can? :manager, :all  %>

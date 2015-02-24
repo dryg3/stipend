@@ -1,0 +1,51 @@
+.
+\vspace{5.3cm plus 1mm minus 1mm}
+\pagestyle{empty}
+
+\hspace{-1cm}\textbf{\scriptsize{О назначении стипендии студентам <%=@order.faculty.short_name%>}}
+
+
+
+<%= @order.up%>
+
+<%= @order.bottom%>
+
+
+\vspace{1.5cm plus 1mm minus 1mm}
+\begin{tabular}{l}
+<%=@order.signature.split("\n").first.split("\t")[0]%>\\
+\end{tabular}
+\hfill
+\begin{tabular}{l}
+<%=@order.signature.split("\n").first.split("\t")[1]%>\\
+\end{tabular}
+
+\newpage
+\noindent СОГЛАСОВАНО:
+
+\parindent=0.5cm
+<%o=@order.signature.split("\n")%>
+<%o.shift%>
+\begin{tabular}{p{8.2cm}}
+<%o.each do |signature|%>
+    <%=signature.split("\t")[0]%>\\
+<%end%>
+\end{tabular}
+\hfill
+\begin{tabular}{l}
+<%o.each do |signature|%>
+
+    <%=signature.split("\t")[1]%>\\
+    <%if signature.split("\t")[0].size>40%>\\ <%end%>
+<%end%>
+\end{tabular}
+
+\parindent=1.25cm
+\begin{table}[b]
+
+Исп. <%=lesc current_user.name%>\\
+Тел. <%=lesc current_user.tel%>\\
+
+Рассылка: ОООП <%=lesc @order.faculty.short_name%>, УЭР, ПФО, стипендиальный отдел
+\end{table}
+\linespread{1.5}
